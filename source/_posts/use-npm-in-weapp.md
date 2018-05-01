@@ -56,10 +56,10 @@ module.exports = {
 })([module1, module2, module3]);
 ```
 
+> 示例代码：https://github.com/JerryC8080/use-npm-in-weapp/tree/master/step1
+
 这样的代码，显然没法达到我们要的效果。
 幸好 webpack 提供了 `output.libraryTarget` 的配置项。
-
-> 示例代码：https://github.com/JerryC8080/use-npm-in-weapp/tree/master/step1
 
 ## output.libraryTarget: "commonjs2"
 
