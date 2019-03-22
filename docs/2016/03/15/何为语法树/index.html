@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="han-init">
+<head>
+  <meta charset="utf-8">
+  
+  <title>何为语法树 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="语法树," />
+  
+
+  <meta name="description" content="什么是语法树？
+你是否曾想过，这个世界存在这么多语言的意义。
+
+假如现在你面前有一个物体，它是一个不规则的圆体，整个身体通红，头部还有一根细长稍微弯曲偏右呈棕色的圆柱体。在中文我们称之为「苹果」，在英文我们称之为「Apple」，在日文中我们称之为「アップル」，在法语中我们称之为「pomme」，在德语中我们称之为「Apfel」，无论用不同的语言，针对这个物体在文字上、发音上都完全不一样，但这个物体确">
+<meta property="og:type" content="article">
+<meta property="og:title" content="何为语法树">
+<meta property="og:url" content="http://huang-jerryc.com/2016/03/15/何为语法树/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="什么是语法树？
+你是否曾想过，这个世界存在这么多语言的意义。
+
+假如现在你面前有一个物体，它是一个不规则的圆体，整个身体通红，头部还有一根细长稍微弯曲偏右呈棕色的圆柱体。在中文我们称之为「苹果」，在英文我们称之为「Apple」，在日文中我们称之为「アップル」，在法语中我们称之为「pomme」，在德语中我们称之为「Apfel」，无论用不同的语言，针对这个物体在文字上、发音上都完全不一样，但这个物体确">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/whatisAST/表达式语法树比较.png">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/whatisAST/Python语法树.png">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/whatisAST/javascript语法树.png">
+<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="何为语法树">
+<meta name="twitter:description" content="什么是语法树？
+你是否曾想过，这个世界存在这么多语言的意义。
+
+假如现在你面前有一个物体，它是一个不规则的圆体，整个身体通红，头部还有一根细长稍微弯曲偏右呈棕色的圆柱体。在中文我们称之为「苹果」，在英文我们称之为「Apple」，在日文中我们称之为「アップル」，在法语中我们称之为「pomme」，在德语中我们称之为「Apfel」，无论用不同的语言，针对这个物体在文字上、发音上都完全不一样，但这个物体确">
+<meta name="twitter:image" content="http://huang-jerryc.com/image/blog/whatisAST/表达式语法树比较.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/styles.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.css">
+
+</head>
+
+<body>
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <div class="toolbox-entry">盒子</div>
+    <ul class="list-toolbox">
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/">博客</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/">分类</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/">标签</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/">友链</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/">关于</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/atom.xml">RSS</a>
+          </li>
+        
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是语法树？"><span class="toc-text">什么是语法树？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一则简单的例子"><span class="toc-text">一则简单的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#先来看看Python的语法树"><span class="toc-text">先来看看Python的语法树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#再窥视一下JavaScript的语法树"><span class="toc-text">再窥视一下JavaScript的语法树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我们可以利用语法树做些什么？"><span class="toc-text">我们可以利用语法树做些什么？</span></a></li></ol>
+  </div>
+
+
+<div class="content-post CENTER">
+   <article id="post-何为语法树" class="article article-type-post" itemscope itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">何为语法树</h1>
+
+    <div class="article-meta">
+      <span>2016-03-15</span>
+
+      <span> | </span>
+
+      <span class="article-author">JerryC</span>
+
+      <span> | </span>
+
+      
+  <span class="article-category">
+    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+  </span>
+
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="什么是语法树？"><a href="#什么是语法树？" class="headerlink" title="什么是语法树？"></a>什么是语法树？</h2><blockquote>
+<p>你是否曾想过，这个世界存在这么多语言的意义。</p>
+</blockquote>
+<p>假如现在你面前有一个物体，它是一个不规则的圆体，整个身体通红，头部还有一根细长稍微弯曲偏右呈棕色的圆柱体。<br>在中文我们称之为「苹果」，<br>在英文我们称之为「Apple」，<br>在日文中我们称之为「アップル」，<br>在法语中我们称之为「pomme」，<br>在德语中我们称之为「Apfel」，<br>无论用不同的语言，针对这个物体在文字上、发音上都完全不一样，但这个物体确确实实的存在这个时空上，颜色、气味、形状都不曾因为语言而改变过。    </p>
+<blockquote>
+<p>无论这个世界存在多少语言，它们所描述的真理都不曾改变过。</p>
+</blockquote>
+<p>或者说，真理就存在那里，可以用不同的语言的不同表达方式描述出来。那么计算机的世界，这么多编程的语言，C、C++、Java、C#、JavaScript、Python、Go、Ruby等等等，它们共同所描述的真理是什么？</p>
+<p>我们知道人类语言上，无论什么语种，都会有「主语」「动词」「宾语」「标点符号」来描述一个现实世界所发生的事件。<br>而在计算机编程语言上，无论什么语种，都会有「类型」「运算符」「流程语句」「函数」「对象」等概念来表达计算机中存在内存中的0和1，以及背后运算与逻辑。</p>
+<blockquote>
+<p>语法树，计算机描述世界真理的树状结构。</p>
+</blockquote>
+<p>不同的语言，都会配之不同的语法分析器，而语法分析器是把源代码作为字符串读入、解析，并建立语法树的程序。语法的设计和语法分析器的实现是决定语言外在表现的重要因素。<br>什么是语法树？摘自Wiki一段：</p>
+<blockquote>
+<p>在计算机科学中，抽象语法树（abstract syntax tree 或者缩写为 AST），或者语法树（syntax tree），是源代码的抽象语法结构的树状表现形式，这里特指编程语言的源代码。树上的每个节点都表示源代码中的一种结构。之所以说语法是「抽象」的，是因为这里的语法并不会表示出真实语法中出现的每个细节。</p>
+</blockquote>
+<h2 id="一则简单的例子"><a href="#一则简单的例子" class="headerlink" title="一则简单的例子"></a>一则简单的例子</h2><p>如果我们需要让计算机帮忙算一下 「1加2再乘以3」 的结果，该怎么表达呢？<br>现在我们大多数的现代编程语言，都是使用「中缀表达式」的方式来编写运算，比如JavaScript：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1 + 2) * 3</span><br></pre></td></tr></table></figure>
+<p>而FORTH语言则使用「后缀表达式」，这基本上与日语中的语序是一致的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 2 + 3 *</span><br></pre></td></tr></table></figure>
+<p>LISP语言使用的「前缀表达式」：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">( * (+ 1 2) 3)</span><br></pre></td></tr></table></figure>
+<p>我们再看一下这三种表达式的语法树：</p>
+<p><img src="/image/blog/whatisAST/表达式语法树比较.png" alt="表达式语法树比较"></p>
+<p>可以看出，对于这三种简单的语言，它们只是在这个语法树上按不同的规则遍历而已。三者的代码看起来差别很大，但实际上所用的树结构是相同的。</p>
+<h2 id="先来看看Python的语法树"><a href="#先来看看Python的语法树" class="headerlink" title="先来看看Python的语法树"></a>先来看看Python的语法树</h2><p>通过Python语言自带的库文件ast，我们可以查看特定的代码被转换成怎样的语法树。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import ast</span><br><span class="line">&gt;&gt;&gt; ast.dump(ast.parse(&quot;(1 + 2) * 3&quot;))</span><br><span class="line">&apos;Module(</span><br><span class="line">	body=[</span><br><span class="line">		Expr(</span><br><span class="line">			value=BinOp(</span><br><span class="line">				left=BinOp(</span><br><span class="line">					left=Num(n=1), </span><br><span class="line">					op=Add(), </span><br><span class="line">					right=Num(n=2)</span><br><span class="line">				), </span><br><span class="line">				op=Mult(), </span><br><span class="line">				right=Num(n=3)</span><br><span class="line">			)</span><br><span class="line">		)</span><br><span class="line">	]</span><br><span class="line">)&apos;</span><br></pre></td></tr></table></figure>
+<p><code>BinOp op = Mult()</code>表示乘法运算，与<code>*</code>相对应；<br><code>BinOp op = Add()</code>表示加法运算，与<code>+</code>相对应；<br><code>Num n = 1</code>既为数值1。</p>
+<p><img src="/image/blog/whatisAST/Python语法树.png" alt="Python语法树"></p>
+<h2 id="再窥视一下JavaScript的语法树"><a href="#再窥视一下JavaScript的语法树" class="headerlink" title="再窥视一下JavaScript的语法树"></a>再窥视一下JavaScript的语法树</h2><blockquote>
+<p>在语法复杂的语言中，语法树是包含很多细节的语法结果表达式，我们需要靠语法树把这种形式以更简洁的形式表达出来。</p>
+</blockquote>
+<p>Javascript 有不少工具可以把代码构造出清晰的语法树，比如 <a href="http://esprima.org/" target="_blank" rel="external">esprima</a>、<a href="https://code.google.com/p/v8/source/browse/branches/bleeding_edge/src/ast.h" target="_blank" rel="external">v8</a>、<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API" target="_blank" rel="external">SpiderMonkey</a>、<a href="http://lisperator.net/uglifyjs/" target="_blank" rel="external">UglifyJS</a>、<a href="http://astexplorer.net/" target="_blank" rel="external">AST explorer</a>等。</p>
+<p>这里，我使用「esprima」来探讨一下JavaScript运算<code>(1 + 2) * 3</code>的语法树。</p>
+<p>javascript code: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1 + 2)* 3;</span><br></pre></td></tr></table></figure>
+<p>ast for json:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot;: &quot;Program&quot;,</span><br><span class="line">    &quot;body&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;type&quot;: &quot;ExpressionStatement&quot;,</span><br><span class="line">            &quot;expression&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;BinaryExpression&quot;,</span><br><span class="line">                &quot;operator&quot;: &quot;*&quot;,</span><br><span class="line">                &quot;left&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;BinaryExpression&quot;,</span><br><span class="line">                    &quot;operator&quot;: &quot;+&quot;,</span><br><span class="line">                    &quot;left&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;Literal&quot;,</span><br><span class="line">                        &quot;value&quot;: 1,</span><br><span class="line">                        &quot;raw&quot;: &quot;1&quot;</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &quot;right&quot;: &#123;</span><br><span class="line">                        &quot;type&quot;: &quot;Literal&quot;,</span><br><span class="line">                        &quot;value&quot;: 2,</span><br><span class="line">                        &quot;raw&quot;: &quot;2&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &quot;right&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;Literal&quot;,</span><br><span class="line">                    &quot;value&quot;: 3,</span><br><span class="line">                    &quot;raw&quot;: &quot;3&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;sourceType&quot;: &quot;script&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>body</code>表示程序体，而程序体中包含了一则表达式<code>ExpressionStatement</code>, 表达式体里包含了操作符 <code>*</code>,以及左右两边表达式，其中右边是数字<code>3</code>,而左边表达式还包含一层表达式，里面是一个<code>+</code> 操作符，以及左右两边分别为<code>1</code>和<code>2</code>的数字。</p>
+<p><img src="/image/blog/whatisAST/javascript语法树.png" alt="javascript语法树"></p>
+<p>如果还没有看懂，你可以到这里看一下这段代码所生成的语法树：<a href="http://esprima.org/demo/parse.html?code=%2F%2F%20Life%2C%20Universe%2C%20and%20Everything%0A(1%20%2B%202" target="_blank" rel="external">AST for (1 + 2)* 3;</a>*%203%0A)</p>
+<h2 id="我们可以利用语法树做些什么？"><a href="#我们可以利用语法树做些什么？" class="headerlink" title="我们可以利用语法树做些什么？"></a>我们可以利用语法树做些什么？</h2><p>看到这里你可能会问，知道语法是又有什么用呢？跟我日常编写代码貌似半毛钱关系都没有。其实语法树还是很有用的，想一下如果想做「语法高亮」、「关键字匹配」、「作用域判断」、以及「代码压缩」等等，都是最好把代码解构成语法树之后再去各种操作，当然仅仅解构还不够，还需要提供各种函数去遍历与修改语法树。</p>
+<p>另一方面，去研究、去探讨计算机真实的世界不是一个很精彩很刺激的过程么？</p>
+
+    
+  </div>
+</article>
+
+
+
+<section class="disqus-comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+
+</div>
+
+  
+<script>
+  var disqus_shortname = 'bluesun-jerryc';
+  
+  var disqus_url = 'http://huang-jerryc.com/2016/03/15/何为语法树/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+  
+
+</body>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.js"></script>
+</html>

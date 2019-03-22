@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="han-init">
+<head>
+  <meta charset="utf-8">
+  
+  <title>登录那些事儿 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Nodejs,session,cookie,单点登录," />
+  
+
+  <meta name="description" content="也不知道是什么原因，刚开始不久的职业生涯，在技术这条路走着走着，和「登录」总是有着一个不解之缘。还记得当初学习Web编程的时候么？不管是Java、.Net、PHP，继经典「Hello World」之后，要写的很有可能就是「登录」功能。至今「登录」的问题还是让我心中一万只草泥马奔过。下面，给分享一下各种「登录」相关的需求
+普通的登录这个是极其普通的登录需求，要的就是一个登录页面，输入账号密码，提交F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="登录那些事儿">
+<meta property="og:url" content="http://huang-jerryc.com/2015/12/14/登录那些事儿/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="也不知道是什么原因，刚开始不久的职业生涯，在技术这条路走着走着，和「登录」总是有着一个不解之缘。还记得当初学习Web编程的时候么？不管是Java、.Net、PHP，继经典「Hello World」之后，要写的很有可能就是「登录」功能。至今「登录」的问题还是让我心中一万只草泥马奔过。下面，给分享一下各种「登录」相关的需求
+普通的登录这个是极其普通的登录需求，要的就是一个登录页面，输入账号密码，提交F">
+<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="登录那些事儿">
+<meta name="twitter:description" content="也不知道是什么原因，刚开始不久的职业生涯，在技术这条路走着走着，和「登录」总是有着一个不解之缘。还记得当初学习Web编程的时候么？不管是Java、.Net、PHP，继经典「Hello World」之后，要写的很有可能就是「登录」功能。至今「登录」的问题还是让我心中一万只草泥马奔过。下面，给分享一下各种「登录」相关的需求
+普通的登录这个是极其普通的登录需求，要的就是一个登录页面，输入账号密码，提交F">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/styles.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.css">
+
+</head>
+
+<body>
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <div class="toolbox-entry">盒子</div>
+    <ul class="list-toolbox">
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/">博客</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/">分类</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/">标签</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/">友链</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/">关于</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/atom.xml">RSS</a>
+          </li>
+        
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#普通的登录"><span class="toc-text">普通的登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用独立登录系统"><span class="toc-text">使用独立登录系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单点登录"><span class="toc-text">单点登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OAuth2-0登录"><span class="toc-text">OAuth2.0登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在最后"><span class="toc-text">在最后</span></a></li></ol>
+  </div>
+
+
+<div class="content-post CENTER">
+   <article id="post-登录那些事儿" class="article article-type-post" itemscope itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">登录那些事儿</h1>
+
+    <div class="article-meta">
+      <span>2015-12-14</span>
+
+      <span> | </span>
+
+      <span class="article-author">JerryC</span>
+
+      <span> | </span>
+
+      
+  <span class="article-category">
+    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+  </span>
+
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>也不知道是什么原因，刚开始不久的职业生涯，在技术这条路走着走着，和「登录」总是有着一个不解之缘。还记得当初学习Web编程的时候么？不管是Java、.Net、PHP，继经典「Hello World」之后，要写的很有可能就是「登录」功能。至今「登录」的问题还是让我心中一万只草泥马奔过。<br>下面，给分享一下各种「登录」相关的需求</p>
+<h2 id="普通的登录"><a href="#普通的登录" class="headerlink" title="普通的登录"></a>普通的登录</h2><p>这个是极其普通的登录需求，要的就是一个登录页面，输入账号密码，提交Form表单，后端查询数据库对应用户名的密码，匹配正确则把用户记录到Session，不正确则返回错误。<br>这种登录，在上学的时候，也许敬爱的老师就已经教过你了。<br>但可能他没有教你的是，密码需要hash加密，session为什么可以记录登录用户的原理。</p>
+<p><strong>密码Hash</strong><br>密码hash，就是存进数据库的密码是一串密文，密文是明文密码通过不可逆算法得出的。在Nodejs中，你可以使用<a href="https://www.npmjs.com/package/bcryptjs" target="_blank" rel="external">bcryptjs</a>，它提供了<code>hash</code>以及对应的<code>compare</code>方法，非常适合用于密码的加密和对比。</p>
+<p><strong>Session原理</strong><br>Session的原理其实还是依赖了Cookie，所以Cookie才是记录用户凭证的真理。它的原理大概是酱紫的：服务器端维护一个session的表，这个表的每一条记录存的就是与某一个客户端的会话，会话会有过期时间，过期的会话会被清理。然后这个会话，会有一个对应的id，一般是一串长长的看不懂的字符串，然后这个字符串会被存储在客户端的cookie中，每一次请求服务器端都会带上这个cookie，服务器端就知道访问的就是哪个客户端了。<br>欲知更多有关「Session原理」请点击传送门：<a href="http://www.jianshu.com/p/2b7c10291aad" target="_blank" rel="external">Session原理</a></p>
+<h2 id="使用独立登录系统"><a href="#使用独立登录系统" class="headerlink" title="使用独立登录系统"></a>使用独立登录系统</h2><p>应项目需要，登录逻辑需要独立出来做成一个系统，就是另外一个项目。与原来的主站不是在同一个项目中了。一个域名是 <code>www.site.com</code>，一个则是<code>passport.site.com</code>了。要在不同的域名下进行登录，一般的方法是<code>www.site.com/login</code> 跳转到 <code>passport.site.com/login</code>，passport这边是一个登录页面，用户输入账号密码登录成功之后，passport会通过带着一个可逆加密的包含用户信息的token，重定向到<code>www.site.com</code>提供的回调处理地址，然后进行解密，匹配正确，则登录用户。<br>要注意的是，这里的加密的信息需要包含一个时间戳，接收方需要认证这个时间戳，过期登录失败。避免token被窃取，被无限登录site系统。</p>
+<h2 id="单点登录"><a href="#单点登录" class="headerlink" title="单点登录"></a>单点登录</h2><p>单点登录需要实现的需求，说白了就是在站点A的登录了，那么用户就自动在站点B、站点C、站点E、F、G登录。<br>这又分两种情况，A站点和B站点是否在同一个二级域名下。<br>假如是在同一个域名下，例如<code>siteA.site.com</code>与<code>siteB.site.com</code>，因为cookie允许设置到二级域名下<code>.site.com</code>，所以siteA和siteB是可以共享cookie的，用户的信息可以通过可逆加密放在二级域名下的cookie，并且设置<code>http only</code>，就可以一站登录，站站登录。<br>而如果A站点和B站点不在同一二级域名下，例如<code>www.siteA.com</code>与<code>www.siteB.com</code>，他们就无法通过共享cookie的方式共享用户信息，所以需要用到jsonp的方式，用户在siteA登录之后，提供一个jsonp接口获取加密的用户信息，siteB访问这个jsonp获取加密信息。达到共享用户状态的效果。<br>欲知更多有关「单点登录」请点击传送门：<a href="http://www.jianshu.com/p/613e44d4a464" target="_blank" rel="external">单点登录的三种实现方式</a></p>
+<h2 id="OAuth2-0登录"><a href="#OAuth2-0登录" class="headerlink" title="OAuth2.0登录"></a>OAuth2.0登录</h2><p>这就比较普遍了，现在随随便便做个网站，都接入「微信登录」、「微博登录」、「豆瓣登录」、「QQ登录」、「Github登录」、<em>@^</em>&amp;@%#^%^@%&amp;%@&amp;#……..<br>这些统一叫做：「第三方登录」。<br>第三方登录都是实现了OAuth2.0协议的，流程大概是酱紫的：<br>第三方提供一个登录入口，也就是第三方域名下的登录页面。主站需要登录的时候，引导用户重定向到第三方的登录页面，用户输入账号密码之后，登录第三方系统，第三方系统匹配帐号成功之后，带上一个code到主站的回调地址，主站接收到code，短时间内拿着code请求第三方提供获取长期凭证的接口(因为code有一个比较短的过期时间)，这个长期凭证叫<code>access_token</code>，获取之后就把这个<code>access_token</code>存到数据库中，请求一些第三方提供的API，需要用到这个<code>access_token</code>，因为这个token就是记录用户在第三方系统的一个身份凭证。<br>一些系统，在获取<code>access_token</code>的时候，还会返回一个副参数<code>refresh_token</code>，因为<code>access_token</code>是有过期时间的，一旦过期了，主站可以使用<code>refresh_token</code>请求第三方提供的接口获取新的<code>access_token</code>以及新的<code>refresh_token</code>。<br>在Nodejs中，你可以使用<code>passport</code>来给第三方登录提供一个统一解决方案，而如果你是开发「微信公众号」授权，除了<a href="https://www.npmjs.com/package/passport" target="_blank" rel="external">passport</a>，也可以使用<a href="https://www.npmjs.com/package/wechat-oauth" target="_blank" rel="external">wechat-oauth</a></p>
+<h2 id="在最后"><a href="#在最后" class="headerlink" title="在最后"></a>在最后</h2><p>其实登录问题，理解了Session原理是很重要的，这个也不难理解。然后站点之间的用户信息交流，就是通过各种跨域限制，各种加密解密而已。在做这个的时候，需要充分考虑到加密的token是否会被窃取的可能性，还要考虑让这个token加上时间的验证，在一些可能会被窃取，安全需求比较高的情况，就需要把token的时间设置的更短。还有就是加密的方式需要依照需求不同而选择可逆或者不可逆，hash sha1还是JWT(Json Web Token)。<br>sha1加密，可以使用Nodejs自带的<code>crypto</code>，JWT可以使用<a href>jsonwebtoken</a></p>
+
+    
+  </div>
+</article>
+
+
+
+<section class="disqus-comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+
+</div>
+
+  
+<script>
+  var disqus_shortname = 'bluesun-jerryc';
+  
+  var disqus_url = 'http://huang-jerryc.com/2015/12/14/登录那些事儿/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+  
+
+</body>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.js"></script>
+</html>
