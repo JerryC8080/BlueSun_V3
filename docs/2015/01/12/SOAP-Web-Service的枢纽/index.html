@@ -30,7 +30,7 @@ SOAP（Simple Ob">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/79702-e7cf075365536286.jpeg">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/79702-e7cf075365536286.jpeg">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/79702-5d2b1c9e8970c3ea.jpeg">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SOAP，WebService的枢纽">
 <meta name="twitter:description" content="前言前两天，室友给我发了一套代码……
@@ -165,7 +165,7 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前两天，室友给我发了一套代码……</p>
-<p><img src="/image/blog/79702-e7cf075365536286.jpeg" alt><br><img src="/image/blog/79702-e7cf075365536286.jpeg" alt></p>
+<p><img src="/image/blog/79702-e7cf075365536286.jpeg" alt=""><br><img src="/image/blog/79702-e7cf075365536286.jpeg" alt=""></p>
 <p>一段对话下来，我心中多个疑问：SOAP是什么？node调用java接口？</p>
 <p>一向懒散的我，不知为何却对些问题有点兴趣，平常我们处理不同应用程序之间的通讯，都是以RESTful API的方式的，基于HTTP协议，互相传输JSON格式的数据以达到程序间的交流。现在却有一个称SOAP的东东，可以直接调用程序的接口？</p>
 <h2 id="SOAP，何方妖孽？"><a href="#SOAP，何方妖孽？" class="headerlink" title="SOAP，何方妖孽？"></a>SOAP，何方妖孽？</h2><ul>
@@ -181,7 +181,7 @@ ga('send', 'pageview');
 <p><strong>假设</strong>现在有两个应用程序，分别用两种语言进行开发的，一个是用nodejs开发的程序，一个是用java开发的程序。而java程序其中有一个方法(getUser)可以查询数据库中的某用户的信息。那么在nodejs程序请求java程序的(getUser)方法获取某用户信息的流程是怎么走的？</p>
 <p>我在应用程序的层面上解释一下这个流程，</p>
 <p>请看下图，然后我再对每一个步骤说明：</p>
-<p><img src="/image/blog/79702-5d2b1c9e8970c3ea.jpeg" alt></p>
+<p><img src="/image/blog/79702-5d2b1c9e8970c3ea.jpeg" alt=""></p>
 <p>首先java程序会把<code>getUser()</code>做成Web Service，然后要提供对这个service的描述文档，那便是WSDL文件。nodejs程序要调用的方法以及参数的信息都存放在遵循了SOAP标准的WSDL文件中，所以要访问远端的web service，必须先获得对方提供的WSDL。</p>
 <p>步骤一：nodejs程序通过http请求，获取到java程序提供的WSDL文件。nodejs程序得到这个WSDL文件之后，就会对它进行解析，得知java程序提供了<code>getUser()</code>，而且也知道这个方法需要的参数是<code>string</code>类型的且变量名<code>userUUID</code>。</p>
 <p>步骤二：在nodejs程序知道java程序有<code>getUser()</code>这个方法之后，它通过http请求，发送SOAP信息到java程序，java程序得到这个SOAP信息之后，进行解析，知道了nodejs程序需要请求<code>getUser()</code>方法，且提供了所需要的参数。</p>

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="HTML,CSS,Javascript,node webkit," />
+    <meta name="keywords" content="Javascript,HTML,CSS,node webkit," />
   
 
   <meta name="description" content="前言受益于Node的问世，Javascript终于能够挣脱浏览器这个条条框框的盒子。于是，Javascript能够开发服务器应用了。既然Javascript能够运行在操作系统中，那是否也能使用Javascript像C/C++开发那些个桌面应用呢。在Google一番之后，果然已经有高人实现了这个想法了。
@@ -32,7 +32,7 @@ Node-WebKit，把浏览器的布局引擎WebKit和Node.js结合了在一起。We
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/imgFile1412168871884.jpg">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/imgFile1412168728769.jpg">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/imgFile1412168908105.jpg">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTML-CSS-JS打造Windows桌面版《2048》">
 <meta name="twitter:description" content="前言受益于Node的问世，Javascript终于能够挣脱浏览器这个条条框框的盒子。于是，Javascript能够开发服务器应用了。既然Javascript能够运行在操作系统中，那是否也能使用Javascript像C/C++开发那些个桌面应用呢。在Google一番之后，果然已经有高人实现了这个想法了。
@@ -171,11 +171,11 @@ ga('send', 'pageview');
 <p>2、基于jQuery实现的2048游戏：<br><a href="http://huang-jerryc/（原文地址）" target="_blank" rel="external">http://huang-jerryc/（原文地址）</a><br><a href="https://github.com/JerryC8080/My2048（下载地址）" target="_blank" rel="external">https://github.com/JerryC8080/My2048（下载地址）</a></p>
 <p>node-webkit的其他版本，在项目地址（<a href="https://github.com/rogerwang/node-webkit）可以下载得到，不同操作系统是不同版本的。" target="_blank" rel="external">https://github.com/rogerwang/node-webkit）可以下载得到，不同操作系统是不同版本的。</a><br>基于jQuery实现的2048游戏，是我之前做的一个小玩意，而这一次就完美移植到Windows桌面，哇嘎嘎嘎。</p>
 <p>node-webkit下载并解压之后，如下：<br><img src="/image/blog/imgFile1412168419938.jpg" alt="解压后"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">文件说明：</span><br><span class="line">nw.pak           --核心Javascript库</span><br><span class="line">incudt.dll       --网络库</span><br><span class="line">ffmpegsumo.dll   --媒体库，为&lt;video&gt;、&lt;audio&gt;或者其他媒体功能提供支持</span><br><span class="line">libEGL.dll、</span><br><span class="line">libGLESv2.dll、</span><br><span class="line">D3DCompiler_43.dll、</span><br><span class="line">d3dx9_43.dll     --该四个dll，为WebGL、GPU、DirectX提供支持</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">文件说明：</div><div class="line">nw.pak           --核心Javascript库</div><div class="line">incudt.dll       --网络库</div><div class="line">ffmpegsumo.dll   --媒体库，为&lt;video&gt;、&lt;audio&gt;或者其他媒体功能提供支持</div><div class="line">libEGL.dll、</div><div class="line">libGLESv2.dll、</div><div class="line">D3DCompiler_43.dll、</div><div class="line">d3dx9_43.dll     --该四个dll，为WebGL、GPU、DirectX提供支持</div></pre></td></tr></table></figure>
 <p>基于jQuery实现的2048游戏下载并解压之后，如下：<br><img src="/image/blog/imgFile1412168441331.jpg" alt="解压后"></p>
 <h2 id="Step-2-：-编写package-json文件"><a href="#Step-2-：-编写package-json文件" class="headerlink" title="Step 2  ： 编写package.json文件"></a>Step 2  ： 编写package.json文件</h2><p>在《2048》游戏的目录，新建一个package.json文件，输入内容：<br>HTML 代码片段</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"MyDemo"</span>,</span><br><span class="line">  <span class="attr">"main"</span>: <span class="string">"index.html"</span>,</span><br><span class="line">  <span class="attr">"window"</span>: &#123;</span><br><span class="line">    <span class="attr">"toolbar"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"resizable"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"width"</span>: <span class="number">660</span>,</span><br><span class="line">    <span class="attr">"height"</span>: <span class="number">800</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/image/blog/imgFile1412168471850.jpg" alt></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"MyDemo"</span>,</div><div class="line">  <span class="attr">"main"</span>: <span class="string">"index.html"</span>,</div><div class="line">  <span class="attr">"window"</span>: &#123;</div><div class="line">    <span class="attr">"toolbar"</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">"resizable"</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">"width"</span>: <span class="number">660</span>,</div><div class="line">    <span class="attr">"height"</span>: <span class="number">800</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="/image/blog/imgFile1412168471850.jpg" alt=""></p>
 <p>复制代码保存代码提示：</p>
 <ol>
 <li>编写代码可使用Emmet语法，即Zen coding语法 </li>

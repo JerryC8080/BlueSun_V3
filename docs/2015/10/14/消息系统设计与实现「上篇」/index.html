@@ -12,38 +12,32 @@
   
 
   <meta name="description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。
-
-
 整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。
+我只是一个会思考的idea搬运工。
 
-
-我只是一个会思考的idea搬运工。">
+产品">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息系统设计与实现「上篇」">
 <meta property="og:url" content="http://huang-jerryc.com/2015/10/14/消息系统设计与实现「上篇」/index.html">
 <meta property="og:site_name" content="BlueSun">
 <meta property="og:description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。
-
-
 整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。
+我只是一个会思考的idea搬运工。
 
-
-我只是一个会思考的idea搬运工。">
+产品">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/c3aad7dc-5914-4c5c-9f88-34e40077d0ff.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/b0ee917e-0776-4aa9-bf4a-0a2cd33ca853.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/a6b102ed-d337-41d2-a5d3-b3923650de16.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/5f90952e-2fe6-447f-affb-8a7c9a04d0ab.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/80cc4aaf-0568-478c-8513-b8821e57520f.jpg">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息系统设计与实现「上篇」">
 <meta name="twitter:description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。
-
-
 整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。
+我只是一个会思考的idea搬运工。
 
-
-我只是一个会思考的idea搬运工。">
+产品">
 <meta name="twitter:image" content="http://xia-dev.b0.upaiyun.com/c3aad7dc-5914-4c5c-9f88-34e40077d0ff.jpg">
 
   
@@ -171,11 +165,7 @@ ga('send', 'pageview');
     
       <blockquote>
 <p>由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。</p>
-</blockquote>
-<blockquote>
 <p>整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。</p>
-</blockquote>
-<blockquote>
 <p>我只是一个会思考的idea搬运工。</p>
 </blockquote>
 <h2 id="产品分析"><a href="#产品分析" class="headerlink" title="产品分析"></a>产品分析</h2><p>首先我们来看一下市场上关于消息的实现是怎么样的。</p>

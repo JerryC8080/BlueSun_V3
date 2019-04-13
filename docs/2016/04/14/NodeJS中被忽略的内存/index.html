@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/memory-in-nodejs/Mark-Sweep在老生代空间中标记后的示意图.png">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/memory-in-nodejs/Mark-Compact完成标记并移动存活对象后的示意图.png">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/memory-in-nodejs/Chrome Profile.jpg">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NodeJS中被忽略的内存">
 <meta name="twitter:description" content="如朴灵说过，Node对内存泄露十分敏感，一旦线上应用有成千上万的流量，那怕是一个字节的内存泄漏也会造成堆积，垃圾回收过程中将会耗费更多时间进行对象扫描，应用响应缓慢，直到进程内存溢出，应用奔溃。
@@ -165,7 +165,7 @@ ga('send', 'pageview');
 <h2 id="V8的内存机制"><a href="#V8的内存机制" class="headerlink" title="V8的内存机制"></a>V8的内存机制</h2><h3 id="内存的限制"><a href="#内存的限制" class="headerlink" title="内存的限制"></a>内存的限制</h3><p>Node中并不像其他后端语言中，对内存的使用没有多少限制。在Node中使用内存，只能使用到系统的一部分内存，64位系统下约为1.4GB，32位系统下约为0.7GB。这归咎于Node使用了本来运行在浏览器的V8引擎。</p>
 <p>V8引擎的设计之初只是运行在浏览器中，而在浏览器的一般应用场景下使用起来绰绰有余，足以胜任前端页面中的所有需求。</p>
 <p>虽然服务端操作大内存也不是常见的需求，但是万一有这样的需求，还是可以解除限制的。<br>在启动node程序的时候，可以传递两个参数来调整内存限制的大小。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --max-nex-space-size=1024 app.js // 单位为KB</span><br><span class="line">node --max-old-space-size=2000 app.js // 单位为MB</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">node --max-nex-space-size=1024 app.js // 单位为KB</div><div class="line">node --max-old-space-size=2000 app.js // 单位为MB</div></pre></td></tr></table></figure>
 <p>这两条命令分别对应Node内存堆中的「新生代」和「老生代」</p>
 <h3 id="不受内存限制的特例"><a href="#不受内存限制的特例" class="headerlink" title="不受内存限制的特例"></a>不受内存限制的特例</h3><p>在Node中，使用Buffer可以读取超过V8内存限制的大文件。原因是Buffer对象不同于其他对象，它不经过V8的内存分配机制。这在于Node并不同于浏览器的应用场景。在浏览器中，JavaScript直接处理字符串即可满足绝大多数的业务需求，而Node则需要处理网络流和文件I/O流，操作字符串远远不能满足传输的性能需求。</p>
 <h3 id="内存的分配"><a href="#内存的分配" class="headerlink" title="内存的分配"></a>内存的分配</h3><blockquote>
@@ -190,9 +190,9 @@ ga('send', 'pageview');
 <p><img src="/image/blog/memory-in-nodejs/Mark-Compact完成标记并移动存活对象后的示意图.png" alt="Mark-Compact完成标记并移动存活对象后的示意图"></p>
 <h4 id="Incremental-Marking"><a href="#Incremental-Marking" class="headerlink" title="Incremental Marking"></a>Incremental Marking</h4><p>鉴于Node单线程的特性，V8每次垃圾回收的时候，都需要将应用逻辑暂停下来，待执行完垃圾回收后再恢复应用逻辑，被称为「全停顿」。在分代垃圾回收中，一次小垃圾回收只收集新生代，且存活对象也相对较少，即使全停顿也没有多大的影响。但是在老生代中，存活对象较多，垃圾回收的标记、清理、整理都需要长时间的停顿，这样会严重影响到系统的性能。<br>所以「增量标记 (Incrememtal Marking)」被提出来。它从标记阶段入手，将原本要一口气停顿完成的动作改为增量标记，拆分为许多小「步进」，每做完一「步进」就让JavaScript应用逻辑执行一小会，垃圾回收与应用逻辑这样交替执行直到标记阶段完成。</p>
 <h2 id="内存泄露排查的工具"><a href="#内存泄露排查的工具" class="headerlink" title="内存泄露排查的工具"></a>内存泄露排查的工具</h2><h3 id="node-heapdump"><a href="#node-heapdump" class="headerlink" title="node-heapdump"></a><a href="https://github.com/bnoordhuis/node-heapdump" target="_blank" rel="external">node-heapdump</a></h3><p>它允许对V8堆内存抓取快照，用于事后分析。<br>在程序中引入</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> heapdump = <span class="built_in">require</span>(<span class="string">"node-heapdump"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> heapdump = <span class="built_in">require</span>(<span class="string">"node-heapdump"</span>);</div></pre></td></tr></table></figure>
 <p>之后可以通过向服务器发送SIGUSR2信号，让node-heapdump抓拍一份堆内存的快照：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kill -USR2 &lt;pid&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ kill -USR2 &lt;pid&gt;</div></pre></td></tr></table></figure>
 <p>这份抓拍的快照会默认存放在文件目录下，这是一份大JSON文件，可以通过Chrome的开发者工具打开查看。</p>
 <p><img src="/image/blog/memory-in-nodejs/Chrome Profile.jpg" alt="Chrome Profile"></p>
 <h3 id="node-memwatch"><a href="#node-memwatch" class="headerlink" title="node-memwatch"></a><a href="https://github.com/lloyd/node-memwatch" target="_blank" rel="external">node-memwatch</a></h3><blockquote>

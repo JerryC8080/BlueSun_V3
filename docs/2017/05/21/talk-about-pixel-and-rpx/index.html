@@ -26,7 +26,7 @@ rpx（responsive pixel）， 可以根据屏幕宽度进行自适应。规定屏
 <meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/855BB6047CE2CA7F9DBBF1791D52C6CC.gif">
 <meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/2A67EB1D8C0873E419C676DB430570C2.gif">
 <meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/ACED349F80C8D926AB74922C360B2F5A.png">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-05-21T12:29:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈像素以及微信小程序的 rpx">
 <meta name="twitter:description" content="前言最近在负责有赞的某个业务的微信小程序开发，这是我第一次着手微信小程序的开发，这个过程中发现微信小程序所定义的一套 WXSS (WeiXin Style Sheets) 中有一个有趣的长度单位 rpx，即 responsive pixel。根据官方的描述：
@@ -206,9 +206,9 @@ ga('send', 'pageview');
 <h1 id="DPR"><a href="#DPR" class="headerlink" title="DPR"></a>DPR</h1><p>Device Pixel Ratio，设备像素比。</p>
 <p>在早先的移动设备中，并没有 DPR 的概念。随着技术的发展，移动设备的屏幕像素密度越来越高。<br>从 iPhone4 开始，苹果公司推出了所谓的 Retina 视网膜屏幕。之所以叫做视网膜屏幕，是因为屏幕的 PPI 太高，人的视网膜无法分辨出屏幕上的像素点。<br>iPhone4 的分辨率提高了一倍，但屏幕尺寸却没有变化，这意味着同样大小的屏幕上，像素多了一倍，于是 <code>dpr = 2</code>。</p>
 <p>在 Chrome 浏览器可以通过以下代码获取设备的 DPR：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let dpr = window.devicePixelRatio;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let dpr = window.devicePixelRatio;</div></pre></td></tr></table></figure>
 <p>而通过下面的代码可以获取设备的逻辑像素：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let logicalHeight = screen.height;</span><br><span class="line">let logicalWidth = screen.width;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let logicalHeight = screen.height;</div><div class="line">let logicalWidth = screen.width;</div></pre></td></tr></table></figure>
 <p>那么很多人看到这里，就会认为：<code>物理像素 = 逻辑像素 * dpr</code><br>但实际情况并不是这样，<br>留意一下 iPhone6 plus 的物理像素和逻辑像素：</p>
 <ul>
 <li>物理像素：<code>1080px x 1920px</code></li>

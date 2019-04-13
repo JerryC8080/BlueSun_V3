@@ -21,7 +21,7 @@ Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存�
 Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。前端部分，借助 Vue2 和 ChartJS 提供了一个不错的动态展示面板。Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/79702-097ba6a11cc5b0ae.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/79702-362b432432f6be64.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-05-14T09:58:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一款 NodeJS 轻量级内存监控工具">
 <meta name="twitter:description" content="MemeyeGithub 链接：https://github.com/JerryC8080/Memeye
@@ -167,11 +167,11 @@ ga('send', 'pageview');
 <li>Node v6.x</li>
 </ul>
 <h1 id="安装-amp-使用"><a href="#安装-amp-使用" class="headerlink" title="安装 &amp; 使用"></a>安装 &amp; 使用</h1><p>运行下面命令安装 : </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install memeye --save-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install memeye --save-dev</div></pre></td></tr></table></figure>
 <p>然后在你的代码中引入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const memeye = require(&apos;memeye&apos;);</span><br><span class="line">memeye();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">const memeye = require(&apos;memeye&apos;);</div><div class="line">memeye();</div></pre></td></tr></table></figure>
 <p>最后打开你的浏览器，输入下面地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:23333  //23333 port by defaul.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://localhost:23333  //23333 port by defaul.</div></pre></td></tr></table></figure>
 <p>就这么简单！</p>
 <h1 id="Memeye-是如何工作的"><a href="#Memeye-是如何工作的" class="headerlink" title="Memeye 是如何工作的"></a>Memeye 是如何工作的</h1><p>Memeye 有三个核心概念：Collector, Indicators, Dashboard。<br>Collector 运行在宿主进程中（你的NodeJS进程），Indicator 和 Dashboard 运行在子进程中，这样可以尽量减少 Memeye 代码对你的宿主进程的影响。    </p>
 <h2 id="Collector"><a href="#Collector" class="headerlink" title="Collector"></a>Collector</h2><p>Collector 会监听宿主进程，并且收集数据，然后通过 IPC 通信管道发送数据给子进程，交由子进程处理。    </p>
