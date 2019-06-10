@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/understand-nginx-concept/57A6A903E3C2E44B13B33BB2E25BDAD0.png">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/understand-nginx-concept/67B3801CA06A50CFAEC12E154D86E17C.png">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/understand-nginx-concept/AF9F8A26CD1A65010090A0FE5DA8B42B.png">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="了解 Nginx 的基本概念">
 <meta name="twitter:description" content="前言本篇是我学习Nginx的一些笔记，主要内容讲述了一些了解Nginx需要的基本概念。然后探讨一下Nginx的模块化的组织架构，以及各个模块的分类、工作方式、职责和提供的相关指令。主要达到以下目的：
@@ -335,7 +335,7 @@ ga('send', 'pageview');
 <li><strong>load balance模块</strong><br>负载均衡模块，实现特定的算法，在众多的后端服务器中，选择一个服务器出来作为某个请求的转发服务器</li>
 </ol>
 <h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>本文讲述了Nginx的一些基本概念。<br>Nginx是线程模型是Master-Worker模式的，每个worker是单线程的，也就是处理请求是单线程处理的。而单线程并发的事件模型是「异步非阻塞I/O」模型。<br>并且讲述了「反向代理」「负载均衡」的概念，这是nginx能高性能处理高并发的原因之一。<br>Nginx对于网络请求是有Connection和Request的概念和封装的。<br>Nginx的源码组织架构是模块化的，不同的模块实现不一样的职责，然后它们被连接起来一起干一件大事，知道模块有哪些分类，可以让我们知道怎么查找官方文档。<br>在没有看过有哪些指令，哪些指令有什么功能之前，是不能完全知道nginx提供什么样的功能的，那就抱着，那就抱着「能想到的别人都想到并实现了」的想法来使用nginx吧。Nginx作为一个代理服务，在中间想做什么都可以啦。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://tengine.taobao.org/book/chapter_04.html#id2" target="_blank" rel="external">Nginx开发从入门到精通</a><br><a href="http://nginx.org/" target="_blank" rel="external">Nginx官方网站</a><br><a href>《计算机操作系统》</a><br><a href>《深入浅出Node.js》</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://tengine.taobao.org/book/chapter_04.html#id2" target="_blank" rel="external">Nginx开发从入门到精通</a><br><a href="http://nginx.org/" target="_blank" rel="external">Nginx官方网站</a><br><a href="">《计算机操作系统》</a><br><a href="">《深入浅出Node.js》</a></p>
 
     
   </div>

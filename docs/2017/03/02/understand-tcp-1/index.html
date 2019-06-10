@@ -23,7 +23,7 @@
 
 端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。    
 我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程">
-<meta property="og:updated_time" content="2018-02-12T07:30:52.000Z">
+<meta property="og:updated_time" content="2018-05-01T16:16:02.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解TCP（一）：端口">
 <meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
@@ -172,7 +172,7 @@ ga('send', 'pageview');
 <li>客户端使用的端口号</li>
 </ol>
 <p>下面展开来说说。    </p>
-<h3 id="端口号的分类"><a href="#端口号的分类" class="headerlink" title="端口号的分类"></a>端口号的分类</h3><h4 id="服务器端使用的端口号"><a href="#服务器端使用的端口号" class="headerlink" title="服务器端使用的端口号"></a>服务器端使用的端口号</h4><p><strong>熟知端口号</strong>：<br>取值范围：0 ~ 1023。<br>可以在 <a href="http://www.iana.org" target="_blank" rel="external">www.iana.org</a> 查到，服务器机器一接通电源，服务器程序就运行起来，为了让因特网上所有的客户程序都能找到服务器程序，服务器程序所使用的端口就必须是固定的，并且总所众所周知的。    </p>
+<h3 id="端口号的分类"><a href="#端口号的分类" class="headerlink" title="端口号的分类"></a>端口号的分类</h3><h4 id="服务器端使用的端口号"><a href="#服务器端使用的端口号" class="headerlink" title="服务器端使用的端口号"></a>服务器端使用的端口号</h4><p><strong>熟知端口号</strong>：<br>取值范围：0 ~ 1023。<br>可以在 www.iana.org 查到，服务器机器一接通电源，服务器程序就运行起来，为了让因特网上所有的客户程序都能找到服务器程序，服务器程序所使用的端口就必须是固定的，并且总所众所周知的。    </p>
 <p>一些常见的端口号：    </p>
 <table>
 <thead>
