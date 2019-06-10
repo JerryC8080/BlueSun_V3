@@ -69,8 +69,8 @@ theme: fexo
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:JerryC8080/BlueSun.io.git
-  branch: gh-pages
+  repo: git@github.com:JerryC8080/BlueSun_V3.git
+  branch: master
   message: "feat(post):update post {{ now('YYYY-MM-DD HH:mm:ss') }}"
 
 # Extensions

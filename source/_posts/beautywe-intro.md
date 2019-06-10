@@ -7,6 +7,9 @@ tags:
 ---
 
 
+![](https://raw.githubusercontent.com/beautywe/docs/master/docs/assets/images/logo-V4.png)
+
+
 # 一个简单的介绍
 
 **BeautyWe.js 是什么？**
@@ -39,25 +42,25 @@ tags:
 * **一些官方插件** — [BeautyWe Plugins](https://www.npmjs.com/search?q=keywords%3Abeautywe-plugin)    
     得益于 Core 的「可插件化」特性，封装复杂逻辑，实现可插拔。官方对于常见的需求提供了一些插件：如增强存储、发布/订阅、状态机、Logger、缓存策略等。
 
-* **一套开箱即用的项目框架** - [BeautyWe Framework](http://beautywejs.com/#/contents/framework/introduce)    
+* **一套开箱即用的项目框架** - [BeautyWe Framework](https://user-gold-cdn.xitu.io/2019/6/10/16b40250bcbe53fb#/contents/framework/introduce)    
     描述了一种项目的组织形式，开箱即用，集成了 `BeautyWe Core` ，并且提供了如：全局窗口、开发规范、多环境开发、全局配置、NPM 等解决方案。
 
-* **一个CLI工具** - [BeautyWe Cli](http://beautywejs.com/#/remote/cli)    
+* **一个CLI工具** - [BeautyWe Cli](https://user-gold-cdn.xitu.io/2019/6/10/16b40250bcbe53fb#/remote/cli)    
     提供快速创建应用、页面、插件，以及项目构建功能的命令行工具。并且还支持自定义的创建模板。
 
 # 一个简单的例子
 
 下载
 
-![](https://img.yzcdn.cn/public_files/2019/06/10/8a2cecd1a91a8e6032b1da12ccac8d47.png)
+![](https://user-gold-cdn.xitu.io/2019/6/10/16b40245836b6597?w=1184&h=300&f=png&s=49810)
 
 用 BeautyWe 包装你的应用
 
-![](https://img.yzcdn.cn/public_files/2019/06/10/8f656d72fd1231dceecf1d77c1bae692.png)
+![](https://user-gold-cdn.xitu.io/2019/6/10/16b402458305a068?w=1142&h=714&f=png&s=128701)
 
 之后，你就能使用 BeautyWe Plugin 提供的能力了。
 
-![](https://img.yzcdn.cn/public_files/2019/06/10/5b56a3bb3bf978177a75f876e582188a.png)
+![](https://user-gold-cdn.xitu.io/2019/6/10/16b4024583ceb98c?w=1312&h=484&f=png&s=106549)
 
 # 开放原生App/Page，支持插件化
 
@@ -91,7 +94,7 @@ tags:
 
 **下面深入一下插件化的原理**：
 
-![beautywe pluggable](https://img.yzcdn.cn/public_files/2019/06/05/3c3148116ff9c503375d797bb499475e.png)
+![beautywe pluggable](https://user-gold-cdn.xitu.io/2019/6/10/16b402458282a1c3?w=2824&h=2128&f=png&s=451312)
 
 工作原理是这样的：    
 1. 经过 `new BtApp(...)` 包装，所有的钩子函数，都会有一个独立的执行队列，    
@@ -248,7 +251,7 @@ View 层只需要描述数据怎么展示：
 
 一般的请求数据的形式是，页面加载的时候，从服务端获取数据，然后等待数据返回之后，进行页面渲染：
 
-![](https://img.yzcdn.cn/public_files/2019/03/01/8ef4fa605cae10f80dc5838de13bd508.png)
+![](https://user-gold-cdn.xitu.io/2019/6/10/16b4024582c54843?w=1013&h=234&f=png&s=29037)
 
 但这种模式，会受到服务端接口耗时，网络环境等因素影响到加载性能。   
 
@@ -257,7 +260,7 @@ View 层只需要描述数据怎么展示：
 
 Super Cache 提供了一个中间数据缓存的解决方案：
 
-![](https://img.yzcdn.cn/public_files/2019/03/01/271ade0bb4cadfad41a49acd4b268e29.png)
+![](https://user-gold-cdn.xitu.io/2019/6/10/16b40245891e7049?w=946&h=342&f=png&s=65324)
 
 思路：    
 1. 当你需要获取一个数据的时候，如果有缓存，先把旧的数据给你。
@@ -651,7 +654,7 @@ BeautyWe Framework 实现支持 npm 的原理很简单，总结一句话：
 
 > 使用 webpack 打包 `src/npm/index.js` ，以 commonjs 格式输出到 `dist/npm/index.js`
 
-![npm-works](https://img.yzcdn.cn/public_files/2019/06/10/856560e46e6ac942ec35eea9235f9a06.jpg)
+![npm-works](https://user-gold-cdn.xitu.io/2019/6/10/16b40245b039bed1?w=1382&h=544&f=jpeg&s=98102)
 
 这样做的好处：
 
@@ -681,5 +684,5 @@ import { beautywe } from './npm/index';
 
 而 `framework` 则负责提供一整套针对于微信小程序的企业级项目解决方案，开箱即用。
 
-其中还有跟多的内容，欢迎浏览官网：[beautywejs.com](http://beautywejs.com/)
+其中还有更多的内容，欢迎浏览官网：[beautywejs.com](https://user-gold-cdn.xitu.io/2019/6/10/16b40250bcbe53fb)
 
