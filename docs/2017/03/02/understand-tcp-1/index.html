@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="han-init">
+<head>
+  <meta charset="utf-8">
+  
+  <title>理解TCP（一）：端口 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="tcp," />
+  
+
+  <meta name="description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
+
+端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。    
+我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解TCP（一）：端口">
+<meta property="og:url" content="http://huang-jerryc.com/2017/03/02/understand-tcp-1/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
+
+端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。    
+我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程">
+<meta property="og:updated_time" content="2018-02-12T07:30:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解TCP（一）：端口">
+<meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
+
+端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。    
+我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link rel="stylesheet" href="/css/styles.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.css">
+
+</head>
+
+<body>
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <div class="toolbox-entry">盒子</div>
+    <ul class="list-toolbox">
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/">博客</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/">分类</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/">标签</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/">友链</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/">关于</a>
+          </li>
+        
+      
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/atom.xml">RSS</a>
+          </li>
+        
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#端口与进程"><span class="toc-text">端口与进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#认识端口"><span class="toc-text">认识端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#端口号的分类"><span class="toc-text">端口号的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器端使用的端口号"><span class="toc-text">服务器端使用的端口号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#客户端使用的端口号"><span class="toc-text">客户端使用的端口号</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a>
+  </div>
+
+
+<div class="content-post CENTER">
+   <article id="post-understand-tcp-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">理解TCP（一）：端口</h1>
+
+    <div class="article-meta">
+      <span>2017-03-02</span>
+
+      <span> | </span>
+
+      <span class="article-author">JerryC</span>
+
+      <span> | </span>
+
+      
+  <span class="article-category">
+    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+  </span>
+
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <blockquote>
+<p>更好阅读体验：<a href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/" target="_blank" rel="external">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
+</blockquote>
+<h2 id="端口与进程"><a href="#端口与进程" class="headerlink" title="端口与进程"></a>端口与进程</h2><p>TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。<br>就是说，端口这一东西，是属于 TCP 知识范畴的。    </p>
+<p>我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。<br>而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程通讯中我们可以使用 <strong>「PID(进程标识符)」</strong> 来唯一标识一个进程。<br>但 PID 只在本地唯一，如果把两个进程放到了不同的两台计算机，然后他们要通信的话，PID 就不够用了，这样就需要另外一种手段了。    </p>
+<p>解决这个问题的方法就是在运输层使用 <strong>「协议端口号 (protocol port number)」</strong>，简称 <strong>「端口 (port)」</strong>.<br>我们知道 IP 层的 ip 地址可以唯一标识主机，而 TCP 层协议和端口号可以唯一标识主机的一个进程，这样我们可以利用：<strong>「ip地址＋协议＋端口号」</strong>唯一标示网络中的一个进程。<br>在一些场合，也把这种唯一标识的模式称为<strong>「套接字 (Socket)」</strong>。    </p>
+<p>这就是说，虽然通信的重点是应用进程，但我们只要把要传送的报文交到目的主机的某一个合适的端口，剩下的工作就由 TCP 来完成了。    </p>
+<h2 id="认识端口"><a href="#认识端口" class="headerlink" title="认识端口"></a>认识端口</h2><p>TCP 用一个 16 位端口号来标识一个端口，可允许有 65536 ( 2的16次方) 个不同的端口号，范围在 0 ~ 65535 之间。    </p>
+<p>端口号根据服务器使用还是客户端使用，以及常见不常见的维度来区分，主要有以下类别：</p>
+<ol>
+<li>服务器端使用的端口号<ul>
+<li>熟知端口号</li>
+<li>登记端口号</li>
+</ul>
+</li>
+<li>客户端使用的端口号</li>
+</ol>
+<p>下面展开来说说。    </p>
+<h3 id="端口号的分类"><a href="#端口号的分类" class="headerlink" title="端口号的分类"></a>端口号的分类</h3><h4 id="服务器端使用的端口号"><a href="#服务器端使用的端口号" class="headerlink" title="服务器端使用的端口号"></a>服务器端使用的端口号</h4><p><strong>熟知端口号</strong>：<br>取值范围：0 ~ 1023。<br>可以在 <a href="http://www.iana.org" target="_blank" rel="external">www.iana.org</a> 查到，服务器机器一接通电源，服务器程序就运行起来，为了让因特网上所有的客户程序都能找到服务器程序，服务器程序所使用的端口就必须是固定的，并且总所众所周知的。    </p>
+<p>一些常见的端口号：    </p>
+<table>
+<thead>
+<tr>
+<th>应用程序</th>
+<th>FTP</th>
+<th>TELNET</th>
+<th>SMTP</th>
+<th>DNS</th>
+<th>TFTP</th>
+<th>HTTP</th>
+<th>HTTPS</th>
+<th>SNMP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>熟知端口号</td>
+<td><strong>21</strong></td>
+<td>23</td>
+<td>25</td>
+<td>53</td>
+<td>69</td>
+<td><strong>80</strong></td>
+<td><strong>443</strong></td>
+<td>161</td>
+</tr>
+</tbody>
+</table>
+<p><strong>登记端口号</strong>：<br>取值范围：1024 ~ 49151。<br>这类端口没有熟知的应用程序使用，但是需要登记，以防重复</p>
+<h4 id="客户端使用的端口号"><a href="#客户端使用的端口号" class="headerlink" title="客户端使用的端口号"></a>客户端使用的端口号</h4><p>取值范围：49152 ~ 65535。<br>这类端口仅在客户端进程运行时才动态选择。<br>又叫 短暂端口号，表示这种端口的存在时间是短暂的，客户进程并不在意操作系统给它分配的是哪一个端口号，因为客户进程之所以必须有一个端口号，是为了让传输层的实体能够找到自己。    </p>
+<p><em>PS：在<code>/etc/services</code>文件中可以查看所有知名服务使用的端口。</em></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://book.douban.com/subject/26850616/" target="_blank" rel="external">《后台开发 核心技术与应用实践》</a><br><a href="https://book.douban.com/subject/2970300/" target="_blank" rel="external">《计算机网络》</a></p>
+
+    
+  </div>
+</article>
+
+
+
+<section class="disqus-comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+
+</div>
+
+  
+<script>
+  var disqus_shortname = 'bluesun-jerryc';
+  
+  var disqus_url = 'http://huang-jerryc.com/2017/03/02/understand-tcp-1/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+  
+
+</body>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.js"></script>
+</html>
