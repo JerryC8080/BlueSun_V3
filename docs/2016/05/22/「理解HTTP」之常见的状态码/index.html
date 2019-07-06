@@ -51,7 +51,7 @@ Informational
 
 
 2XX">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「理解HTTP」之常见的状态码">
 <meta name="twitter:description" content="状态码的职责是当客户端向服务器端发送请求时，描述返回请求结果。借助状态码，用户可以知道服务器端是正常处理了请求，还是出现了什么错误。
@@ -247,8 +247,8 @@ ga('send', 'pageview');
 </blockquote>
 <p>3XX 响应结果表明浏览器需要执行某些特殊的处理以完成请求。</p>
 <h3 id="301-Moved-Permanently"><a href="#301-Moved-Permanently" class="headerlink" title="301 Moved Permanently"></a>301 Moved Permanently</h3><p>永久性重定向。该状态码表示请求的资源已经被分配了新的URI，并且以后使用资源现在所指的URI。并且根据请求的方法有不同的处理方式：<br><strong>HEAD</strong>：必须在响应头部<code>Location</code>字段中指明新的永久性的URI。<br><strong>GET</strong>：除了有<code>Location</code>字段以外，还需要在响应体中附上永久性URI的超链接文本。<br><strong>POST</strong>：客户端在发送POST请求，受到301响应之后，不应该自动跳转URI，应当让用户确认跳转。</p>
-<p>比如，如果一个URI已经在浏览器中被收藏为书签，这时应该按照<code>Location</code>首部字段提示的URI重新保存。<br>例如建立一个收藏的书签：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://wan.bigertech.com</span><br></pre></td></tr></table></figure></p>
-<p>当访问这个书签的时候，请求会被重定向到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://wan.meizu.com</span><br></pre></td></tr></table></figure></p>
+<p>比如，如果一个URI已经在浏览器中被收藏为书签，这时应该按照<code>Location</code>首部字段提示的URI重新保存。<br>例如建立一个收藏的书签：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://wan.bigertech.com</div></pre></td></tr></table></figure></p>
+<p>当访问这个书签的时候，请求会被重定向到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://wan.meizu.com</div></pre></td></tr></table></figure></p>
 <p>并且对应的书签会被改变，指向<code>http://wan.meizu.com</code><br>不信？Try yourself.</p>
 <h3 id="302-Found"><a href="#302-Found" class="headerlink" title="302 Found"></a>302 Found</h3><p>临时性重定向。该状态码表示请求的资源已被分配了新的URI，希望用户本次能使用新的URI访问。<br>和301 Moved Permanently 状态码相似，但302状态码代表的资源不是被永久移动，只是临时性质的。<br>如果，用户把一个URI收藏为书签，302响应是不会像301那样去更新书签。</p>
 <h3 id="303-See-Other"><a href="#303-See-Other" class="headerlink" title="303 See Other"></a>303 See Other</h3><p>该状态码表示由于请求对应的资源存在另一个URI，应使用GET方法定向获取请求的资源。303与302不同之处在于，302是不会改变请求的方法，如果请求方法是POST的话，重定向的请求也应该是POST。而对于303，使用POST请求的话，重定向的请求应该是GET请求。<br>但是有一点是需要注意的，许多HTTP/1.1版以前的浏览器不能正确理解303状态码，很多现存的浏览器讲302响应视为303响应，并且使用GET方式访问<code>Location</code>中规定的的URI，而无视原先请求的方法。<br>在RFC2616中有相关的这样一段原文：</p>

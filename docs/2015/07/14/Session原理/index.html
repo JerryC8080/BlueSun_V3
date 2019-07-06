@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="BlueSun">
 <meta property="og:description" content="无状态的 HTTP 协议还记得每当入门一门 Web 端语言的进行服务器端开发的时候，仅次于「Hello World」的 demo 就是「登录功能」了。实现登录功能很简单，验证客户端发送过来的账户和密码，如果通过验证就把用户塞进 session 中，然后在后续的访问中，只需检测 session 是否有这个用户就能知道用户是否登录了。Session 的中文翻译为：「会话」，只属于某一个客户端和某一个服">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/79702-5660ac4cb51f6257.jpg">
-<meta property="og:updated_time" content="2017-08-31T05:09:14.000Z">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Session原理">
 <meta name="twitter:description" content="无状态的 HTTP 协议还记得每当入门一门 Web 端语言的进行服务器端开发的时候，仅次于「Hello World」的 demo 就是「登录功能」了。实现登录功能很简单，验证客户端发送过来的账户和密码，如果通过验证就把用户塞进 session 中，然后在后续的访问中，只需检测 session 是否有这个用户就能知道用户是否登录了。Session 的中文翻译为：「会话」，只属于某一个客户端和某一个服">
@@ -158,12 +158,12 @@ ga('send', 'pageview');
 </li>
 </ul>
 <h2 id="为-Cookie-服务的-HTTP-首部字段"><a href="#为-Cookie-服务的-HTTP-首部字段" class="headerlink" title="为 Cookie 服务的 HTTP 首部字段"></a>为 Cookie 服务的 HTTP 首部字段</h2><blockquote>
-</blockquote>
 <ul>
 <li>Set-Cookie</li>
 <li>Cookie</li>
 </ul>
-<h4 id="Set-Cookie"><a href="#Set-Cookie" class="headerlink" title="Set-Cookie"></a>Set-Cookie</h4><p>服务器管理状态使用到的字段，用于响应首部<br>一则响应首部的 Set-Cookie 字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: status=enable; expires= Tue, 05 Jul 2011 07:26:31 GMT; path=/; domain=.hackr.jp;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="Set-Cookie"><a href="#Set-Cookie" class="headerlink" title="Set-Cookie"></a>Set-Cookie</h4><p>服务器管理状态使用到的字段，用于响应首部<br>一则响应首部的 Set-Cookie 字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-Cookie: status=enable; expires= Tue, 05 Jul 2011 07:26:31 GMT; path=/; domain=.hackr.jp;</div></pre></td></tr></table></figure></p>
 <p>Set-Cookie 字段的属性：</p>
 <table>
 <thead>
