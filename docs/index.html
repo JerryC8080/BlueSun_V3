@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans" class="han-init">
+
+
+  <html class="light page-home">
+
+
 <head>
   <meta charset="utf-8">
   
@@ -24,8 +28,11 @@
     <link rel="icon" href="/images/favicon.ico">
   
 
-  <link rel="stylesheet" href="/css/styles.css">
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
 
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
   
 
   
@@ -55,24 +62,48 @@ ga('send', 'pageview');
   </script>
 
 
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
 
-  <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.css">
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
 
 </head>
 
 <body>
+
+
   
-  <div class="bg"></div>
-<div class="content-home text-center">
+
+  
+  <div class="content-home text-center">
   <a class="avatar" href="/">
     <img src="/images/avatar.jpg" alt="" />
   </a>
-  <h1 class="name">
+  <h1 class="name" style="font-family: calligraffittiregular">
     BlueSun
   </h1>
   <div class="slogan">
     写取一枝清瘦竹，秋风江上作文章
   </div>
+
   <hr>
 
   <ul class="text-center nav">
@@ -86,21 +117,21 @@ ga('send', 'pageview');
     
       <li class="item">
         
-          <a href="https://github.com/JerryC8080" target="_blank">GitHub</a>
+          <a href="https://github.com/JerryC8080">GitHub</a>
         
         <span>|</span>
       </li>
     
       <li class="item">
         
-          <a href="http://www.jianshu.com/users/843d2366f95b/latest_articles" target="_blank">Jianshu</a>
+          <a href="http://www.jianshu.com/users/843d2366f95b/latest_articles">Jianshu</a>
         
         <span>|</span>
       </li>
     
       <li class="item">
         
-          <a href="https://segmentfault.com/u/jerryc" target="_blank">SF</a>
+          <a href="https://segmentfault.com/u/jerryc">SF</a>
         
         <span>|</span>
       </li>
@@ -119,22 +150,133 @@ ga('send', 'pageview');
 
 
 
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
   
-<script>
-  var disqus_shortname = 'bluesun-jerryc';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
 </script>
 
-
-  
-
 </body>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.js"></script>
 </html>
