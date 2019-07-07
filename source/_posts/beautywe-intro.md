@@ -52,15 +52,15 @@ tags:
 
 下载
 
-![](https://user-gold-cdn.xitu.io/2019/6/10/16b40245836b6597?w=1184&h=300&f=png&s=49810)
+![](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181427)
 
 用 BeautyWe 包装你的应用
 
-![](https://user-gold-cdn.xitu.io/2019/6/10/16b402458305a068?w=1142&h=714&f=png&s=128701)
+![](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181445)
 
 之后，你就能使用 BeautyWe Plugin 提供的能力了。
 
-![](https://user-gold-cdn.xitu.io/2019/6/10/16b4024583ceb98c?w=1312&h=484&f=png&s=106549)
+![](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181337)
 
 # 开放原生App/Page，支持插件化
 
@@ -94,7 +94,7 @@ tags:
 
 **下面深入一下插件化的原理**：
 
-![beautywe pluggable](https://user-gold-cdn.xitu.io/2019/6/10/16b402458282a1c3?w=2824&h=2128&f=png&s=451312)
+![beautywe pluggable](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181648)
 
 工作原理是这样的：    
 1. 经过 `new BtApp(...)` 包装，所有的钩子函数，都会有一个独立的执行队列，    
@@ -251,7 +251,7 @@ View 层只需要描述数据怎么展示：
 
 一般的请求数据的形式是，页面加载的时候，从服务端获取数据，然后等待数据返回之后，进行页面渲染：
 
-![](https://user-gold-cdn.xitu.io/2019/6/10/16b4024582c54843?w=1013&h=234&f=png&s=29037)
+![](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181755)
 
 但这种模式，会受到服务端接口耗时，网络环境等因素影响到加载性能。   
 
@@ -260,7 +260,7 @@ View 层只需要描述数据怎么展示：
 
 Super Cache 提供了一个中间数据缓存的解决方案：
 
-![](https://user-gold-cdn.xitu.io/2019/6/10/16b40245891e7049?w=946&h=342&f=png&s=65324)
+![](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181847)
 
 思路：    
 1. 当你需要获取一个数据的时候，如果有缓存，先把旧的数据给你。
@@ -654,7 +654,7 @@ BeautyWe Framework 实现支持 npm 的原理很简单，总结一句话：
 
 > 使用 webpack 打包 `src/npm/index.js` ，以 commonjs 格式输出到 `dist/npm/index.js`
 
-![npm-works](https://user-gold-cdn.xitu.io/2019/6/10/16b40245b039bed1?w=1382&h=544&f=jpeg&s=98102)
+![npm-works](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936)
 
 这样做的好处：
 

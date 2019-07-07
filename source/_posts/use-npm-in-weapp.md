@@ -14,7 +14,7 @@ category: 搬砖码农
 
 那么我的思路，就是利用 Webpack 把我们所有的 npm 依赖打包好，提供一个入口文件，在小程序开发中，我们通过这个入口文件，进而使用 npm 的依赖。
 
-![](http://om6ayrafu.bkt.clouddn.com/post/use-npm-in-weapp/80EBDB3CEAB5B74F18E1F61F9FC519FB.jpg)
+![](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936)
 
 我们最终实现的效果应该是这样的。
 
