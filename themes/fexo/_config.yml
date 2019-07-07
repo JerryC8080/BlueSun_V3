@@ -35,9 +35,9 @@ page_nav:
   - name: 分类
     url: /category/
     target_blank: false
-  - name: 标签
-    url: /tag/
-    target_blank: false
+  # - name: 标签
+  #   url: /tag/
+  #   target_blank: false
   - name: 友链
     url: /link/
     target_blank: false
@@ -47,9 +47,9 @@ page_nav:
   - name: RSS
     url: /atom.xml
     target_blank: true # 在新页面打开
-  - name: 搜索
-    url: /search/
-    target_blank: false # 在新页面打开
+  # - name: 搜索
+  #   url: /search/
+  #   target_blank: false # 在新页面打开
 
 page_nav_style: CIRCLE  # CIRCLE|ROUND_RECT
 
@@ -89,9 +89,9 @@ donation:
     - type: 微信
       text: 微信扫一扫
       imgUrl: /images/qr-wechat.jpg
-    # - type: 支付宝
-    #   text: 支付宝扫一扫
-    #   imgUrl: /images/qr-alipay.png
+    - type: 支付宝
+      text: 支付宝扫一扫
+      imgUrl: /images/qr-alipay.png
 
 
 
@@ -228,7 +228,7 @@ link:
   - name: Xie Zefan
     info: xxx
     url: http://xiezefan.me/
-    avatar: http://xiezefan.qiniudn.com/avatar.jpg
+    avatar: http://pics.xiezefan.me/avatar.jpg
 
 project:
   - type: personal
