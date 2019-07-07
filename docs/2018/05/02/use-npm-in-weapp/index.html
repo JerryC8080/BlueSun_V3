@@ -27,15 +27,15 @@
 本文旨在为那些不愿意引入第三方框架， 想在小程序环境中写原汁原味代码的人（例如我），提供一种解决问题的思路。
 在现代的 Web 开发中，我们对 Webpack 已经再熟悉不过了，简单理解，它就是项目发布之前，把所有资源都打包好，然后提供一个入口文件，在入口模板中引入这个入口文件。
 那么我的思路，就是利用 Webpa">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/use-npm-in-weapp/80EBDB3CEAB5B74F18E1F61F9FC519FB.jpg">
-<meta property="og:updated_time" content="2018-05-01T16:28:19.175Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936">
+<meta property="og:updated_time" content="2019-07-07T10:28:45.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="原汁原味的配方:「微信小程序支持 NPM」">
 <meta name="twitter:description" content="微信小程序本身不支持 npm 包的使用，目前市面上很多框架也有了相对应的解决方案。
 本文旨在为那些不愿意引入第三方框架， 想在小程序环境中写原汁原味代码的人（例如我），提供一种解决问题的思路。
 在现代的 Web 开发中，我们对 Webpack 已经再熟悉不过了，简单理解，它就是项目发布之前，把所有资源都打包好，然后提供一个入口文件，在入口模板中引入这个入口文件。
 那么我的思路，就是利用 Webpa">
-<meta name="twitter:image" content="http://om6ayrafu.bkt.clouddn.com/post/use-npm-in-weapp/80EBDB3CEAB5B74F18E1F61F9FC519FB.jpg">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936">
 
   
 
@@ -144,17 +144,6 @@ ga('send', 'pageview');
         <li class="item-toolbox">
           <a
             class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
             href="/link/"
             rel="noopener noreferrer"
             target="_self"
@@ -185,17 +174,6 @@ ga('send', 'pageview');
           </a>
         </li>
       
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
     </ul>
   </div>
 
@@ -204,7 +182,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
+    <strong class="toc-title">Posts List</strong>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Webpack-打包-npm-依赖"><span class="toc-text">Webpack 打包 npm 依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#output-libraryTarget-“commonjs2”"><span class="toc-text">output.libraryTarget: “commonjs2”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打造-npm-入口"><span class="toc-text">打造 npm 入口</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#结合-Gulp-做项目工程化"><span class="toc-text">结合 Gulp 做项目工程化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关于控制-npm-文件代码量"><span class="toc-text">关于控制 npm 文件代码量</span></a></li></ol>
   </div>
 
@@ -260,7 +238,7 @@ ga('send', 'pageview');
 <p>本文旨在为那些不愿意引入第三方框架， 想在小程序环境中写原汁原味代码的人（例如我），提供一种解决问题的思路。</p>
 <p>在现代的 Web 开发中，我们对 Webpack 已经再熟悉不过了，简单理解，它就是项目发布之前，把所有资源都打包好，然后提供一个入口文件，在入口模板中引入这个入口文件。</p>
 <p>那么我的思路，就是利用 Webpack 把我们所有的 npm 依赖打包好，提供一个入口文件，在小程序开发中，我们通过这个入口文件，进而使用 npm 的依赖。</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/use-npm-in-weapp/80EBDB3CEAB5B74F18E1F61F9FC519FB.jpg" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936" alt=""></p>
 <p>我们最终实现的效果应该是这样的。</p>
 <p>例如我们小程序的首页中，需要使用到 <code>moment</code></p>
 <p>pages/home/home.js：</p>
@@ -335,6 +313,13 @@ ga('send', 'pageview');
             <img src="/images/qr-wechat.jpg" alt="">
           </li>
         
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
         </ul>
       </div>
     </div>
@@ -368,7 +353,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+      <span id="close" class="btn-close">Close</span>
     </div>
     <hr>
     <div class="modal-body">
@@ -393,17 +378,6 @@ ga('send', 'pageview');
               target="_self"
               >
               分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
             </a>
           </li>
         
@@ -437,17 +411,6 @@ ga('send', 'pageview');
               target="_blank"
               >
               RSS
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
             </a>
           </li>
         

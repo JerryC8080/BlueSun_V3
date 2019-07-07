@@ -1,0 +1,5 @@
+.article-content img {
+    transform: translate(-50%);
+    position: relative;
+    left: 50%;
+}

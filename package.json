@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "generate": "hexo generate",
-    "server": "hexo server"
+    "server": "hexo server",
+    "publish": "hexo generate && git add . && git commit -m 'publish' && git push"
   },
   "hexo": {
     "version": "3.2.2"

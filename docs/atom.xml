@@ -159,7 +159,7 @@
     <link href="http://huang-jerryc.com/2019/06/11/beautywe-intro/"/>
     <id>http://huang-jerryc.com/2019/06/11/beautywe-intro/</id>
     <published>2019-06-11T06:22:25.000Z</published>
-    <updated>2019-07-06T14:51:31.504Z</updated>
+    <updated>2019-07-07T10:19:58.893Z</updated>
     
     <content type="html"><![CDATA[<p><img src="https://raw.githubusercontent.com/beautywe/docs/master/docs/assets/images/logo-V4.png" alt=""></p>
 <h1 id="一个简单的介绍"><a href="#一个简单的介绍" class="headerlink" title="一个简单的介绍"></a>一个简单的介绍</h1><p><strong>BeautyWe.js 是什么？</strong></p>
@@ -196,11 +196,11 @@
 </li>
 </ul>
 <h1 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h1><p>下载</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/6/10/16b40245836b6597?w=1184&amp;h=300&amp;f=png&amp;s=49810" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181427" alt=""></p>
 <p>用 BeautyWe 包装你的应用</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/6/10/16b402458305a068?w=1142&amp;h=714&amp;f=png&amp;s=128701" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181445" alt=""></p>
 <p>之后，你就能使用 BeautyWe Plugin 提供的能力了。</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/6/10/16b4024583ceb98c?w=1312&amp;h=484&amp;f=png&amp;s=106549" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181337" alt=""></p>
 <h1 id="开放原生App-Page，支持插件化"><a href="#开放原生App-Page，支持插件化" class="headerlink" title="开放原生App/Page，支持插件化"></a>开放原生App/Page，支持插件化</h1><p><code>new BtApp({...})</code> 的执行结果是对原生的应用进行包装，其中包含了「插件化」的处理，然后返回一个新的实例，这个实例适配原生的 <code>App()</code> 方法。</p>
 <p>下面来讲讲「插件化」到底做了什么事情。</p>
 <p>首先，插件化开放了原生 App 的四种能力：</p>
@@ -221,7 +221,7 @@
 <p>native.onShow → pluginA.onShow → pluginB.onShow → …</p>
 </blockquote>
 <p><strong>下面深入一下插件化的原理</strong>：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/6/10/16b402458282a1c3?w=2824&amp;h=2128&amp;f=png&amp;s=451312" alt="beautywe pluggable"></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181648" alt="beautywe pluggable"></p>
 <p>工作原理是这样的：    </p>
 <ol>
 <li>经过 <code>new BtApp(...)</code> 包装，所有的钩子函数，都会有一个独立的执行队列，    </li>
@@ -284,11 +284,11 @@
 <li>灵活可配置的数据存储方式</li>
 </ol>
 <h4 id="How-it-work"><a href="#How-it-work" class="headerlink" title="How it work"></a>How it work</h4><p>一般的请求数据的形式是，页面加载的时候，从服务端获取数据，然后等待数据返回之后，进行页面渲染：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/6/10/16b4024582c54843?w=1013&amp;h=234&amp;f=png&amp;s=29037" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181755" alt=""></p>
 <p>但这种模式，会受到服务端接口耗时，网络环境等因素影响到加载性能。   </p>
 <p>对于加载性能要求高的页面（如首页），一般的 Web 开发我们有很多解决方案（如服务端渲染，服务端缓存，SSR 等）。<br>但是也有一些环境不能使用这种技术（如微信小程序）。</p>
 <p>Super Cache 提供了一个中间数据缓存的解决方案：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2019/6/10/16b40245891e7049?w=946&amp;h=342&amp;f=png&amp;s=65324" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181847" alt=""></p>
 <p>思路：    </p>
 <ol>
 <li>当你需要获取一个数据的时候，如果有缓存，先把旧的数据给你。</li>
@@ -515,7 +515,7 @@
 <blockquote>
 <p>使用 webpack 打包 <code>src/npm/index.js</code> ，以 commonjs 格式输出到 <code>dist/npm/index.js</code></p>
 </blockquote>
-<p><img src="https://user-gold-cdn.xitu.io/2019/6/10/16b40245b039bed1?w=1382&amp;h=544&amp;f=jpeg&amp;s=98102" alt="npm-works"></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936" alt="npm-works"></p>
 <p>这样做的好处：</p>
 <ol>
 <li>实现简单。</li>
@@ -762,13 +762,13 @@
     <link href="http://huang-jerryc.com/2018/05/02/use-npm-in-weapp/"/>
     <id>http://huang-jerryc.com/2018/05/02/use-npm-in-weapp/</id>
     <published>2018-05-01T16:07:00.000Z</published>
-    <updated>2018-05-01T16:28:19.175Z</updated>
+    <updated>2019-07-07T10:28:45.723Z</updated>
     
     <content type="html"><![CDATA[<p>微信小程序本身不支持 npm 包的使用，目前市面上很多框架也有了相对应的解决方案。</p>
 <p>本文旨在为那些不愿意引入第三方框架， 想在小程序环境中写原汁原味代码的人（例如我），提供一种解决问题的思路。</p>
 <p>在现代的 Web 开发中，我们对 Webpack 已经再熟悉不过了，简单理解，它就是项目发布之前，把所有资源都打包好，然后提供一个入口文件，在入口模板中引入这个入口文件。</p>
 <p>那么我的思路，就是利用 Webpack 把我们所有的 npm 依赖打包好，提供一个入口文件，在小程序开发中，我们通过这个入口文件，进而使用 npm 的依赖。</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/use-npm-in-weapp/80EBDB3CEAB5B74F18E1F61F9FC519FB.jpg" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936" alt=""></p>
 <p>我们最终实现的效果应该是这样的。</p>
 <p>例如我们小程序的首页中，需要使用到 <code>moment</code></p>
 <p>pages/home/home.js：</p>

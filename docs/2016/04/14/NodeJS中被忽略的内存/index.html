@@ -146,17 +146,6 @@ ga('send', 'pageview');
         <li class="item-toolbox">
           <a
             class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
             href="/link/"
             rel="noopener noreferrer"
             target="_self"
@@ -187,17 +176,6 @@ ga('send', 'pageview');
           </a>
         </li>
       
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
     </ul>
   </div>
 
@@ -206,7 +184,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
+    <strong class="toc-title">Posts List</strong>
     <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#V8的内存机制"><span class="toc-text">V8的内存机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内存的限制"><span class="toc-text">内存的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不受内存限制的特例"><span class="toc-text">不受内存限制的特例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存的分配"><span class="toc-text">内存的分配</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#V8的垃圾回收机制"><span class="toc-text">V8的垃圾回收机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分代式垃圾回收"><span class="toc-text">分代式垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么要分成新老两代？"><span class="toc-text">为什么要分成新老两代？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新生代中的垃圾回收"><span class="toc-text">新生代中的垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Scavenge"><span class="toc-text">Scavenge</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#在新生代中的对象怎样才能到老生代中？"><span class="toc-text">在新生代中的对象怎样才能到老生代中？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#老生代中的垃圾回收"><span class="toc-text">老生代中的垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Mark-Sweep"><span class="toc-text">Mark-Sweep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mark-Compact"><span class="toc-text">Mark-Compact</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Incremental-Marking"><span class="toc-text">Incremental Marking</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存泄露排查的工具"><span class="toc-text">内存泄露排查的工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#node-heapdump"><span class="toc-text">node-heapdump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-memwatch"><span class="toc-text">node-memwatch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-profiler"><span class="toc-text">node-profiler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#alinode"><span class="toc-text">alinode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#以上内容参考自"><span class="toc-text">以上内容参考自</span></a></li></ol>
   </div>
 
@@ -331,6 +309,13 @@ ga('send', 'pageview');
             <img src="/images/qr-wechat.jpg" alt="">
           </li>
         
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
         </ul>
       </div>
     </div>
@@ -364,7 +349,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+      <span id="close" class="btn-close">Close</span>
     </div>
     <hr>
     <div class="modal-body">
@@ -389,17 +374,6 @@ ga('send', 'pageview');
               target="_self"
               >
               分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
             </a>
           </li>
         
@@ -433,17 +407,6 @@ ga('send', 'pageview');
               target="_blank"
               >
               RSS
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
             </a>
           </li>
         

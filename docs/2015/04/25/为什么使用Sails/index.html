@@ -150,17 +150,6 @@ ga('send', 'pageview');
         <li class="item-toolbox">
           <a
             class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
             href="/link/"
             rel="noopener noreferrer"
             target="_self"
@@ -191,17 +180,6 @@ ga('send', 'pageview');
           </a>
         </li>
       
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
     </ul>
   </div>
 
@@ -210,7 +188,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
+    <strong class="toc-title">Posts List</strong>
     <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一步搭建项目"><span class="toc-text">一步搭建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目架构"><span class="toc-text">项目架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#api"><span class="toc-text">api/</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#views"><span class="toc-text">views/</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#assets"><span class="toc-text">assets/</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#config"><span class="toc-text">config/</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tasks"><span class="toc-text">tasks/</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#app-js"><span class="toc-text">app.js</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ORM"><span class="toc-text">ORM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC的实现"><span class="toc-text">MVC的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Model层"><span class="toc-text">Model层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#View层"><span class="toc-text">View层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Controller层"><span class="toc-text">Controller层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Service层"><span class="toc-text">Service层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Policy层"><span class="toc-text">Policy层</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由"><span class="toc-text">路由</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RESTful-routes"><span class="toc-text">RESTful routes</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Shortcut-routes"><span class="toc-text">Shortcut routes</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Action-routes"><span class="toc-text">Action routes</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安全"><span class="toc-text">安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志"><span class="toc-text">日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元测试"><span class="toc-text">单元测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebSocket"><span class="toc-text">WebSocket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结语"><span class="toc-text">结语</span></a></li></ol>
   </div>
 
@@ -396,6 +374,13 @@ ga('send', 'pageview');
             <img src="/images/qr-wechat.jpg" alt="">
           </li>
         
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
         </ul>
       </div>
     </div>
@@ -429,7 +414,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+      <span id="close" class="btn-close">Close</span>
     </div>
     <hr>
     <div class="modal-body">
@@ -454,17 +439,6 @@ ga('send', 'pageview');
               target="_self"
               >
               分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
             </a>
           </li>
         
@@ -498,17 +472,6 @@ ga('send', 'pageview');
               target="_blank"
               >
               RSS
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
             </a>
           </li>
         
