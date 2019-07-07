@@ -1,6 +1,6 @@
 .post-header {
-  padding-top: 20px;
   margin: 0 auto;
+  padding-top: 20px;
   &.LEFT {
     width: $post-width - 40px;
     border-left: 4px solid #f0f0f0;
@@ -10,11 +10,30 @@
     background: #f0f0f0;
   }
   .toolbox {
+    margin-top: -40px;
     margin-left: -18px;
     background: #fff;
+    transition-duration: 0.5s;
+    transition-propety: transform;
+    &:hover {
+      transform: translate(0, 30px);
+    }
+    .toolbox-entry {
+      .icon-angle-down {
+        margin-top: 16px;
+        display: inline-block;
+        line-height: 0;
+        font-size: 22px;
+        border-radius: 50%;
+      }
+      .toolbox-entry-text {
+        display: none;
+      }
+    }
   }
 }
-.content-post {
+.content.content-post {
+  border-left: none;
   margin: 50px auto;
   &.CENTER {
     .article-header {
@@ -25,9 +44,9 @@
     margin-bottom: 40px;
     .post-title {
       font-size: 32px;
-      margin: 0 0 12px;
-      color:$title-color;
       font-weight: normal;
+      margin: 0 0 12px;
+      color: $title-color;
     }
     .article-meta {
       font-size: 12px;
@@ -37,20 +56,27 @@
       a {
         color: #999;
       }
+      > span > * {
+        vertical-align: middle;
+      }
+      i {
+        display: inline-block;
+        margin: 0 -4px 0 4px;
+      }
     }
   }
 }
 @media screen and (min-width: 768px) {
-  .content-post {
+  .content.content-post {
     width: $post-width;
+    margin-top: 60px;
   }
 }
 @media screen and (max-width: 767px) {
   .post-header {
     display: none;
   }
-  .content-post {
-    width: 100%;
+  .content.content-post {
     .article-content,
     .post-title {
       padding-right: 10px;
@@ -59,16 +85,23 @@
     .article-header .post-title {
       font-size: 24px;
     }
-    .disqus-comments,
-    .duoshuo-comments {
-      padding: 10px;
+  }
+  .content.content-archive {
+    .archive-body {
+      border-left: none;
+      .item-title:before,
+      .item-post:before {
+        display: none;
+      }
+      .item-year,
+      .item-post {
+        padding-left: 0;
+      }
     }
   }
 }
-
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-  .content-post {
+  .content.content-post {
     width: 95%;
   }
 }
-

@@ -1,0 +1,105 @@
+# Blog info
+blog_name: BlueSun
+slogan: 写取一枝清瘦竹，秋风江上作文章
+
+# Set avatar (Absolute url and relative url)
+avatar: /images/avatar.jpg
+
+# Set favicon
+favicon: /images/favicon.ico
+
+# For seo
+keywords: huang-jerrryc,JerryC8080,jerryc,JC_Huang,前端,设计,前端开发,用户体验,设计,frontend,design,nodejs,JavaScript
+
+init_page_content: HOME_NAV  # HOME_NAV | POST
+
+home_nav:
+  - name: Blog
+    url: /archives
+  - name: GitHub
+    url: https://github.com/JerryC8080
+    target: _blank
+  - name: Jianshu
+    url: http://www.jianshu.com/users/843d2366f95b/latest_articles
+    target: _blank
+  - name: SF
+    url: https://segmentfault.com/u/jerryc
+    target: _blank
+  - name: About Me
+    url: /about
+
+# config page nav
+page_nav:
+  - 博客: /archives/
+  - 分类: /category/
+  - 标签: /tag/
+  - 友链: /link/
+  - 关于: /about/
+  - RSS: /atom.xml
+
+page_nav_style: CIRCLE  # CIRCLE|ROUND_RECT
+
+# 面包屑
+breadcrumb:
+  isShow: false # true|fase
+
+# 盒子
+toolbox:
+  isShow: true # true|fase
+
+post:
+  header_align: CENTER # LEFT|CENTER
+  showToc: true # true|false
+
+link:
+  - name: Xie Zefan
+    info: xxx
+    url: http://xiezefan.me/
+    avatar: http://xiezefan.qiniudn.com/avatar.jpg
+
+
+about:
+  - type: me
+    icon: icon-user
+    text_value:
+    - "JerryC"
+    - "君子，厚积薄发也"
+  - type: Github
+    icon: icon-github
+    text_key: Github
+    text_value: "@JerryC8080"
+    text_value_url: https://github.com/JerryC8080
+  - type: CNode
+    text_key: CNode
+    text_value: "@JerryC8080"
+    text_value_url: https://cnodejs.org/user/JerryC8080
+  - type: SegmentFault
+    text_key: SegmentFault
+    text_value: "@JerryC"
+    text_value_url: https://segmentfault.com/u/jerryc
+  - type: 简书
+    text_key: 简书
+    text_value: "@JC-Huang"
+    text_value_url: http://www.jianshu.com/users/843d2366f95b/latest_articles
+  - type: Weibo
+    text_key: 微博
+    text_value: "@大大大大大大培杰"
+    text_value_url: http://weibo.com/2254858394
+  - type: mail
+    text_key: Gmail
+    text_value: "huangjerryc@gmail.com"
+  - type: location
+    icon: icon-location
+    text_value: 珠海
+
+# Stats
+google_analytics: UA-83430919-1
+baidu_analytics: b65b3ffc3fd0d14c968e1036793e631b
+
+# Comment service
+disqus_shortname: bluesun-jerryc
+# duoshuo_shortname: forsigner
+
+# Custom CSS style
+# personal_style: /css/forsigner.css
+

@@ -10,19 +10,16 @@
     color: $title-color;
   }
   h1 {
-    font-size: 26px;
+    font-size: 24px;
   }
   h2 {
-    font-size: 22px;
-  }
-  h3 {
-    font-size: 18px;
+    font-size: 20px;
   }
   h3 {
     font-size: 16px;
   }
   h4 {
-    font-size: 16px;
+    font-size: 14px;
   }
   a {
     color: $site-color;
@@ -31,8 +28,10 @@
     }
   }
   strong {
-    font-weight: normal;
     color: $title-color;
+  }
+  a strong {
+    color: $site-color;
   }
   p {
     font-size: $article-font-size;
@@ -46,7 +45,7 @@
     color: $article-color;
   }
   img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
   }
   ul {
@@ -55,23 +54,25 @@
       padding-left: 14px;
       &:before {
         position: absolute;
-        top: 11px;
+        top: 12px;
         left: -2px;
-        width: 6px;
-        height: 6px;
+        width: 4px;
+        height: 4px;
         margin-left: 2px;
         content: ' ';
         border-radius: 50%;
-        background: #ccc;
+        background: #bbb;
       }
     }
   }
   p + ul {
     margin-top: -10px;
   }
-
   ul + p {
     margin-top: 25px;
+  }
+  ol {
+    padding-left: 20px;
   }
   blockquote {
     margin: 0;

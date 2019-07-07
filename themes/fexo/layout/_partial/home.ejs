@@ -2,19 +2,20 @@
   <a class="avatar" href="/">
     <img src="<%= theme.avatar %>" alt="" />
   </a>
-  <h1 class="name">
+  <h1 class="name" style="font-family: <%= theme.blog_name_font_familiy || 'calligraffittiregular' %>">
     <%= theme.blog_name %>
   </h1>
   <div class="slogan">
     <%= theme.slogan %>
   </div>
+
   <hr>
 
   <ul class="text-center nav">
     <% theme.home_nav.forEach(function(item, i){ %>
       <li class="item">
-        <% if(item.target === '_blank') { %>
-          <a href="<%= item.url %>" target="_blank"><%= item.name %></a>
+        <% if(item.target_blank === true) { %>
+          <a href="<%= item.url %>" rel="noopener noreferrer" target="_blank"><%= item.name %></a>
         <% } else { %>
           <a href="<%= item.url %>"><%= item.name %></a>
         <% } %>

@@ -1,6 +1,7 @@
 # Blog info
 blog_name: BlueSun
 slogan: 写取一枝清瘦竹，秋风江上作文章
+url: http://huang-jerryc.com/
 
 # Set avatar (Absolute url and relative url)
 avatar: /images/avatar.jpg
@@ -10,8 +11,6 @@ favicon: /images/favicon.ico
 
 # For seo
 keywords: huang-jerrryc,JerryC8080,jerryc,JC_Huang,前端,设计,前端开发,用户体验,设计,frontend,design,nodejs,JavaScript
-
-init_page_content: HOME_NAV  # HOME_NAV | POST
 
 home_nav:
   - name: Blog
@@ -30,40 +29,173 @@ home_nav:
 
 # config page nav
 page_nav:
-  - 博客: /archives/
-  - 分类: /category/
-  - 标签: /tag/
-  - 友链: /link/
-  - 关于: /about/
-  - RSS: /atom.xml
+  - name: 博客
+    url: /archives/
+    target_blank: false # 不在新页面打开
+  - name: 分类
+    url: /category/
+    target_blank: false
+  - name: 标签
+    url: /tag/
+    target_blank: false
+  - name: 友链
+    url: /link/
+    target_blank: false
+  - name: 关于
+    url: /about/
+    target_blank: false
+  - name: RSS
+    url: /atom.xml
+    target_blank: true # 在新页面打开
+  - name: 搜索
+    url: /search/
+    target_blank: false # 在新页面打开
 
 page_nav_style: CIRCLE  # CIRCLE|ROUND_RECT
 
 # 面包屑
 breadcrumb:
-  isShow: false # true|fase
+  isShow: true # true|fase
 
 # 盒子
 toolbox:
   isShow: true # true|fase
+  text: 盒子
+
+search_slogan:
+  isShow: true # true|fase
+  text: Can you find the bug of world ~
+
+link_slogan:
+  isShow: true # true|fase
+  text: 交换友链可以邮件 huangjerryc@gmail.com
+
+
+# set backtop show or hide
+backtop:
+  home: false
+  archive: false
+  category: true
+  tag: true
+  post: true
+  link: false
+  about: false
+
+donation:
+  show: true
+  btn_text: 支持一下
+  tip: 扫一扫，支持JerryC
+  items:
+    - type: 微信
+      text: 微信扫一扫
+      imgUrl: /images/qr-wechat.jpg
+    # - type: 支付宝
+    #   text: 支付宝扫一扫
+    #   imgUrl: /images/qr-alipay.png
+
+
 
 post:
   header_align: CENTER # LEFT|CENTER
   showToc: true # true|false
+  showComments: true
+  open_in_new_window: false
+  show_prev_next: true
 
-link:
-  - name: Xie Zefan
-    info: xxx
-    url: http://xiezefan.me/
-    avatar: http://xiezefan.qiniudn.com/avatar.jpg
+# =========================================================
+# 个性化设置
+# =========================================================
+
+# Custom CSS style, 推荐把样式文件放在blog源码文件夹，而不是主题里面
+personal_style: /css/personal-style.css
+
+# 这个值取决于你得背景图片是深色还是浅色，深色用dark，浅色用light
+home_background_scheme: light # dark、light
+
+# custom font-family 暂时只支持这3种英文字体，你可以完全自定义字体(看文档)
+blog_name_font_familiy: calligraffittiregular
+# blog_name_font_familiy: Lobster-Regular
+# blog_name_font_familiy: PoiretOne-Regular
+
+init_page_content: HOME_NAV  # HOME_NAV | POST
 
 
+# =========================================================
+# 第三方服务
+# =========================================================
+# Stats
+google_analytics: UA-83430919-1
+baidu_analytics: b65b3ffc3fd0d14c968e1036793e631b
+
+# Comment service
+
+disqus_shortname: bluesun-jerryc
+# hypercomments_id: 89821
+# gentie_key: d16a7241e7cd4b389584ed8db2a4e8bc
+
+#有言用户编号
+# uyan_key:
+
+# 畅言, doc: http://changyan.kuaizhan.com/
+changyan:
+  enable: false  # true | false  这里开启
+  changyan_appid:
+  changyan_appkey:
+
+# gitalk评论组件，把下面的配置换成你的，官方文档: https://gitalk.github.io/
+gitalk:
+  enable: false # 如果使用 gitalk，请设置改之为true
+  clientID: 
+  clientSecret: 
+  repo: BlueSun-Comment
+  owner: JerryC8080
+  admin: JerryC8080
+
+
+# gitment comment service
+gitment:
+  enable: false  # true | false  这里开启
+  owner:  # Your GitHub ID. Required.
+  repo:  # The repository to store your comments. Make sure you're repo's owner. Required.
+  oauth: # An object contains your client ID and client secret. Required.
+    client_id: # GitHub client ID. Required.
+    client_secret: # GitHub client secret. Required.
+  id: # An optional string to identify your page. Default location.href.
+  title: # An optional title for your page, used as issue's title. Default document.title.
+  link: # An optional link for your page, used in issue's body. Default location.href.
+  desc: # An optional description for your page, used in issue's body. Default ''.
+  labels: # An optional array of labels your want to add when creating the issue. Default [].
+  theme: # An optional Gitment theme object. Default gitment.defaultTheme.
+  perPage: # An optional number to which comments will be paginated. Default 20.
+  maxCommentHeight: # An optional number to limit comments' max height, over which comments will be folded. Default 250.
+
+# Valine comment system  https://valine.js.org
+valine:
+  enable: false # 如果使用valine，请设置改之为true
+  appid:  # your leancloud application appid
+  appkey:  # your leancloud application appkey
+  notify: false # mail notifier , https://github.com/xCss/Valine/wiki
+  verify: false # Verification code
+  placeholder: Just go go # comment box placeholder
+  avatar: mm # gravatar style
+  guest_info: nick,mail,link # custom comment header
+  pageSize: 10 # pagination size
+
+
+
+
+# 不算子,文章访问量统计和显示
+busuanzi: true
+
+# =========================================================
+# 页面内容设置
+# =========================================================
 about:
   - type: me
     icon: icon-user
     text_value:
-    - "JerryC"
-    - "君子，厚积薄发也"
+     - "JerryC"
+     - "君子，厚积薄发也"
   - type: Github
     icon: icon-github
     text_key: Github
@@ -90,16 +222,24 @@ about:
     text_value: "huangjerryc@gmail.com"
   - type: location
     icon: icon-location
-    text_value: 珠海
+    text_value: 深圳
 
-# Stats
-google_analytics: UA-83430919-1
-baidu_analytics: b65b3ffc3fd0d14c968e1036793e631b
+link:
+  - name: Xie Zefan
+    info: xxx
+    url: http://xiezefan.me/
+    avatar: http://xiezefan.qiniudn.com/avatar.jpg
 
-# Comment service
-disqus_shortname: bluesun-jerryc
-# duoshuo_shortname: forsigner
-
-# Custom CSS style
-# personal_style: /css/forsigner.css
-
+project:
+  - type: personal
+    name: BeautyWe.js
+    url: https://github.com/beautywe/beautywe
+    intro: 👨‍💻‍ Write beautiful code for wechat mini app by the beautiful we!
+  - type: personal
+    name: Memeye
+    url: https://github.com/JerryC8080/Memeye
+    intro: 👀 The eye of memory. A lightweight memory monitor and dashboard for Node.js application on development.
+  - type: personal
+    name: super-cache
+    url: https://github.com/JerryC8080/super-cache
+    intro: 💾 一个跨 JS 平台的缓存库，支持缓存逻辑代理，支持自定义数据存储

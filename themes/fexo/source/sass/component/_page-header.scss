@@ -30,13 +30,13 @@
       height: 60px;
       vertical-align: middle;
       border-radius: 50%;
+      object-fit: cover;
+      overflow: hidden;
     }
     .info {
       .name {
-        font-family: 'calligraffittiregular';
         font-size: 24px;
         font-weight: bold;
-        width: 100px;
         margin: 0;
         color: #000;
       }
@@ -47,8 +47,6 @@
     }
   }
 }
-
-
 @media screen and (min-width: 768px) {
   .page-header {
     margin-bottom: 30px;

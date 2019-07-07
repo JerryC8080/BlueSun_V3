@@ -2,8 +2,13 @@
   position: absolute;
   left: 50%;
   margin-left: $post-width / 2 + 20px;
-  top: 430px;
+  top: 200px;
   font-size: 13px;
+
+  &.fixed {
+    position: fixed;
+    top: 20px;
+  }
 
   ol {
     line-height: 1.8em;
@@ -21,6 +26,11 @@
 
   .toc {
     padding-left: 0;
+  }
+
+  a.toc-link.active {
+    color: #111;
+    font-weight: bold;
   }
 
   a {
@@ -43,4 +53,3 @@
     display: none;
   }
 }
-

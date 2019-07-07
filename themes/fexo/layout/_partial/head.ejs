@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans" class="han-init">
+
+<% if (theme.home_background_scheme === 'light') {%>
+  <html class="light page-<%= page.base ? page.base.replace(/\//g, '') : page.layout ? page.layout : 'home' %>">
+<% } else { %>
+  <html class="dark page-<%= page.base ? page.base.replace(/\//g, '') : page.layout ? page.layout : 'home' %>">
+<% } %>
+
 <head>
   <meta charset="utf-8">
   <%
@@ -39,7 +45,7 @@
     <link rel="icon" href="<%- theme.favicon %>">
   <% } %>
 
-  <%- css('css/styles') %>
+  <%- partial('style') %>
 
   <% if (theme.personal_style){ %>
     <%- css(theme.personal_style) %>
@@ -47,7 +53,11 @@
 
   <%- partial('google-analytics') %>
   <%- partial('baidu-analytics') %>
+  <%- partial('baidu-push') %>
 
-  <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.css">
+  <% if (theme.busuanzi){ %>
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <% } %>
 
 </head>
