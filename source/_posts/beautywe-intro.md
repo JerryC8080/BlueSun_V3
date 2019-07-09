@@ -10,6 +10,10 @@ tags:
 ![](https://raw.githubusercontent.com/beautywe/docs/master/docs/assets/images/logo-V4.png)
 
 
+> 官网：[beautywejs.com](http://beautywejs.com)    
+> Repo: [beautywe](https://github.com/beautywe/beautywe)
+
+
 # 一个简单的介绍
 
 **BeautyWe.js 是什么？**
@@ -684,5 +688,5 @@ import { beautywe } from './npm/index';
 
 而 `framework` 则负责提供一整套针对于微信小程序的企业级项目解决方案，开箱即用。
 
-其中还有更多的内容，欢迎浏览官网：[beautywejs.com](https://user-gold-cdn.xitu.io/2019/6/10/16b40250bcbe53fb)
+其中还有更多的内容，欢迎浏览官网：[beautywejs.com](http://beautywejs.com)
 
