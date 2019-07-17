@@ -1302,7 +1302,7 @@
     <link href="http://huang-jerryc.com/2017/03/17/the-memeye/"/>
     <id>http://huang-jerryc.com/2017/03/17/the-memeye/</id>
     <published>2017-03-17T07:17:38.000Z</published>
-    <updated>2017-05-14T09:58:29.000Z</updated>
+    <updated>2019-07-17T13:52:49.737Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Memeye"><a href="#Memeye" class="headerlink" title="Memeye"></a><a href="https://github.com/JerryC8080/Memeye" target="_blank" rel="external">Memeye</a></h1><p>Github 链接：<a href="https://github.com/JerryC8080/Memeye" target="_blank" rel="external">https://github.com/JerryC8080/Memeye</a></p>
 <p>Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。<br>前端部分，借助 <a href="https://github.com/vuejs/vue" target="_blank" rel="external">Vue2</a> 和 <a href="https://github.com/chartjs/Chart.js" target="_blank" rel="external">ChartJS</a> 提供了一个不错的动态展示面板。<br>Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，交由子进程来进行。<br>这样做能把 Memeye 的代码对宿主进程的影响降到最低，以确保数据的真实性。    </p>
@@ -1331,8 +1331,8 @@
 <h2 id="Indicator"><a href="#Indicator" class="headerlink" title="Indicator"></a>Indicator</h2><p>Indicator 像一个状态机。当它的属性变化的时候，会触发相应事件。所以我们可以用它来处理收集回来的数据。    </p>
 <h2 id="Dashboard"><a href="#Dashboard" class="headerlink" title="Dashboard"></a>Dashboard</h2><p>Dashboard 会以子进程的形式唤起。他会创建一个 Indicator 实例，以及启动一个集成 socket.io 的 Http 服务器。<br>然后绑定 Indicator 和进程通信管道，以接收父进程发过来的数据。<br>最后再绑定 Indicator 和 socket.io，这样可以在 Indicator 属性变化的时候发送数据给前端。    </p>
 <p>##Collector, Indicator, Dashboard 之间的通信</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/79702-097ba6a11cc5b0ae.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="commication.jpeg"></p>
-<h1 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h1><p><img src="http://upload-images.jianshu.io/upload_images/79702-362b432432f6be64.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="预览"></p>
+<p><img src="(https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214117.jpg" alt="commication.jpeg"></p>
+<h1 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h1><p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214216.jpeg" alt="预览"></p>
 ]]></content>
     
     <summary type="html">

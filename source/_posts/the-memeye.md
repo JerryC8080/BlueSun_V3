@@ -79,7 +79,7 @@ Dashboard 会以子进程的形式唤起。他会创建一个 Indicator 实例�
 
 ##Collector, Indicator, Dashboard 之间的通信
 
-![commication.jpeg](http://upload-images.jianshu.io/upload_images/79702-097ba6a11cc5b0ae.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![commication.jpeg]((https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214117.jpg)
 
 # 预览
-![预览](http://upload-images.jianshu.io/upload_images/79702-362b432432f6be64.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![预览](https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214216.jpeg)
