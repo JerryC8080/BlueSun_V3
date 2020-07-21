@@ -27,17 +27,17 @@ UDP 和 TCP 的不同TCP 在传送数据之前必须先建立连接，数据传�
 
 UDP 和 TCP 的不同TCP 在传送数据之前必须先建立连接，数据传送结束后要释放连接。TCP 不提供广播或多播服务，由于 TCP 要提供可靠的、面向连接的运输服务，因此不可避免地增加了许多的开销，如确认、流量控制、计时器以及连接管理等。    
 而 UDP 在传送数据之前不需要先建立连接。接收方收到 UDP 报文之">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/6FCC9F4EDE80F784BD11ED9FA76FA375.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/3D9C291187835C3571A111952201B4FF.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/5DADDF7480F81837145468E2ADA6839F.png">
-<meta property="og:updated_time" content="2018-05-01T16:16:02.088Z">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/6FCC9F4EDE80F784BD11ED9FA76FA375.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/3D9C291187835C3571A111952201B4FF.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/5DADDF7480F81837145468E2ADA6839F.png">
+<meta property="og:updated_time" content="2020-07-21T08:12:37.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解UDP">
 <meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
 
 UDP 和 TCP 的不同TCP 在传送数据之前必须先建立连接，数据传送结束后要释放连接。TCP 不提供广播或多播服务，由于 TCP 要提供可靠的、面向连接的运输服务，因此不可避免地增加了许多的开销，如确认、流量控制、计时器以及连接管理等。    
 而 UDP 在传送数据之前不需要先建立连接。接收方收到 UDP 报文之">
-<meta name="twitter:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/6FCC9F4EDE80F784BD11ED9FA76FA375.png">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/6FCC9F4EDE80F784BD11ED9FA76FA375.png">
 
   
 
@@ -184,7 +184,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">Posts List</strong>
+    <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UDP-和-TCP-的不同"><span class="toc-text">UDP 和 TCP 的不同</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UDP-概述"><span class="toc-text">UDP 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UDP-报文结构"><span class="toc-text">UDP 报文结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UDP-如何进行校验和"><span class="toc-text">UDP 如何进行校验和</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#伪首部"><span class="toc-text">伪首部</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#校验和计算方法"><span class="toc-text">校验和计算方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
   </div>
 
@@ -266,7 +266,7 @@ ga('send', 'pageview');
 <li>流式多媒体通信</li>
 </ol>
 <h1 id="UDP-报文结构"><a href="#UDP-报文结构" class="headerlink" title="UDP 报文结构"></a>UDP 报文结构</h1><p>UDP 数据报分为数据字段和首部字段。<br>首部字段只有 8 个字节，由四个字段组成，每个字段的长度是 2 个字节。    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/6FCC9F4EDE80F784BD11ED9FA76FA375.png" alt="UDP  数据报结构.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/6FCC9F4EDE80F784BD11ED9FA76FA375.png" alt="UDP  数据报结构.png"></p>
 <p><strong>首部各字段意义</strong>：</p>
 <ol>
 <li><strong>源端口</strong>：源端口号，在需要对方回信时选用，不需要时可全 0.</li>
@@ -275,7 +275,7 @@ ga('send', 'pageview');
 <li><strong>检验和</strong>：检测 UDP 用户数据报在传输中是否有错，有错就丢弃。</li>
 </ol>
 <h1 id="UDP-如何进行校验和"><a href="#UDP-如何进行校验和" class="headerlink" title="UDP 如何进行校验和"></a>UDP 如何进行校验和</h1><h2 id="伪首部"><a href="#伪首部" class="headerlink" title="伪首部"></a>伪首部</h2><p>UDP 数据报首部中检验和的计算方法比较特殊。<br>在计算检验和时，要在数据报之前增加 12 个字节的伪首部，用来计算校验和。<br>伪首部并不是数据报真正的首部，是为了计算校验和而临时添加在数据报前面的，在真正传输的时候并不会把伪首部一并发送。    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/3D9C291187835C3571A111952201B4FF.png" alt="UDP 数据报结构-伪首部.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/3D9C291187835C3571A111952201B4FF.png" alt="UDP 数据报结构-伪首部.png"></p>
 <p><strong>伪首部个字段意义</strong>：</p>
 <ol>
 <li>第一字段，源 IP 地址</li>
@@ -304,7 +304,7 @@ ga('send', 'pageview');
 <p>接收方收到数据报之后，按照同样的方法计算校验和，如果有差错，则丢弃这个数据报。    </p>
 <p>可以看出校验和，既检查了 UDP 用户数据报的源端口号和目的端口号以及数据报的数据部分，又检查了 IP 数据报的源 IP 地址和目的地址。    </p>
 <p><strong>一个校验和例子</strong><br>假设一个 UDP 数据报：</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/5DADDF7480F81837145468E2ADA6839F.png" alt="UDP 校验和.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/5DADDF7480F81837145468E2ADA6839F.png" alt="UDP 校验和.png"></p>
 <p>各字段以二进制表示：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">1001 1001 0001 0011 //伪首部源IP地址前16位，值：153.19</div><div class="line">0000 1000 0110 1000 //伪首部源IP地址后16位，值：8.104</div><div class="line">1010 1011 0000 0011 //伪首部目的IP地址前16位，值：171.3</div><div class="line">0000 1110 0000 1011 //伪首部目的IP地址后16位，值：14.11</div><div class="line">0000 0000 0001 0001 //伪首部UDP协议字段代表号，值：17</div><div class="line">0000 0000 0000 1111 //伪首部UDP长度字段，值：15</div><div class="line">0000 0100 0011 1111 //UDP头部源IP地址对应的进程端口号，值：1087</div><div class="line">0000 0000 0000 1101 //UDP头部目的IP地址对应的进程端口号，值：13</div><div class="line">0000 0000 0000 1111 //UDP头部UDP长度字段，值：15</div><div class="line">0000 0000 0000 0000 //UDP头部UDP检验和，值：0</div><div class="line">0101 0100 0100 0101 //数据字段</div><div class="line">0101 0011 0101 0100 //数据字段</div><div class="line">0100 1001 0100 1110 //数据字段</div><div class="line">0100 0111 0000 0000 //数据字段+填充0字段</div></pre></td></tr></table></figure>
 <p>按照二进制反码运算求和，结果：<code>10010110 11101101</code><br>结果求反码得出校验和：<code>01101001 00010010</code> </p>
@@ -371,7 +371,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">Close</span>
+      <span id="close" class="btn-close">关闭</span>
     </div>
     <hr>
     <div class="modal-body">

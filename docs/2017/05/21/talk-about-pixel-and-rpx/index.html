@@ -25,18 +25,18 @@ rpx（responsive pixel）， 可以根据屏幕宽度进行自适应。规定屏
 <meta property="og:description" content="前言最近在负责有赞的某个业务的微信小程序开发，这是我第一次着手微信小程序的开发，这个过程中发现微信小程序所定义的一套 WXSS (WeiXin Style Sheets) 中有一个有趣的长度单位 rpx，即 responsive pixel。根据官方的描述：
 
 rpx（responsive pixel）， 可以根据屏幕宽度进行自适应。规定屏幕宽为750rpx。如在 iPhone6 上，屏幕宽度为3">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/9C4CD0061C94690AF81DB8DED8F71252.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/855BB6047CE2CA7F9DBBF1791D52C6CC.gif">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/2A67EB1D8C0873E419C676DB430570C2.gif">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/ACED349F80C8D926AB74922C360B2F5A.png">
-<meta property="og:updated_time" content="2017-05-21T12:29:26.000Z">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/9C4CD0061C94690AF81DB8DED8F71252.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/855BB6047CE2CA7F9DBBF1791D52C6CC.gif">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/2A67EB1D8C0873E419C676DB430570C2.gif">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/ACED349F80C8D926AB74922C360B2F5A.png">
+<meta property="og:updated_time" content="2020-07-21T08:12:37.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈像素以及微信小程序的 rpx">
 <meta name="twitter:description" content="前言最近在负责有赞的某个业务的微信小程序开发，这是我第一次着手微信小程序的开发，这个过程中发现微信小程序所定义的一套 WXSS (WeiXin Style Sheets) 中有一个有趣的长度单位 rpx，即 responsive pixel。根据官方的描述：
 
 rpx（responsive pixel）， 可以根据屏幕宽度进行自适应。规定屏幕宽为750rpx。如在 iPhone6 上，屏幕宽度为3">
-<meta name="twitter:image" content="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png">
 
   
 
@@ -183,7 +183,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">Posts List</strong>
+    <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#像素"><span class="toc-text">像素</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#物理像素"><span class="toc-text">物理像素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑像素"><span class="toc-text">逻辑像素</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PPI"><span class="toc-text">PPI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PPI-怎么算出来的？"><span class="toc-text">PPI 怎么算出来的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#物理像素有多大？"><span class="toc-text">物理像素有多大？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DPR"><span class="toc-text">DPR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#回到-rpx"><span class="toc-text">回到 rpx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
   </div>
 
@@ -254,15 +254,15 @@ ga('send', 'pageview');
 </ol>
 <h2 id="物理像素"><a href="#物理像素" class="headerlink" title="物理像素"></a>物理像素</h2><p>也被称为设备像素 (Device independent pixels)，即设备在出厂的时候就已经固定了像素。</p>
 <p>我们来看一下 iPhone6 (左图) 与 iPhone6 plus (右图) 的官方显示屏的规格说明：</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png" alt="iPhone6 &amp; iPhone6 plus 规格"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png" alt="iPhone6 &amp; iPhone6 plus 规格"></p>
 <p>iPhone6 是 <code>1334px x 750px</code> 的像素分辨率，意思是当手机竖放的时候，横向有 750 个物理像素，纵向有 1334 个物理像素。</p>
 <h2 id="逻辑像素"><a href="#逻辑像素" class="headerlink" title="逻辑像素"></a>逻辑像素</h2><p>在 CSS 中也被称为 CSS 像素 (CSS pixels)，是为 Web 开发者创造的，在 CSS 和 JavaScript 中使用的一个抽象的层，每一个 CSS 声明和几乎所有的 Javascript 属性都使用 CSS 像素。</p>
 <p>例如我们平时使用 Chrome 的设备调试工具的时候，iPhone6 是高 <code>667px</code>，宽是 <code>375px</code>，与苹果官方的 <code>1334px x 750px</code>，长宽分别少了 2 倍，那么面积就少了 4 倍。这就是经常说的 Retina 屏幕用四个(物理)像素表示一个(逻辑)像素。</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/9C4CD0061C94690AF81DB8DED8F71252.png" alt="Chrome 下 iPhone6 逻辑像素"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/9C4CD0061C94690AF81DB8DED8F71252.png" alt="Chrome 下 iPhone6 逻辑像素"></p>
 <h1 id="PPI"><a href="#PPI" class="headerlink" title="PPI"></a>PPI</h1><p>Pixels per inch，每英寸像素，也被称为像素密度，意思是一英寸中有多少个物理像素。<br>其中 1英寸 (inch) = 2.54厘米 (cm)。</p>
 <p>回顾一下上面的 iPhone6 和 iPhone6 plus 的官方规格说明图，其中有 <code>ppi</code> 这一项，iPhone6 是 <code>326ppi</code>，iphone6 plus 是 <code>401ppi</code>。</p>
 <h2 id="PPI-怎么算出来的？"><a href="#PPI-怎么算出来的？" class="headerlink" title="PPI 怎么算出来的？"></a>PPI 怎么算出来的？</h2><p>要计算显示器的每英寸像素值，首先要确定屏幕的尺寸和分辨率。<br>PPI 计算公式：</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/855BB6047CE2CA7F9DBBF1791D52C6CC.gif" alt="PPI 计算公式"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/855BB6047CE2CA7F9DBBF1791D52C6CC.gif" alt="PPI 计算公式"></p>
 <p>其中，</p>
 <ul>
 <li>dp (device pixel) 为屏幕对角线的分辨率</li>
@@ -271,7 +271,7 @@ ga('send', 'pageview');
 <li>di (device inch) 为屏幕对角线的长度(单位为英寸)。</li>
 </ul>
 <p>以 iPhone6 为例：</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/2A67EB1D8C0873E419C676DB430570C2.gif" alt="iPhone6 PPI 计算"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/2A67EB1D8C0873E419C676DB430570C2.gif" alt="iPhone6 PPI 计算"></p>
 <p>四舍五入那便是 <code>326ppi</code> 了。</p>
 <h2 id="物理像素有多大？"><a href="#物理像素有多大？" class="headerlink" title="物理像素有多大？"></a>物理像素有多大？</h2><p>「物理像素」是有特定长度的，这取决于 ppi 值。</p>
 <p>那么如何求出一个设备的物理像素的长度？<br>因为绝大多数设备的物理像素都是方形的，我们可以假设当前设备的像素是方形的。<br>那么，</p>
@@ -300,7 +300,7 @@ ga('send', 'pageview');
 <p>原来 iPhone6 plus 对逻辑像素做了缩小处理，以适应物理像素，也就是<br><code>1241px x 2208px</code> 除以 <code>115%</code> ，得到 <code>1080px x 1920px</code>。</p>
 <p>换句话来说，本来 iPhone6 plus 的 <code>dpr = 2.6</code>，但是通过虚拟技术把物理像素放大 115% ，以达到 <code>dpr = 3</code> 的效果。</p>
 <p>所以说是假 3 倍 dpr，其实我们开发和设计的时候也不用管这个，当作它就是 3 倍 dpr 就好了。</p>
-<h1 id="回到-rpx"><a href="#回到-rpx" class="headerlink" title="回到 rpx"></a>回到 rpx</h1><p>根据官方给出的 rpx 换算 px 的实例：<br><img src="http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/ACED349F80C8D926AB74922C360B2F5A.png" alt="rpx 换算 px"></p>
+<h1 id="回到-rpx"><a href="#回到-rpx" class="headerlink" title="回到 rpx"></a>回到 rpx</h1><p>根据官方给出的 rpx 换算 px 的实例：<br><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/ACED349F80C8D926AB74922C360B2F5A.png" alt="rpx 换算 px"></p>
 <p>三款机器的逻辑像素：</p>
 <ul>
 <li>iPhone5 : <code>320px x 568px</code></li>
@@ -382,7 +382,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">Close</span>
+      <span id="close" class="btn-close">关闭</span>
     </div>
     <hr>
     <div class="modal-body">

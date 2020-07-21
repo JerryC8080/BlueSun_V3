@@ -27,16 +27,16 @@ TCP 是面向字节流的，但传送的数据单元却是报文段。
 
 TCP 是面向字节流的，但传送的数据单元却是报文段。
 什么是报文？例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。一共四个 TCP 报文，发送到另外一个端">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/CFC6314E4B2FD039C450821D946E93E2.png">
-<meta property="og:updated_time" content="2018-05-01T16:16:02.083Z">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/CFC6314E4B2FD039C450821D946E93E2.png">
+<meta property="og:updated_time" content="2020-07-21T08:12:37.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解TCP（二）：报文结构">
 <meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
 
 TCP 是面向字节流的，但传送的数据单元却是报文段。
 什么是报文？例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。一共四个 TCP 报文，发送到另外一个端">
-<meta name="twitter:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png">
 
   
 
@@ -183,7 +183,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">Posts List</strong>
+    <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-首部各字段的意义和作用"><span class="toc-text">TCP 首部各字段的意义和作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#源端口和目的端口-Port"><span class="toc-text">源端口和目的端口 Port</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#序号-Sequence-Number"><span class="toc-text">序号 Sequence Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#确认号-Acknowledgemt-Number"><span class="toc-text">确认号 Acknowledgemt Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据偏移-Offset"><span class="toc-text">数据偏移 Offset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保留-Reserved"><span class="toc-text">保留 Reserved</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标志位-TCP-Flags"><span class="toc-text">标志位 TCP Flags</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#紧急-URG-Urgent"><span class="toc-text">紧急 URG (Urgent)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#确认-ACK-Acknowlegemt"><span class="toc-text">确认 ACK (Acknowlegemt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推送-PSH-Push"><span class="toc-text">推送 PSH (Push)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#复位-RST-Reset"><span class="toc-text">复位 RST (Reset)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#同步-SYN-SYNchronization"><span class="toc-text">同步 SYN (SYNchronization)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#终止-FIN-Finis"><span class="toc-text">终止 FIN (Finis)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#窗口大小-Window-Size"><span class="toc-text">窗口大小 Window Size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#校验和-TCP-Checksum"><span class="toc-text">校验和 TCP Checksum</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#紧急指针-Urgent-Pointer"><span class="toc-text">紧急指针 Urgent Pointer</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a>
   </div>
 
@@ -242,9 +242,9 @@ ga('send', 'pageview');
 <p><strong>什么是报文？</strong><br>例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。<br>而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。<br>一共四个 TCP 报文，发送到另外一个端。<br>另外一端收到数据包，然后再剔除 TCP 首部，组装起来。<br>等到四个数据包都收到了，就能还原出来一个完整的 HTML 文档了。    </p>
 <p>在 OSI 的七层协议中，第二层（数据链路层）的数据叫「Frame」，第三层（网络层）上的数据叫「Packet」，第四层（传输层）的数据叫「Segment」。</p>
 <p>TCP 报文 (Segment)，包括首部和数据部分。    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png" alt="报文结构.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png" alt="报文结构.png"></p>
 <p>而 TCP 的全部功能都体现在它首部中各字段的作用，只有弄清 TCP 首部各字段的作用才能掌握 TCP 的工作原理。<br>TCP 报文段首部的前20个字节是固定的，后面有 4N 字节是根据需要而增加的。<br>下图是把 TCP 报文中的首部放大来看。    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/CFC6314E4B2FD039C450821D946E93E2.png" alt="报文首部结构.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/CFC6314E4B2FD039C450821D946E93E2.png" alt="报文首部结构.png"></p>
 <p>TCP 的首部包括以下内容：    </p>
 <ol>
 <li>源端口 source port    </li>
@@ -341,7 +341,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">Close</span>
+      <span id="close" class="btn-close">关闭</span>
     </div>
     <hr>
     <div class="modal-body">

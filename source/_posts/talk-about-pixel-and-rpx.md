@@ -33,7 +33,7 @@ tags:
 
 我们来看一下 iPhone6 (左图) 与 iPhone6 plus (右图) 的官方显示屏的规格说明：
 
-![iPhone6 & iPhone6 plus 规格](http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png)
+![iPhone6 & iPhone6 plus 规格](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/518488434BEC1074B675EB42A5A57AEF.png)
 
 iPhone6 是 `1334px x 750px` 的像素分辨率，意思是当手机竖放的时候，横向有 750 个物理像素，纵向有 1334 个物理像素。
 
@@ -42,7 +42,7 @@ iPhone6 是 `1334px x 750px` 的像素分辨率，意思是当手机竖放的时
 
 例如我们平时使用 Chrome 的设备调试工具的时候，iPhone6 是高 `667px`，宽是 `375px`，与苹果官方的 `1334px x 750px`，长宽分别少了 2 倍，那么面积就少了 4 倍。这就是经常说的 Retina 屏幕用四个(物理)像素表示一个(逻辑)像素。
 
-![Chrome 下 iPhone6 逻辑像素](http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/9C4CD0061C94690AF81DB8DED8F71252.png)
+![Chrome 下 iPhone6 逻辑像素](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/9C4CD0061C94690AF81DB8DED8F71252.png)
 
 # PPI
 
@@ -56,7 +56,7 @@ Pixels per inch，每英寸像素，也被称为像素密度，意思是一英�
 要计算显示器的每英寸像素值，首先要确定屏幕的尺寸和分辨率。
 PPI 计算公式：
 
-![PPI 计算公式](http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/855BB6047CE2CA7F9DBBF1791D52C6CC.gif)
+![PPI 计算公式](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/855BB6047CE2CA7F9DBBF1791D52C6CC.gif)
 
 其中，
 
@@ -67,7 +67,7 @@ PPI 计算公式：
 
 以 iPhone6 为例：
 
-![iPhone6 PPI 计算](http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/2A67EB1D8C0873E419C676DB430570C2.gif)
+![iPhone6 PPI 计算](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/2A67EB1D8C0873E419C676DB430570C2.gif)
 
 四舍五入那便是 `326ppi` 了。
 
@@ -132,7 +132,7 @@ let logicalWidth = screen.width;
 # 回到 rpx
 
 根据官方给出的 rpx 换算 px 的实例：
-![rpx 换算 px](http://om6ayrafu.bkt.clouddn.com/post/talk-about-pixel-and-rpx/ACED349F80C8D926AB74922C360B2F5A.png)
+![rpx 换算 px](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/talk-about-pixel-and-rpx/ACED349F80C8D926AB74922C360B2F5A.png)
 
 三款机器的逻辑像素：
 

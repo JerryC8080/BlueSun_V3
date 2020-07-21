@@ -22,7 +22,7 @@ tags:
 因为这是一个庞大的流量入口啊。
 
 ## 三个平台
-![三个平台](http://om6ayrafu.bkt.clouddn.com/post/yz-share-about-wxapp--cencept/F0C87F9DD75168C4C99AC1BDB4C7AAD4.jpg)
+![三个平台](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/yz-share-about-wxapp--cencept/F0C87F9DD75168C4C99AC1BDB4C7AAD4.jpg)
 
 在接触微信的开发体系中，接触最多的是这三个平台。
 我们站在一个更高的维度来看，就知道小程序处于微信开发体系中的哪个位置了。
@@ -65,14 +65,14 @@ tags:
 
 ## 账号体系
 
-![微信账号体系](http://om6ayrafu.bkt.clouddn.com/post/yz-share-about-wxapp--cencept/ADD94BAC954A36120ADB41E7A8546FCB.jpg)
+![微信账号体系](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/yz-share-about-wxapp--cencept/ADD94BAC954A36120ADB41E7A8546FCB.jpg)
 
 在接入微信账号的时候，在我们申请的应用（网站应用、移动应用、公众号、小程序），对于用户都有一个 OpenID，但是同个用户在多个应用下的 OpenID 是不一样的。
 而如果想打通多个应用的用户的话，做法就是注册开放平台账号，然后把多个应用绑定到同一个开放平台账号下，这样就能获取 UnionID。
 
 而小程序对于 UnionID 有一个特别注意的地方：
 
-![UnionID 机制](http://om6ayrafu.bkt.clouddn.com/post/yz-share-about-wxapp--cencept/EB40AFD817F2807B2A1626FACF25FE7C.jpg)
+![UnionID 机制](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/yz-share-about-wxapp--cencept/EB40AFD817F2807B2A1626FACF25FE7C.jpg)
 
 小程序中，在绑定同一个开放平台账号的前提下。如果其他相同主体的应用账号被用户授权过之后，在小程序中就无需再次授权，直接获取 UnionID（正常情况下，获取 UnionID 需要用户授权的）。
 
@@ -83,7 +83,7 @@ tags:
 对于个人来说，主体就是你本人，通过身份证标记唯一性。
 而对于企业来说，主体就是企业本身，通过营业执照来标记唯一性。
 
-![相同主体](http://om6ayrafu.bkt.clouddn.com/post/yz-share-about-wxapp--cencept/0ABA321D4E60DC52F7B7F9DB8D444B6C.jpg)
+![相同主体](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/yz-share-about-wxapp--cencept/0ABA321D4E60DC52F7B7F9DB8D444B6C.jpg)
 
 在任何一个以上线的公众号或者小程序中的详细信息，都可以查看得到本体信息。
 
@@ -92,11 +92,11 @@ tags:
 在此心痛微信小程序团队 10 秒钟。
 然后我们从截止 8月18日 回顾将近一年的时间，小程序的更新迭代来感受小程序具备哪些能力。
 
-![小程序更新回顾](http://om6ayrafu.bkt.clouddn.com/post/yz-share-about-wxapp--cencept/2EC3DDD2B7877249747FB6CADE85C9C4.png)
+![小程序更新回顾](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/yz-share-about-wxapp--cencept/2EC3DDD2B7877249747FB6CADE85C9C4.png)
 
 # 数据分析
 
-![数据分析](http://om6ayrafu.bkt.clouddn.com/post/yz-share-about-wxapp--cencept/1951C347D0577BA466B972987B288CAE.png)
+![数据分析](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/yz-share-about-wxapp--cencept/1951C347D0577BA466B972987B288CAE.png)
 
 对于数据分析的需求，其实我们可以有很多选择。
 
@@ -123,7 +123,7 @@ tags:
 
 # 社区与资源
 
-![资源](http://om6ayrafu.bkt.clouddn.com/post/yz-share-about-wxapp--cencept/9628CBA157FD3EBF8DA6AD6E63D574AB.png)
+![资源](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/yz-share-about-wxapp--cencept/9628CBA157FD3EBF8DA6AD6E63D574AB.png)
 
 我们需要关注小程序生态圈的动态，通过关注一些媒体、社区，是很有用的。
 

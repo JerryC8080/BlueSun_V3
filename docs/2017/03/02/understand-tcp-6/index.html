@@ -25,14 +25,14 @@
 <meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
 
 一切皆 Socket我们已经知道网络中的进程是通过 socket 来通信的，那什么是 socket 呢？socket 起源于 UNIX，而 UNIX/Linux 基本哲学之一就是「一切皆文件」，都可以用「open → write/read → close」模式来操作。socket 其实就是该模式的一个实现，socket">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/46872611EB6C0874FE9E4C290E8F3FE9.png">
-<meta property="og:updated_time" content="2018-05-01T16:16:02.087Z">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/46872611EB6C0874FE9E4C290E8F3FE9.png">
+<meta property="og:updated_time" content="2020-07-21T08:12:37.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解TCP（六）：网络编程接口">
 <meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
 
 一切皆 Socket我们已经知道网络中的进程是通过 socket 来通信的，那什么是 socket 呢？socket 起源于 UNIX，而 UNIX/Linux 基本哲学之一就是「一切皆文件」，都可以用「open → write/read → close」模式来操作。socket 其实就是该模式的一个实现，socket">
-<meta name="twitter:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/46872611EB6C0874FE9E4C290E8F3FE9.png">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/46872611EB6C0874FE9E4C290E8F3FE9.png">
 
   
 
@@ -179,7 +179,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">Posts List</strong>
+    <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一切皆-Socket"><span class="toc-text">一切皆 Socket</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#套接字接口-Socket-Interfaces"><span class="toc-text">套接字接口 Socket Interfaces</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Socket-的交互流程"><span class="toc-text">Socket 的交互流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Socket-接口"><span class="toc-text">Socket 接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#socket-函数"><span class="toc-text">socket 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数原型"><span class="toc-text">函数原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明"><span class="toc-text">参数说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bind-函数"><span class="toc-text">bind 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数原型-1"><span class="toc-text">函数原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明-1"><span class="toc-text">参数说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#listen-函数"><span class="toc-text">listen 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数原型-2"><span class="toc-text">函数原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明-2"><span class="toc-text">参数说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#connect-函数"><span class="toc-text">connect 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数原型-3"><span class="toc-text">函数原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明-3"><span class="toc-text">参数说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#accept-函数"><span class="toc-text">accept 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数原型-4"><span class="toc-text">函数原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明-4"><span class="toc-text">参数说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#close-函数"><span class="toc-text">close 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数原型-5"><span class="toc-text">函数原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明-5"><span class="toc-text">参数说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络-I-O-函数"><span class="toc-text">网络 I/O 函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现一个简单-TCP-交互"><span class="toc-text">实现一个简单 TCP 交互</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#服务端"><span class="toc-text">服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端"><span class="toc-text">客户端</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Run"><span class="toc-text">Run</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
   </div>
 
@@ -252,7 +252,7 @@ ga('send', 'pageview');
 <li>read()</li>
 <li>close()</li>
 </ul>
-<h1 id="Socket-的交互流程"><a href="#Socket-的交互流程" class="headerlink" title="Socket 的交互流程"></a>Socket 的交互流程</h1><p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/46872611EB6C0874FE9E4C290E8F3FE9.png" alt="socket 交互过程.png"></p>
+<h1 id="Socket-的交互流程"><a href="#Socket-的交互流程" class="headerlink" title="Socket 的交互流程"></a>Socket 的交互流程</h1><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/46872611EB6C0874FE9E4C290E8F3FE9.png" alt="socket 交互过程.png"></p>
 <p>图中展示了 TCP 协议的 socket 交互流程，描述如下：</p>
 <ol>
 <li>服务器根据地址类型、socket 类型、以及协议来创建 socket。</li>
@@ -395,7 +395,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">Close</span>
+      <span id="close" class="btn-close">关闭</span>
     </div>
     <hr>
     <div class="modal-body">

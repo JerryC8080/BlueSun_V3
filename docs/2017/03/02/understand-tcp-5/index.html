@@ -35,12 +35,12 @@ TCP 是一种提供可靠性交付的协议。也就是说，通过 TCP 连接�
 超时重传    
 流量控制    
 拥塞">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/FCA43D210DF50C93E428DFD04FBBBF32.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/4C22A2B58DB2F0B885A0DC50057D2768.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/F4B7AEDE41EE179676E79DEF2601D4A4.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/95A36446FAD21CC3DD086FA683942FFA.png">
-<meta property="og:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/686E3FC14C2DEF657C61ECBC16C9C954.png">
-<meta property="og:updated_time" content="2018-05-01T16:16:02.086Z">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/FCA43D210DF50C93E428DFD04FBBBF32.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/4C22A2B58DB2F0B885A0DC50057D2768.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/F4B7AEDE41EE179676E79DEF2601D4A4.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/95A36446FAD21CC3DD086FA683942FFA.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/686E3FC14C2DEF657C61ECBC16C9C954.png">
+<meta property="og:updated_time" content="2020-07-21T08:12:37.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解TCP（五）：可靠性交付的实现">
 <meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
@@ -51,7 +51,7 @@ TCP 是一种提供可靠性交付的协议。也就是说，通过 TCP 连接�
 超时重传    
 流量控制    
 拥塞">
-<meta name="twitter:image" content="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/FCA43D210DF50C93E428DFD04FBBBF32.png">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/FCA43D210DF50C93E428DFD04FBBBF32.png">
 
   
 
@@ -198,7 +198,7 @@ ga('send', 'pageview');
 
 
   <div id="toc" class="toc-article">
-    <strong class="toc-title">Posts List</strong>
+    <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#超时重传"><span class="toc-text">超时重传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#重传时机"><span class="toc-text">重传时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重传算法"><span class="toc-text">重传算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#先认识两个概念"><span class="toc-text">先认识两个概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RTO-Retransmission-Time-Out-重传超时时间"><span class="toc-text">RTO ( Retransmission Time-Out ) 重传超时时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RTT-Round-Trip-Time-连接往返时间"><span class="toc-text">RTT ( Round Trip Time ) 连接往返时间</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jacobson-Karels-算法"><span class="toc-text">Jacobson / Karels 算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#拥塞控制"><span class="toc-text">拥塞控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#滑动窗口-Sliding-Window"><span class="toc-text">滑动窗口 Sliding Window</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发送窗口"><span class="toc-text">发送窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接收窗口"><span class="toc-text">接收窗口</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
   </div>
 
@@ -298,7 +298,7 @@ ga('send', 'pageview');
 <p>滑动窗口分为「接收窗口」和「发送窗口」<br>因为 TCP 协议是全双工的，会话的双方都可以同时接收和发送，那么就需要各自维护一个「发送窗口」和「接收窗口」。    </p>
 <h2 id="发送窗口"><a href="#发送窗口" class="headerlink" title="发送窗口"></a>发送窗口</h2><p>大小取决于对端通告的接受窗口。<br>只有收到对端对于本端发送窗口内字节的 ACK 确认，才会移动发送窗口的左边界。    </p>
 <p>下图是发送窗口的示意图：</p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/FCA43D210DF50C93E428DFD04FBBBF32.png" alt="tcps-send-wwindows.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/FCA43D210DF50C93E428DFD04FBBBF32.png" alt="tcps-send-wwindows.png"></p>
 <p>对于发送窗口，在缓存内的数据有四种状态：</p>
 <ul>
 <li>#1 已发送，并得到接收方 ACK 确认；</li>
@@ -307,11 +307,11 @@ ga('send', 'pageview');
 <li>#4 未发送，且接收方不允许发送，接收方没有空间</li>
 </ul>
 <p>如果下一刻，收到了接收方对于 32-36 字节序的数据包的 ACK 确认，那么发送方的窗口就会发生「滑动」。<br>并且发送下一个 46-51 字节序的数据包。    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/4C22A2B58DB2F0B885A0DC50057D2768.png" alt="tcps-send-wslide.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/4C22A2B58DB2F0B885A0DC50057D2768.png" alt="tcps-send-wslide.png"></p>
 <p>滑动窗口的概念，描述了 TCP 的数据是怎么发送，以及怎么接收的。<br>TCP 的滑动窗口是动态的，我们可以想象成小学常见的一个数学题，一个水池，体积 V，每小时进水量 V1, 出水量 V2。<br>当水池满了就不允许再注入了，如果有个液压系统控制水池大小，那么就可以控制水的注入速率和量了。<br>应用程序可以根据自身的处理能力变化，通过 API 来控制本端 TCP 接收窗口的大小，来进行流量控制。    </p>
 <h2 id="接收窗口"><a href="#接收窗口" class="headerlink" title="接收窗口"></a>接收窗口</h2><p>大小取决于应用、系统、硬件的限制。    </p>
 <p>下图是接收窗口的示意图（找不到图，唯有自己画了）：    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/F4B7AEDE41EE179676E79DEF2601D4A4.png" alt="tcps-receive-wwindows.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/F4B7AEDE41EE179676E79DEF2601D4A4.png" alt="tcps-receive-wwindows.png"></p>
 <p>相对于发送窗口，接受窗口在缓存内的数据只有三种状态：</p>
 <ul>
 <li>已接收已确认；</li>
@@ -319,9 +319,9 @@ ga('send', 'pageview');
 <li>未接收，并未准备接收；</li>
 </ul>
 <p>下一刻接收到来自发送端的 32-36 数据包，然后回送 ACK 确认报，并且移动接收窗口。    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/95A36446FAD21CC3DD086FA683942FFA.png" alt="tcps-receive-wslide.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/95A36446FAD21CC3DD086FA683942FFA.png" alt="tcps-receive-wslide.png"></p>
 <p>另外接收端相对于发送端还有不同的一点，只有前面所有的段都确认的情况下才会移动左边界，<br>在前面还有字节未接收但收到后面字节的情况下，窗口不会移动，并不对后续字节确认，以此确保对端会对这些数据重传。<br>假如 32-36 字节不是一个报文段的，而是每个字节一个报文段的话，那么就会分成了 5 个报文段。<br>在实际的网络环境中，不能确保是按序收到的，其中会有一些早达到，一些迟到达。    </p>
-<p><img src="http://om6ayrafu.bkt.clouddn.com/post/understand-tcp-udp/686E3FC14C2DEF657C61ECBC16C9C954.png" alt="tcps-receive-disorder.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/686E3FC14C2DEF657C61ECBC16C9C954.png" alt="tcps-receive-disorder.png"></p>
 <p>如图中的 34、35 字节序，先收到了，接收窗口也不会移动。<br>因为有可能 32、33 字节序会出现丢包或者超时，这时就需要发送端重发报文段了。    </p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.tcpipguide.com/free/t_TCPSlidingWindowAcknowledgmentSystemForDataTranspo.htm" target="_blank" rel="external">The TCP/IP Guide</a><br><a href="http://coolshell.cn/articles/11609.html" target="_blank" rel="external">TCP 的那些事儿（下）</a><br><a href="https://book.douban.com/subject/26850616/" target="_blank" rel="external">《后台开发 核心技术与应用实践》</a><br><a href="https://book.douban.com/subject/2970300/" target="_blank" rel="external">《计算机网络》</a>    </p>
 
@@ -386,7 +386,7 @@ ga('send', 'pageview');
   <span id="cover" class="cover hide"></span>
   <div id="modal-dialog" class="modal-dialog hide-dialog">
     <div class="modal-header">
-      <span id="close" class="btn-close">Close</span>
+      <span id="close" class="btn-close">关闭</span>
     </div>
     <hr>
     <div class="modal-body">

@@ -29,13 +29,13 @@ tags:
 
 我们经常称这个过程为渲染（rendering），你可以想象这个过程是从数据模型到用户界面的一个映射。当你把数据渲染成一个模板，你得到的是一个 DOM（或者说 HTML）。
 
-![onchange_base.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/15B722FCBCB7A5D72D240DC5B55F7DDE.svg)
+![onchange_base.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/15B722FCBCB7A5D72D240DC5B55F7DDE.svg)
 
 这个过程本身已经足够简单了，数据模型到用户界面之间的映射，并不总是那么的琐碎。它基本只是一个接受输入然后直接输出的函数。
 
 在我们需要考虑数据开始随着时间而变化的时候，这件事就变得更有挑战性了。当用户进行操作或者其它某些操作导致数据产生变化的时候，用户界面需要呈现出这些变化。而且，由于重新构建 DOM 树的代价是极其昂贵的，我们要尽可能产生小的影响。
 
-![onchange_change.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/1D6EF2506F41A57871712CBCAD1463F8.svg)
+![onchange_change.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/1D6EF2506F41A57871712CBCAD1463F8.svg)
 
 因为状态产生了变化，这比只是一次性渲染用户界面变得更加难。这就到了以下解决方案开始表演的时候了。
 
@@ -47,7 +47,7 @@ tags:
 
 在 JavaScript 新纪元之前，你的 Web 应用的任何交互都会触发一趟服务器的环绕旅行。每一个点击和每一个表单提交都会卸载当前页面，一个请求发送到服务器，服务器响应一个新的页面，然后浏览器重新渲染。
 
-![onchange_reload.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/onchange_reload.svg)
+![onchange_reload.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/onchange_reload.svg)
 
 这种方式不需要前端管理任何的状态（state）。就前端范畴而言，当一些事情发生了(后端返回的数据)，整个过程就结束了。就算有状态，那也只是后端的范畴。前端只是由 HTML 和 CSS 构成，也许有时候会有些 JavaScript 撒在表面调味。
 
@@ -65,7 +65,7 @@ tags:
 
 这些框架的体系能分离你的模型和界面代码，但同时也留下了一大部分同步的工作给你。你可以监听某类事件的发生，但是你有义务去计算如何重新渲染以及如何落实到用户界面中。
 
-![onchange_manual.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/onchange_manual.svg)
+![onchange_manual.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/onchange_manual.svg)
 
 基于这种模型，作为开发者，你需要考虑大量的性能问题。由于你能控制什么时候和怎么处理更新，你可以从中做任意的做一些调整。这经常会面临一些权衡：简单的处理导致大面积的页面更新，或者强性能的处理来更新一小块页面。
 
@@ -77,7 +77,7 @@ tags:
 
 Ember，像 Backbone 一样，当数据模型改变的时候会触发某个事件。不同之处在于 Ember 同时提供了一些方法来接收这些事件。你可以把 UI 绑定到数据模型中，这意味着有一个监听器绑定到了 UI 上。该监听器当收到事件的时候，知道如何更新 UI。
 
-![onchange_kvo.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/onchange_kvo.svg)
+![onchange_kvo.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/onchange_kvo.svg)
 
 这是一个高效率的机制。尽管设置全部的监听器需要在初始化时多出一些工作，但是之后就能保证同步状态时的最小影响。当状态产生变化时， 只有真正需要更新的部分才会发生改变。
 
@@ -97,7 +97,7 @@ AngularJS 类似于 Ember，当状态改变的时候，必须人工去处理。�
 
 
 
-![onchange_watch.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/onchange_watch.svg)
+![onchange_watch.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/onchange_watch.svg)
 
 
 
@@ -131,7 +131,7 @@ React 所做的是有效的把我们带回服务器渲染时代，当时我们�
 
 
 
-![onchange_vdom_initial.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/onchange_vdom_initial.svg)
+![onchange_vdom_initial.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/onchange_vdom_initial.svg)
 
 
 
@@ -139,7 +139,7 @@ React 所做的是有效的把我们带回服务器渲染时代，当时我们�
 
 
 
-![onchange_vdom_change.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/onchange_vdom_change.svg)
+![onchange_vdom_change.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/onchange_vdom_change.svg)
 
 
 
@@ -163,7 +163,7 @@ React 所做的是有效的把我们带回服务器渲染时代，当时我们�
 
 
 
-![onchange_immutable.svg](http://om6ayrafu.bkt.clouddn.com/post/change-and-its-detection-in-javascript-frameworks/onchange_immutable.svg)
+![onchange_immutable.svg](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/change-and-its-detection-in-javascript-frameworks/onchange_immutable.svg)
 
 
 
