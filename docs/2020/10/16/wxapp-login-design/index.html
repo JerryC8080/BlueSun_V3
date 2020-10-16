@@ -15,20 +15,22 @@
     <meta name="keywords" content="登录," />
   
 
-  <meta name="description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+  <meta name="description" content="[TOC]
+一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
 同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
 登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
 
-在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信小程序登录功能的设计与实现">
 <meta property="og:url" content="http://huang-jerryc.com/2020/10/16/wxapp-login-design/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+<meta property="og:description" content="[TOC]
+一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
 同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
 登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
 
-在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111059.jpg">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111042.jpg">
@@ -42,15 +44,17 @@
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111006.jpg">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113312.png">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113324.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016162606.png">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjqk8sm9dbj30v60fp0uc.jpg">
-<meta property="og:updated_time" content="2020-10-16T07:56:27.854Z">
+<meta property="og:updated_time" content="2020-10-16T08:29:02.421Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信小程序登录功能的设计与实现">
-<meta name="twitter:description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+<meta name="twitter:description" content="[TOC]
+一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
 同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
 登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
 
-在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之">
 <meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg">
 
   
@@ -250,7 +254,8 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
+      <p>[TOC]</p>
+<h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
 <p>同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。</p>
 <p>登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。</p>
 <p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg" alt=""></p>
@@ -453,6 +458,7 @@ ga('send', 'pageview');
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Page(&#123;</div><div class="line">  @mustAuth();</div><div class="line">  onLoad() &#123;</div><div class="line">    <span class="comment">// 开始初始化页面...</span></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  @mustAuth();</div><div class="line">  onClick(e) &#123;</div><div class="line">    <span class="comment">// 开始处理回调逻辑...</span></div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <h2 id="3-3-前后端交互协议整理"><a href="#3-3-前后端交互协议整理" class="headerlink" title="3.3. 前后端交互协议整理"></a>3.3. 前后端交互协议整理</h2><p>作为一套可复用的小程序登录方案，当然需要去定义好前后端的交互协议。</p>
 <p>那么整套登录流程下来，需要的接口有这么几个：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016162606.png" alt="登录注册前后端接口协议"></p>
 <ol>
 <li><p><strong>静默登录 silentLogin</strong></p>
 <ol>

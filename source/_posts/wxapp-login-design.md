@@ -6,6 +6,8 @@ tags:
 - 登录
 ---
 
+[TOC]
+
 # 一. 前言
 
 对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
@@ -744,8 +746,10 @@ Page({
 
 那么整套登录流程下来，需要的接口有这么几个：
 
+![登录注册前后端接口协议](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016162606.png)
+
 1. **静默登录 silentLogin**
-   
+  
    1. 入参：
       1. code: 产自 wx.login()
    2. 出参：
@@ -828,3 +832,4 @@ Page({
    1. [小程序解密手机号,隔一小段时间后,checksession:ok,但是解密失败](https://developers.weixin.qq.com/community/develop/doc/000424005b89983f337a622c751000?highLine=wx.checkSession)
    2. [wx.checkSession有效，但是解密数据失败](https://developers.weixin.qq.com/community/develop/doc/0008e429bd0c886e10699f59c51000?_at=1602745291452)
    3. [checkSession判断session_key未失效，但是解密手机号失败](https://developers.weixin.qq.com/community/develop/doc/000a04ab4546d80d5428ffcee51800?_at=1602745291452)
+

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://huang-jerryc.com/"/>
-  <updated>2020-10-16T07:56:27.854Z</updated>
+  <updated>2020-10-16T08:29:02.421Z</updated>
   <id>http://huang-jerryc.com/</id>
   
   <author>
@@ -20,9 +20,10 @@
     <link href="http://huang-jerryc.com/2020/10/16/wxapp-login-design/"/>
     <id>http://huang-jerryc.com/2020/10/16/wxapp-login-design/</id>
     <published>2020-10-16T14:22:25.000Z</published>
-    <updated>2020-10-16T07:56:27.854Z</updated>
+    <updated>2020-10-16T08:29:02.421Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
+    <content type="html"><![CDATA[<p>[TOC]</p>
+<h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
 <p>同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。</p>
 <p>登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。</p>
 <p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg" alt=""></p>
@@ -225,6 +226,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Page(&#123;</div><div class="line">  @mustAuth();</div><div class="line">  onLoad() &#123;</div><div class="line">    <span class="comment">// 开始初始化页面...</span></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  @mustAuth();</div><div class="line">  onClick(e) &#123;</div><div class="line">    <span class="comment">// 开始处理回调逻辑...</span></div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <h2 id="3-3-前后端交互协议整理"><a href="#3-3-前后端交互协议整理" class="headerlink" title="3.3. 前后端交互协议整理"></a>3.3. 前后端交互协议整理</h2><p>作为一套可复用的小程序登录方案，当然需要去定义好前后端的交互协议。</p>
 <p>那么整套登录流程下来，需要的接口有这么几个：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016162606.png" alt="登录注册前后端接口协议"></p>
 <ol>
 <li><p><strong>静默登录 silentLogin</strong></p>
 <ol>
@@ -332,7 +334,8 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;一-前言&quot;&gt;&lt;a href=&quot;#一-前言&quot; class=&quot;headerlink&quot; title=&quot;一. 前言&quot;&gt;&lt;/a&gt;一. 前言&lt;/h1&gt;&lt;p&gt;对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。&lt;/p&gt;
+      &lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&quot;一-前言&quot;&gt;&lt;a href=&quot;#一-前言&quot; class=&quot;headerlink&quot; title=&quot;一. 前言&quot;&gt;&lt;/a&gt;一. 前言&lt;/h1&gt;&lt;p&gt;对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免
     
     </summary>
     
