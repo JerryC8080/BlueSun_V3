@@ -360,8 +360,6 @@ class Session {
 }
 ```
 
-
-
 ### 3.1.4 微信 session_key 过期的容错处理
 
 我们从上面的「静默登录」之后，微信服务器端会下发一个`session_key`给后端，而这个会在需要获取[微信开放数据](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html)的时候会用到。
@@ -436,7 +434,7 @@ fly.interceptors.response.use(
     (response) => {
       const code = res.data;
         
-			// 登录态过期或失效
+      // 登录态过期或失效
       if ( ['DECRYPT_WX_OPEN_DATA_FAIL'].includes(code)) {
 
         // 刷新登录态
@@ -657,7 +655,7 @@ class Session {
     const popupComp = curPage.selectComponent(`#${popupCompName}`);
 
     // 组件不存在或者显示指定页面，跳转到授权页面
-    if (!popupComp || mode === AuthDisplayMode.PAGE)
+    if (!popupComp || mode === AuthDisplayMode.PAGE) {
       const curRoute = curPage.route;
 
       // 跳转到授权页面，带上当前页面路由，授权完成之后，回到当前页面。
@@ -746,7 +744,8 @@ Page({
 
 那么整套登录流程下来，需要的接口有这么几个：
 
-1. **静默登录 slientLogin**
+1. **静默登录 silentLogin**
+   
    1. 入参：
       1. code: 产自 wx.login()
    2. 出参：
@@ -815,6 +814,10 @@ Page({
 然后，梳理了这套登录授权方案所依赖的后端接口，和给出最简单的参考协议。
 
 最后，站在「秉着沉淀一套通用的小程序登录方案和服务为目标」的角度，梳理了一下架构层面上的分层。
+
+1. 业务定制层
+2. 登录服务层
+3. 底层建设
 
 # 七. 参考
 
