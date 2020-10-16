@@ -3,8 +3,9 @@ title: 微信小程序登录功能的设计与实现
 category: 搬砖码农
 date: 2020-10-16 22:22:25
 tags: 
-- 登录
+- 登录 微信小程序
 ---
+
 
 # 一. 前言
 
@@ -168,7 +169,7 @@ tags:
 
 那么我们很容易会遇到 `app.onLaunch` 发起的「登录过程」在 `page.onLoad`的时候还没有完成，我们就无法正确去做一些依赖登录态的操作。
 
-针对这种情况，我们设计了一个状态机的工具：[status](http://retailwe.pages.oa.com/common-libs/status/index.html)
+针对这种情况，我们设计了一个状态机的工具：[status](http://beautywejs.com/#/remote/plugin-status?id=plugin-statusl)
 
 
 
@@ -179,7 +180,7 @@ tags:
 基于状态机，我们就可以编写这样的代码：
 
 ```javascript
-import { Status } from '@retailwe/common-libs-status';
+import { Status } from '@beautywe/plugin-status';
 
 // on app.js
 App({
