@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://huang-jerryc.com/"/>
-  <updated>2019-08-16T19:26:22.736Z</updated>
+  <updated>2020-10-16T06:45:24.736Z</updated>
   <id>http://huang-jerryc.com/</id>
   
   <author>
@@ -14,6 +14,328 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>微信小程序登录功能的设计与实现</title>
+    <link href="http://huang-jerryc.com/2020/10/16/wxapp-login-design/"/>
+    <id>http://huang-jerryc.com/2020/10/16/wxapp-login-design/</id>
+    <published>2020-10-16T14:22:25.000Z</published>
+    <updated>2020-10-16T06:45:24.736Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
+<p>同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。</p>
+<p>登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg" alt=""></p>
+<p>在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来的一些设计经验和想法。</p>
+<h1 id="二-业务场景"><a href="#二-业务场景" class="headerlink" title="二. 业务场景"></a>二. 业务场景</h1><p>在用户浏览小程序的过程中，由业务需要，往往需要获取用户的一些基本信息，常见的有：</p>
+<ol>
+<li>微信昵称</li>
+<li>微信手机号</li>
+</ol>
+<p>而不同的产品，对于用户的信息要求不尽相同，也会有不一样的授权流程。</p>
+<p>第一种，常见于电商系统中，用户购买商品的时候，为了识别用户多平台的账号，往往用手机号去做一个联系，这时候需要用户去授权手机号。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111059.jpg" alt="授权手机号"></p>
+<p>第二种，为了让用户信息得到基本的初始化，往往需要更进一步获取用户信息：如微信昵称，<code>unionId</code> 等，就需要询问用户授权。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111042.jpg" alt="授权用户信息"></p>
+<p>第三种，囊括第一种，第二种。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111006.jpg" alt="完整授权流程"></p>
+<h1 id="三-概念"><a href="#三-概念" class="headerlink" title="三. 概念"></a>三. 概念</h1><p>秉着沉淀一套通用的小程序登录方案和服务为目标，我们去分析一下业务，得出变量。</p>
+<p>在做技术设计之前，讲点必要的废话，对一些概念进行基本调频。</p>
+<h2 id="2-1-关于「登录」"><a href="#2-1-关于「登录」" class="headerlink" title="2.1 关于「登录」"></a>2.1 关于「登录」</h2><p>登录在英文中是 「login」，对应的还有 「logout」。而登录之前，你需要拥有一个账号，就要 「register」（or sign up）。</p>
+<p>话说一开始的产品是没有登录/注册功能的，用的人多了就慢慢有了。出于产品本身的需求，需要对「用户」进行身份识别。</p>
+<p>在现实社会中，我们每个人都有一个身份ID：身份证。当我到了16岁的时候，第一次去公安局领身份证的时候，就完成了一次「注册」行为。然后我去网吧上网，身份证刷一下，完成了一次「登录」行为。</p>
+<p>那么对于虚拟世界的互联网来说，这个身份证明就是「账号+密码」。</p>
+<p>常见的登录/注册方式有：</p>
+<ol>
+<li><p><strong>账号密码注册</strong></p>
+<p> 在互联网的早期，个人邮箱和手机覆盖度小。所以，就需要用户自己想一个账号名，我们注册个QQ号，就是这种形式。</p>
+<p> <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105159.png" alt="from 汽车之家">    </p>
+</li>
+<li><p><strong>邮箱地址注册</strong></p>
+<p> 千禧年之后，PC互联网时代快速普及，我们都创建了属于自己的个人邮箱。加上QQ也自带邮箱账号。由于邮箱具有个人私密性，且能够进行信息的沟通，因此，大部分网站开始采用邮箱账号作为用户名来进行注册，并且会在注册的过程中要求登录到相应邮箱内查收激活邮件，验证我们对该注册邮箱的所有权。</p>
+<p> <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105005.png" alt="from 支付宝"></p>
+</li>
+<li><p><strong>手机号码注册</strong></p>
+<p> 在互联网普及之后，智能手机与移动互联网发展迅猛。手机也成为每个人必不可少的移动设备，同时移动互联网也已经深深融入每个人的现代生活当中。所以，相较于邮箱，目前手机号码与个人的联系更加紧密，而且越来越多的移动应用出现，采用手机号码作为用户名的注册方式也得到了广泛的使用。   </p>
+<p> <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105120.png" alt="from 知乎"></p>
+</li>
+</ol>
+<p>到了 2020 年，微信用户规模达 12 亿。那么，微信账号，起码在中国，已成为新一代互联网世界的「身份标识」。</p>
+<p>而对微信小程序而言，天然就能知道当前用户的微信账号ID。微信允许小程序应用，能在用户无感知的情况下，悄无声息的「登录」到我们的小程序应用中去，这个就是我们经常称之为的「静默登录」。</p>
+<p>其实微信小程序的登录，跟传统 Web 应用的「单点登录」本质是一样的概念。</p>
+<ol>
+<li>单点登录：在 A 站登录了，C 站和 B 站能实现快速的「静默登录」。</li>
+<li>微信小程序登录：在微信中，登录了微信账号，那么在整个小程序生态中，都可以实现「静默登录」。</li>
+</ol>
+<p>由于 Http 本来是无状态的，业界基本对于登录态的一般做法：</p>
+<ol>
+<li>cookie-session：常用于浏览器应用中</li>
+<li>access token：常用于移动端等非浏览器应用</li>
+</ol>
+<p>在微信小程序来说，对于「JS逻辑层」并不是一个浏览器环境，自然没有 <code>Cookie</code>，那么通常会使用 <code>access token</code> 的方式。</p>
+<h2 id="2-2-关于「授权」"><a href="#2-2-关于「授权」" class="headerlink" title="2.2 关于「授权」"></a>2.2 关于「授权」</h2><p>对于需要更进一步获取用的用户昵称、用户手机号等信息的产品来说。微信出于用户隐私的考虑，需要用户主动同意授权。小程序应用才能获取到这部分信息，这就有了目前流行的小程序「授权用户信息」、「授权手机号」的交互了。</p>
+<p>出于不同的用户信息敏感度不同的考虑，微信小程序对于不同的用户信息提供「授权」的方式不尽相同：</p>
+<ol>
+<li>调用具体 API 方式，弹窗授权。<ol>
+<li>例如调用 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/location/wx.getLocation.html" target="_blank" rel="external"><code>wx.getLocation()</code></a> 的时候，如果用户未授权，则会弹出地址授权界面。</li>
+<li>如果拒绝了，就不会再次弹窗，<code>wx.getLocation()</code>直接返回失败。</li>
+</ol>
+</li>
+<li><code>&lt;button open-type=&quot;xxx&quot; /&gt;</code> 方式。<ol>
+<li>仅支持：用户敏感信息，用户手机号，需要配合后端进行对称加解密，方能拿到数据。</li>
+<li>用户已拒绝，再次点击按钮，仍然会弹窗。</li>
+</ol>
+</li>
+<li>通过 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/authorize/wx.authorize.html" target="_blank" rel="external"><code>wx.authorize()</code></a>，提前询问授权，之后需要获取相关信息的时候不用再次弹出授权。</li>
+</ol>
+<h1 id="四-详细设计"><a href="#四-详细设计" class="headerlink" title="四. 详细设计"></a>四. 详细设计</h1><p>梳理清楚了概念之后，我们模块的划分上，可以拆分为两大块：</p>
+<ol>
+<li><strong>登录</strong>：负责与服务端创建起一个会话，这个会话实现静默登录以及相关的容错处理等，模块命名为：<code>Session</code></li>
+<li><strong>授权</strong>：负责与用户交互，获取与更新信息，以及权限的控制处理等，模块命名为：<code>Auth</code></li>
+</ol>
+<h2 id="3-1-登录的实现"><a href="#3-1-登录的实现" class="headerlink" title="3.1 登录的实现"></a>3.1 登录的实现</h2><h3 id="3-1-1-静默登录"><a href="#3-1-1-静默登录" class="headerlink" title="3.1.1 静默登录"></a>3.1.1 静默登录</h3><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111135.png" alt="微信登录"></p>
+<p>微信官方提供的登录方案，总结为三步：</p>
+<ol>
+<li>前端通过<code>wx.login()</code> 获取一次性加密凭证 code，交给后端。</li>
+<li>后端把这个 code 传输给微信服务器端，换取用户唯一标识<code>openId</code>和授权凭证<code>session_key</code>。（用于后续服务器端和微信服务器的特殊 API 调用，具体看：<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html" target="_blank" rel="external">微信官方文档-服务端获取开放数据</a>）。</li>
+<li>后端把从微信服务器获取到的用户凭证与自行生成的登录态凭证（token），传输给前端。前端保存起来，下次请求的时候带给后端，就能识别哪个用户。</li>
+</ol>
+<p>如果只是实现这个流程的话，挺简单的。</p>
+<p>但要实现一个健壮的登录过程，还需要注意更多的边界情况：</p>
+<ol>
+<li><p><strong>收拢<code>wx.login()</code>的调用</strong>：</p>
+<p> 由于 <code>wx.login()</code> 会产生不可预测的副作用，例如会可能导致<code>session_key</code>失效，从而导致后续的授权解密场景中的失败。我们这里可以提供一个像<code>session.login()</code>的方法，掌握<code>wx.login()</code>控制权，对其做一系列的封装和容错处理。</p>
+</li>
+<li><p><strong>调用的时机</strong>：</p>
+<p> 通常我们会在应用启动的时候（ <code>app.onLaunch()</code> ），去发起静默登录。但这里会由小程序生命周期设计问题而导致的一个异步问题：加载页面的时候，去调用一个需要登录态的后端 API 的时候，前面异步的静态登录过程有可能还没有完成，从而导致请求失败。</p>
+<p> 当然也可以在第一个需要登录态的接口调用的时候以异步阻塞的方式发起登录调用，这个需要结合良好设计的接口层。</p>
+<p> 以上讲到的两种场景的详细设计思路下文会讲到。</p>
+</li>
+<li><p><strong>并发调用的问题</strong>：</p>
+<p> 在业务场景中，难免会出现多处代码需要触发登录，如果遇到极端情况，这多处代码同时间发起调用。那就会造成短时间多次发起登录过程，尽管之前的请求还没有完成。针对这种情况，我们可以以第一个调用为阻塞，后续调用等待结果，就像精子和卵子结合的过程。</p>
+</li>
+<li><p><strong>未过期调用的问题</strong>：</p>
+<p> 如果我们的登录态未过期，完全可以正常使用的，默认情况就不需再去发起登录过程了。这时候我们可以默认情况下先去检查登录态是否可用，不能用，我们再发起请求。然后还可以提供一个类似 <code>session.login({ force: true })</code>的参数去强行发起登录。</p>
+</li>
+</ol>
+<h3 id="3-1-2-静默登录异步状态的处理"><a href="#3-1-2-静默登录异步状态的处理" class="headerlink" title="3.1.2 静默登录异步状态的处理"></a>3.1.2 静默登录异步状态的处理</h3><p><strong>1. 应用启动的时候调用</strong></p>
+<p>因为大部分情况都需要依赖登录态，我们会很自然而然的想到把这个调用的时机放到应用启动的时候（<code>app.onLaunch()</code>）来调用。</p>
+<p>但是由于原生的小程序启动流程中， <code>App</code>，<code>Page</code>，<code>Component</code> 的生命周期钩子函数，都不支持异步阻塞。</p>
+<p>那么我们很容易会遇到 <code>app.onLaunch</code> 发起的「登录过程」在 <code>page.onLoad</code>的时候还没有完成，我们就无法正确去做一些依赖登录态的操作。</p>
+<p>针对这种情况，我们设计了一个状态机的工具：<a href="http://retailwe.pages.oa.com/common-libs/status/index.html" target="_blank" rel="external">status</a></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016110706.png" alt="状态机"></p>
+<p>基于状态机，我们就可以编写这样的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; Status &#125; <span class="keyword">from</span> <span class="string">'@retailwe/common-libs-status'</span>;</div><div class="line"></div><div class="line"><span class="comment">// on app.js</span></div><div class="line">App(&#123;</div><div class="line">    <span class="attr">status</span>: &#123;</div><div class="line">       <span class="attr">login</span>: <span class="keyword">new</span> Status(<span class="string">'login'</span>);</div><div class="line">    &#125;,</div><div class="line"></div><div class="line">    onLaunch() &#123;</div><div class="line">        session</div><div class="line">            <span class="comment">// 发起静默登录调用</span></div><div class="line">            .login()</div><div class="line"></div><div class="line">            <span class="comment">// 把状态机设置为 success</span></div><div class="line">            .then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.status.login.success())</div><div class="line">      </div><div class="line">            <span class="comment">// 把状态机设置为 fail</span></div><div class="line">            .catch(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.status.login.fail());</div><div class="line">    &#125;,</div><div class="line">&#125;);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// on page.js</span></div><div class="line">Page(&#123;</div><div class="line">    onLoad() &#123;</div><div class="line">      <span class="keyword">const</span> loginStatus = getApp().status.login;</div><div class="line">      </div><div class="line">      <span class="comment">// must 里面会进行状态的判断，例如登录中就等待，登录成功就直接返回，登录失败抛出等。</span></div><div class="line">      loginStatus().status.login.must(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="comment">// 进行一些需要登录态的操作...</span></div><div class="line">      &#125;);</div><div class="line">    &#125;,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>2. 在「第一个需要登录态接口」被调用的时候去发起登录</strong></p>
+<p>更进一步，我们会发现，需要登录态的更深层次的节点是在发起的「需要登录态的后端 API 」的时候。</p>
+<p>那么我们可以在调用「需要登录态的后端 API」的时候再去发起「静默登录」，对于并发的场景，让其他请求等待一下就好了。</p>
+<p>以 <a href="https://wendux.github.io/dist/#/doc/flyio/readme" target="_blank" rel="external">fly.js</a> 作为 <code>wx.request()</code> 封装的「网络请求层」，做一个简单的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 发起请求，并表明该请求是需要登录态的</span></div><div class="line">fly.post(<span class="string">'https://...'</span>, params, &#123; <span class="attr">needLogin</span>: <span class="literal">true</span> &#125;);</div><div class="line"></div><div class="line"><span class="comment">// 在 fly 拦截器中处理逻辑</span></div><div class="line">fly.interceptors.request.use(<span class="keyword">async</span> (req)=&gt;&#123;</div><div class="line"></div><div class="line">  <span class="comment">// 在请求需要登录态的时候</span></div><div class="line">  <span class="keyword">if</span> (req.needLogin !== <span class="literal">false</span>) &#123;</div><div class="line"></div><div class="line">    <span class="comment">// ensureLogin 核心逻辑是：判断是否已登录，如否发起登录调用，如果正在登录，则进入队列等待回调。</span></div><div class="line">    <span class="keyword">await</span> session.ensureLogin();</div><div class="line">    </div><div class="line">    <span class="comment">// 登录成功后，获取 token，通过 headers 传递给后端。</span></div><div class="line">    <span class="keyword">const</span> token = <span class="keyword">await</span> session.getToken();</div><div class="line">    <span class="built_in">Object</span>.assign(req.headers, &#123; [AUTH_KEY_NAME]: token &#125;);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="keyword">return</span> req;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="3-1-3-自定义登录态过期的容错处理"><a href="#3-1-3-自定义登录态过期的容错处理" class="headerlink" title="3.1.3 自定义登录态过期的容错处理"></a>3.1.3 自定义登录态过期的容错处理</h3><p>当自定义登录态过期的时候，后端需要返回特定的状态码，例如：<code>AUTH_EXPIRED</code> 、 <code>AUTH_INVALID</code>等。</p>
+<p>前端可以在「网络请求层」去监听所有请求的这个状态码，然后发起刷新登录态，再去重放失败的请求：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 添加响应拦截器</span></div><div class="line">fly.interceptors.response.use(</div><div class="line">    <span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> code = res.data;</div><div class="line">        </div><div class="line">      <span class="comment">// 登录态过期或失效</span></div><div class="line">      <span class="keyword">if</span> ( [<span class="string">'AUTH_EXPIRED'</span>, <span class="string">'AUTH_INVALID'</span>].includes(code) ) &#123;</div><div class="line">      </div><div class="line">        <span class="comment">// 刷新登录态</span></div><div class="line">        <span class="keyword">await</span> session.refreshLogin();</div><div class="line">        </div><div class="line">        <span class="comment">// 然后重新发起请求</span></div><div class="line">        <span class="keyword">return</span> fly.request(request);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>那么如果并发的发起多个请求，都返回了登录态失效的状态码，上述代码就会被执行多次。</p>
+<p>我们需要对 <code>session.refreshLogin()</code> 做一些特殊的容错处理：</p>
+<ol>
+<li><strong>请求锁</strong>：同一时间，只允许一个正在过程中的网络请求。</li>
+<li><strong>等待队列</strong>：请求被锁定之后，调用该方法的所有调用，都推入一个队列中，等待网络请求完成之后共用返回结果。</li>
+<li><strong>熔断机制</strong>：如果短时间内多次调用，则停止响应一段时间，类似于 TCP 慢启动。</li>
+</ol>
+<p>示例代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Session</span> </span>&#123;</div><div class="line">  <span class="comment">// ....</span></div><div class="line">  </div><div class="line">  <span class="comment">// 刷新登录保险丝，最多重复 3 次，然后熔断，5s 后恢复</span></div><div class="line">  refreshLoginFuseLine = REFRESH_LOGIN_FUSELINE_DEFAULT;</div><div class="line">  refreshLoginFuseLocked = <span class="literal">false</span>;</div><div class="line">  refreshLoginFuseRestoreTime = <span class="number">5000</span>;</div><div class="line"></div><div class="line">  <span class="comment">// 熔断控制</span></div><div class="line">  refreshLoginFuse(): <span class="built_in">Promise</span>&lt;<span class="keyword">void</span>&gt; &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginFuseLocked) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="string">'刷新登录-保险丝已熔断，请稍后'</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginFuseLine &gt; <span class="number">0</span>) &#123;</div><div class="line">      <span class="keyword">this</span>.refreshLoginFuseLine = <span class="keyword">this</span>.refreshLoginFuseLine - <span class="number">1</span>;</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">this</span>.refreshLoginFuseLocked = <span class="literal">true</span>;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">this</span>.refreshLoginFuseLocked = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">this</span>.refreshLoginFuseLine = REFRESH_LOGIN_FUSELINE_DEFAULT;</div><div class="line">        logger.info(<span class="string">'刷新登录-保险丝熔断解除'</span>);</div><div class="line">      &#125;, <span class="keyword">this</span>.refreshLoginFuseRestoreTime);</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="string">'刷新登录-保险丝熔断!!'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 并发回调队列</span></div><div class="line">  refreshLoginQueueMaxLength = <span class="number">100</span>;</div><div class="line">  refreshLoginQueue: any[] = [];</div><div class="line">  refreshLoginLocked = <span class="literal">false</span>;</div><div class="line"></div><div class="line">  <span class="comment">// 刷新登录态</span></div><div class="line">  refreshLogin(): <span class="built_in">Promise</span>&lt;<span class="keyword">void</span>&gt; &#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve()</div><div class="line">    </div><div class="line">      <span class="comment">// 回调队列 + 熔断 控制</span></div><div class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.refreshLoginFuse())</div><div class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginLocked) &#123;</div><div class="line">          <span class="keyword">const</span> maxLength = <span class="keyword">this</span>.refreshLoginQueueMaxLength;</div><div class="line">          <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginQueue.length &gt;= maxLength) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="string">`refreshLoginQueue 超出容量：<span class="subst">$&#123;maxLength&#125;</span>`</span>);</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">            <span class="keyword">this</span>.refreshLoginQueue.push([resolve, reject]);</div><div class="line">          &#125;);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">this</span>.refreshLoginLocked = <span class="literal">true</span>;</div><div class="line">      &#125;)</div><div class="line"></div><div class="line">      <span class="comment">// 通过前置控制之后，发起登录过程</span></div><div class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">this</span>.clearSession();</div><div class="line">        wx.showLoading(&#123; <span class="attr">title</span>: <span class="string">'刷新登录态中'</span>, <span class="attr">mask</span>: <span class="literal">true</span> &#125;);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.login()</div><div class="line">          .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">            wx.hideLoading();</div><div class="line">            wx.showToast(&#123; <span class="attr">icon</span>: <span class="string">'none'</span>, <span class="attr">title</span>: <span class="string">'登录成功'</span> &#125;);</div><div class="line">            <span class="keyword">this</span>.refreshLoginQueue.forEach(<span class="function">(<span class="params">[resolve]</span>) =&gt;</span> resolve());</div><div class="line">            <span class="keyword">this</span>.refreshLoginLocked = <span class="literal">false</span>;</div><div class="line">          &#125;)</div><div class="line">          .catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">            wx.hideLoading();</div><div class="line">            wx.showToast(&#123; <span class="attr">icon</span>: <span class="string">'none'</span>, <span class="attr">title</span>: <span class="string">'登录失败'</span> &#125;);</div><div class="line">            <span class="keyword">this</span>.refreshLoginQueue.forEach(<span class="function">(<span class="params">[, reject]</span>) =&gt;</span> reject());</div><div class="line">            <span class="keyword">this</span>.refreshLoginLocked = <span class="literal">false</span>;</div><div class="line">            <span class="keyword">throw</span> err;</div><div class="line">          &#125;);</div><div class="line">      &#125;);</div><div class="line"></div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-1-4-微信-session-key-过期的容错处理"><a href="#3-1-4-微信-session-key-过期的容错处理" class="headerlink" title="3.1.4 微信 session_key 过期的容错处理"></a>3.1.4 微信 session_key 过期的容错处理</h3><p>我们从上面的「静默登录」之后，微信服务器端会下发一个<code>session_key</code>给后端，而这个会在需要获取<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html" target="_blank" rel="external">微信开放数据</a>的时候会用到。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016110824.png" alt="微信开放数据"></p>
+<p>而 <code>session_key</code> 是有时效性的，以下摘自微信官方描述：</p>
+<blockquote>
+<h4 id="会话密钥-session-key-有效性"><a href="#会话密钥-session-key-有效性" class="headerlink" title="会话密钥 session_key 有效性"></a>会话密钥 session_key 有效性</h4><p>开发者如果遇到因为 session_key 不正确而校验签名失败或解密失败，请关注下面几个与 session_key 有关的注意事项。</p>
+<ol>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html" target="_blank" rel="external">wx.login</a> 调用时，用户的 session_key <strong>可能</strong>会被更新而致使旧 session_key 失效（刷新机制存在最短周期，如果同一个用户短时间内多次调用 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html" target="_blank" rel="external">wx.login</a>，并非每次调用都导致 session_key 刷新）。开发者应该在明确需要重新登录时才调用 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html" target="_blank" rel="external">wx.login</a>，及时通过 <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html" target="_blank" rel="external">auth.code2Session</a> 接口更新服务器存储的 session_key。</li>
+<li>微信不会把 session_key 的有效期告知开发者。我们会根据用户使用小程序的行为对 session_key 进行续期。用户越频繁使用小程序，session_key 有效期越长。</li>
+<li>开发者在 session_key 失效时，可以通过重新执行登录流程获取有效的 session_key。使用接口 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.checkSession.html" target="_blank" rel="external">wx.checkSession</a>可以校验 session_key 是否有效，从而避免小程序反复执行登录流程。</li>
+<li>当开发者在实现自定义登录态时，可以考虑以 session_key 有效期作为自身登录态有效期，也可以实现自定义的时效性策略。</li>
+</ol>
+</blockquote>
+<p>翻译成简单的两句话：</p>
+<ol>
+<li><code>session_key</code> 时效性由微信控制，开发者不可预测。</li>
+<li><code>wx.login</code>可能会导致<code>session_key</code>过期，可以在使用接口之前用<code>wx.checkSession</code>检查一下。</li>
+</ol>
+<p>而对于第二点，我们通过实验发现，偶发性的在 <code>session_key</code> 已过期的情况下，<code>wx.checkSession</code> 会概率性返回 <code>true</code></p>
+<p>社区也有相关的反馈未得到解决：</p>
+<ul>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000424005b89983f337a622c751000?highLine=wx.checkSession" target="_blank" rel="external">小程序解密手机号,隔一小段时间后,checksession:ok,但是解密失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/0008e429bd0c886e10699f59c51000?_at=1602745291452" target="_blank" rel="external">wx.checkSession有效，但是解密数据失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000a04ab4546d80d5428ffcee51800?_at=1602745291452" target="_blank" rel="external">checkSession判断session_key未失效，但是解密手机号失败</a></li>
+</ul>
+<p><strong>所以结论是：<code>wx.checkSession</code>可靠性是不达 100% 的。</strong></p>
+<p>基于以上，我们需要对 <code>session_key</code> 的过期做一些容错处理：</p>
+<ol>
+<li>发起需要使用 <code>session_key</code> 的请求前，做一次 <code>wx.checkSession</code> 操作，如果失败了刷新登录态。</li>
+<li>后端使用<code>session_key</code>解密开放数据失败之后，返回特定错误码（如：<code>DECRYPT_WX_OPEN_DATA_FAIL</code>），前端刷新登录态。</li>
+</ol>
+<p>示例代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 定义检查 session_key 有效性的操作</span></div><div class="line"><span class="keyword">const</span> ensureSessionKey = <span class="keyword">async</span> () =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> hasSession = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</div><div class="line">    wx.checkSession(&#123;</div><div class="line">      <span class="attr">success</span>: <span class="function"><span class="params">()</span> =&gt;</span> resolve(<span class="literal">true</span>),</div><div class="line">      <span class="attr">fail</span>: <span class="function"><span class="params">()</span> =&gt;</span> resolve(<span class="literal">false</span>),</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">  </div><div class="line">  <span class="keyword">if</span> (!hasSession) &#123;</div><div class="line">    logger.info(<span class="string">'sessionKey 已过期，刷新登录态'</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 接上面提到的刷新登录逻辑</span></div><div class="line">    <span class="keyword">return</span> session.refreshLogin();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在发起请求的时候，先做一次确保 session_key 最新的操作（以 fly.js 作为网络请求层为例）</span></div><div class="line"><span class="keyword">const</span> updatePhone = <span class="keyword">async</span> (params) =&gt; &#123;</div><div class="line">  <span class="keyword">await</span> ensureSessionKey();</div><div class="line">  <span class="keyword">const</span> res = <span class="keyword">await</span> fly.post(<span class="string">'https://xxx'</span>, params);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 添加响应拦截器, 监听网络请求返回</span></div><div class="line">fly.interceptors.response.use(</div><div class="line">    <span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> code = res.data;</div><div class="line">        </div><div class="line">			<span class="comment">// 登录态过期或失效</span></div><div class="line">      <span class="keyword">if</span> ( [<span class="string">'DECRYPT_WX_OPEN_DATA_FAIL'</span>].includes(code)) &#123;</div><div class="line"></div><div class="line">        <span class="comment">// 刷新登录态</span></div><div class="line">        <span class="keyword">await</span> session.refreshLogin();</div><div class="line">        </div><div class="line">        <span class="comment">// 由于加密场景的加密数据由用户点击产生，session_key 可能已经更改，需要用户重新点击一遍。</span></div><div class="line">        wx.showToast(&#123; <span class="attr">title</span>: <span class="string">'网络出小差了，请稍后重试'</span>, <span class="attr">icon</span>: <span class="string">'none'</span> &#125;);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+<h2 id="3-2-授权的实现"><a href="#3-2-授权的实现" class="headerlink" title="3.2 授权的实现"></a>3.2 授权的实现</h2><h3 id="3-2-1-组件拆分与设计"><a href="#3-2-1-组件拆分与设计" class="headerlink" title="3.2.1 组件拆分与设计"></a>3.2.1 组件拆分与设计</h3><p>在用户信息和手机号获取的方式上，微信是以 <code>&lt;button open-type=&#39;xxx&#39; /&gt;</code> 的方式，让用户主动点击授权的。</p>
+<p>那么为了让代码更解耦，我们设计这样三个组件：</p>
+<ol>
+<li><code>&lt;user-contaienr getUserInfo=&quot;onUserInfoAuth&quot;&gt;</code>: 包装点击交互，通过 <code>&lt;slot&gt;</code> 支持点击区域的自定义UI。</li>
+<li><code>&lt;phone-container getPhonenNmber=&quot;onPhoneAuth&quot;&gt;</code> : 与 <code>&lt;user-container&gt;</code> 同理。</li>
+<li><code>&lt;auth-flow&gt;</code>: 根据业务需要，组合 <code>&lt;user-container&gt;</code>、<code>&lt;phone-container&gt;</code> 组合来定义不同的授权流程。</li>
+</ol>
+<p>以开头的业务场景的流程为例，它有这样的要求：</p>
+<ol>
+<li>有多个步骤。</li>
+<li>如果中途断掉了，可以从中间接上。</li>
+<li>有些场景中，只要求达到「用户信息授权」，而不需要完成「用户手机号」。</li>
+</ol>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111006.jpg" alt="完整授权流程"></p>
+<p>那么授权的阶段可以分三层：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 用户登录的阶段</span></div><div class="line"><span class="keyword">export</span> enum AuthStep &#123;</div><div class="line">  <span class="comment">// 阶段一：只有登录态，没有用户信息，没有手机号</span></div><div class="line">  ONE = <span class="number">1</span>,</div><div class="line"></div><div class="line">  <span class="comment">// 阶段二：有用户信息，没有手机号</span></div><div class="line">  TWO = <span class="number">2</span>,</div><div class="line"></div><div class="line">  <span class="comment">// 阶段三：有用户信息，有手机号</span></div><div class="line">  THREE = <span class="number">3</span>,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>AuthStep</code> 的推进过程是不可逆的，我们可以定义一个 <code>nextStep</code> 函数来封装 AuthStep 更新的逻辑。外部使用的话，只要无脑调用 <code>nextStep</code>方法，等待回调结果就行。</p>
+<p>示例伪代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// auth-flow component</span></div><div class="line"></div><div class="line">Component(&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  </div><div class="line">  data: &#123;</div><div class="line">    <span class="comment">// 默认情况下，只需要到达阶段二。</span></div><div class="line">    mustAuthStep: AuthStep.TWO</div><div class="line">  &#125;,</div><div class="line">  </div><div class="line">  <span class="comment">// 允许临时更改组件的需要达到的阶段。</span></div><div class="line">  setMustAuthStep(mustAuthStep: AuthStep) &#123;</div><div class="line">    <span class="keyword">this</span>.setData(&#123; mustAuthStep &#125;);</div><div class="line">  &#125;,</div><div class="line">  </div><div class="line">  <span class="comment">// 根据用户当前的信息，计算用户处在授权的阶段</span></div><div class="line">  getAuthStep() &#123;</div><div class="line">    <span class="keyword">let</span> currAuthStep;</div><div class="line">    </div><div class="line">    <span class="comment">// 没有用户信息，尚在第一步</span></div><div class="line">    <span class="keyword">if</span> (!session.hasUser() || !session.hasUnionId()) &#123;</div><div class="line">      currAuthStep = AuthStepType.ONE;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 没有手机号，尚在第二步</span></div><div class="line">    <span class="keyword">if</span> (!session.hasPhone()) &#123;</div><div class="line">      currAuthStep = AuthStepType.TWO;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 都有，尚在第三步</span></div><div class="line">    currAuthStep = AuthStepType.THREE;</div><div class="line">    <span class="keyword">return</span> currAuthStep;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// 发起下一步授权，如果都已经完成，就直接返回成功。</span></div><div class="line">  nextStep(e) &#123;</div><div class="line">    <span class="keyword">const</span> &#123; mustAuthStep &#125; = <span class="keyword">this</span>.data;</div><div class="line">    <span class="keyword">const</span> currAuthStep = <span class="keyword">this</span>.updateAuthStep();</div><div class="line">  </div><div class="line">    <span class="comment">// 已完成授权</span></div><div class="line">    <span class="keyword">if</span> (currAuthStep &gt;= mustAuthStep || currAuthStep === AuthStepType.THREE) &#123;</div><div class="line">      <span class="comment">// 更新全局的授权状态机，广播消息给订阅者。</span></div><div class="line">      <span class="keyword">return</span> getApp().status.auth.success();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 第一步：更新用户信息</span></div><div class="line">    <span class="keyword">if</span> (currAuthStep === AuthStepType.ONE) &#123;</div><div class="line">      <span class="comment">// 已有密文信息，更新用户信息</span></div><div class="line">      <span class="keyword">if</span> (e) session.updateUser(e);</div><div class="line"></div><div class="line">      <span class="comment">// 更新到视图层，展示对应UI，等待获取用户信息</span></div><div class="line">      <span class="keyword">else</span> <span class="keyword">this</span>.setData(&#123; currAuthStep &#125;);</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 第二步：更新手机信息</span></div><div class="line">    <span class="keyword">if</span> (currAuthStep === AuthStepType.TWO) &#123;</div><div class="line">      <span class="comment">// 已有密文信息，更新手机号</span></div><div class="line">      <span class="keyword">if</span> (e) <span class="keyword">this</span>.bindPhone(e);</div><div class="line"></div><div class="line">      <span class="comment">// 未有密文信息，弹出获取窗口</span></div><div class="line">      <span class="keyword">else</span> <span class="keyword">this</span>.setData(&#123; currAuthStep &#125;);</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="built_in">console</span>.warn(<span class="string">'auth.nextStep 错误'</span>, &#123; currAuthStep, mustAuthStep &#125;);</div><div class="line">  &#125;,</div><div class="line">  </div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>那么我们的 <code>&lt;auth-flow&gt;</code> 中就可以根据 <code>currAuthStep</code>和 <code>mustAuthStep</code>来去做不同的 UI 展示。需要注意的是使用 <code>&lt;user-container&gt;</code>、<code>&lt;phone-container&gt;</code> 的时候连接上 <code>nextStep(e)</code> 函数。</p>
+<p>示例伪代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"auth-flow"</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- 已完成授权 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;currAuthStep === mustAuthStep || currAuthStep === AuthStep.THREE&#125;&#125;"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">view</span>&gt;</span>已完成授权<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">block</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- 未完成授权，第一步：授权用户信息 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:elif</span>=<span class="string">"&#123;&#123;currAuthStep === AuthStep.ONE&#125;&#125;"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">user-container</span> <span class="attr">bind:getuserinfo</span>=<span class="string">"nextStep"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">view</span>&gt;</span>授权用户信息<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">user-container</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">block</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- 未完成授权，第二步：授权手机号 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:elif</span>=<span class="string">"&#123;&#123;currAuthStep === AuthStep.TWO&#125;&#125;"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">phone-container</span> <span class="attr">bind:getphonenumber</span>=<span class="string">"nextStep"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">view</span>&gt;</span>授权手机号<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">phone-container</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">block</span>&gt;</span></div><div class="line">  </div><div class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="3-2-2-权限拦截的处理"><a href="#3-2-2-权限拦截的处理" class="headerlink" title="3.2.2 权限拦截的处理"></a>3.2.2 权限拦截的处理</h3><p>到这里，我们制作好了用来承载授权流程的组件 <code>&lt;auth-flow&gt;</code>，那么接下来就是决定要使用它的时机了。</p>
+<p>我们梳理需要授权的场景：</p>
+<ol>
+<li><p>点击某个按钮，例如：购买某个商品。</p>
+<p>对于这种场景，常见的是通过弹窗完成授权，用户可以选择关闭。</p>
+</li>
+</ol>
+<p>   <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113312.png" alt="授权模型-弹窗"></p>
+<ol>
+<li><p>浏览某个页面，例如：访问个人中心。</p>
+<p>对于这种场景，我们可以在点击跳转某个页面的时候，进行拦截，弹窗处理。但这样的缺点是，跳转到目标页面的地方可能会很多，每个都拦截，难免会错漏。而且当目标页面作为「小程序落地页面」的时候，就避免不了。</p>
+<p>这时候，我们可以通过重定向到授权页面来完成授权流程，完成之后，再回来。</p>
+</li>
+</ol>
+<p>   <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113324.png" alt="授权模型-页面"></p>
+<p>那么我们定义一个枚举变量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 授权的展示形式</span></div><div class="line"><span class="keyword">export</span> enum AuthDisplayMode &#123;</div><div class="line">  <span class="comment">// 以弹窗形式</span></div><div class="line">  POPUP = <span class="string">'button'</span>,</div><div class="line"></div><div class="line">  <span class="comment">// 以页面形式</span></div><div class="line">	PAGE = <span class="string">'page'</span>,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们可以设计一个 <code>mustAuth</code> 方法，在点击某个按钮，或者页面加载的时候，进行授权控制。</p>
+<p>伪代码示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Session</span> </span>&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  </div><div class="line">  mustAuth(&#123;</div><div class="line">    mustAuthStep = AuthStepType.TWO, <span class="comment">// 需要授权的LEVEL，默认需要获取用户资料</span></div><div class="line">    popupCompName = <span class="string">'auth-popup'</span>,	<span class="comment">// 授权弹窗组件的 id</span></div><div class="line">    mode = AuthDisplayMode.POPUP, <span class="comment">// 默认以弹窗模式</span></div><div class="line">  &#125; = &#123;&#125;): <span class="built_in">Promise</span>&lt;<span class="keyword">void</span>&gt; &#123;</div><div class="line">    </div><div class="line">    <span class="comment">// 如果当前的授权步骤已经达标，则返回成功</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.currentAuthStep() &gt;= mustAuthStep) <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</div><div class="line"></div><div class="line">    <span class="comment">// 尝试获取当前页面的 &lt;auth-popup id="auth-popup" /&gt; 组件实例</span></div><div class="line">    <span class="keyword">const</span> pages = getCurrentPages();</div><div class="line">    <span class="keyword">const</span> curPage = pages[pages.length - <span class="number">1</span>];</div><div class="line">    <span class="keyword">const</span> popupComp = curPage.selectComponent(<span class="string">`#<span class="subst">$&#123;popupCompName&#125;</span>`</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 组件不存在或者显示指定页面，跳转到授权页面</span></div><div class="line">    <span class="keyword">if</span> (!popupComp || mode === AuthDisplayMode.PAGE)</div><div class="line">      <span class="keyword">const</span> curRoute = curPage.route;</div><div class="line"></div><div class="line">      <span class="comment">// 跳转到授权页面，带上当前页面路由，授权完成之后，回到当前页面。</span></div><div class="line">      wx.redirectTo(&#123; <span class="attr">url</span>: <span class="string">`authPage?backTo=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(curRoute)&#125;</span>`</span> &#125;);</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">// 设置授权 LEVEL，然后调用 &lt;auth-popup&gt; 的 nextStep 方法，进行进一步的授权。</span></div><div class="line">    popupComp.setMustAuthStep(mustAuthStep);</div><div class="line">    popupComp.nextStep();</div><div class="line"></div><div class="line">    <span class="comment">// 等待成功回调或者失败回调</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> authStatus = getApp().status.auth;</div><div class="line">      authStatus.onceSuccess(resolve);</div><div class="line">      authStatus.onceFail(reject);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么我们就能在按钮点击，或者页面加载的时候进行授权拦截：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Page(&#123;</div><div class="line">  onLoad() &#123;</div><div class="line">    session.mustAuth().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="comment">// 开始初始化页面...</span></div><div class="line">    &#125;)；</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  onClick(e) &#123;</div><div class="line">    session.mustAuth().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="comment">// 开始处理回调逻辑...</span></div><div class="line">    &#125;)；</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>当然，如果项目使用了 TS 的话，或者支持 ES7 Decorator 特性的话，我们可以为 <code>mustAuth</code> 提供一个装饰器版本：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">mustAuth</span>(<span class="params">option = &#123;&#125;</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span></span></div><div class="line">    _target,</div><div class="line">    _propertyName,</div><div class="line">    descriptor,</div><div class="line">  ) &#123;</div><div class="line">    <span class="comment">// 劫持目标方法</span></div><div class="line">    <span class="keyword">const</span> method = descriptor.value;</div><div class="line">    </div><div class="line">    <span class="comment">// 重写目标方法</span></div><div class="line">    descriptor.value = <span class="function"><span class="keyword">function</span>(<span class="params">...args: any[]</span>) </span>&#123;</div><div class="line">      <span class="keyword">return</span> session.mustAuth(option).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="comment">// 登录完成之后，重放原来方法</span></div><div class="line">        <span class="keyword">if</span> (method) <span class="keyword">return</span> method.apply(<span class="keyword">this</span>, args);</div><div class="line">      &#125;);</div><div class="line">    &#125;;</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么使用方式就简单一些了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Page(&#123;</div><div class="line">  @mustAuth();</div><div class="line">  onLoad() &#123;</div><div class="line">    <span class="comment">// 开始初始化页面...</span></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  @mustAuth();</div><div class="line">  onClick(e) &#123;</div><div class="line">    <span class="comment">// 开始处理回调逻辑...</span></div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="3-3-前后端交互协议整理"><a href="#3-3-前后端交互协议整理" class="headerlink" title="3.3. 前后端交互协议整理"></a>3.3. 前后端交互协议整理</h2><p>作为一套可复用的小程序登录方案，当然需要去定义好前后端的交互协议。</p>
+<p>那么整套登录流程下来，需要的接口有这么几个：</p>
+<ol>
+<li><strong>静默登录 slientLogin</strong><ol>
+<li>入参：<ol>
+<li>code: 产自 wx.login()</li>
+</ol>
+</li>
+<li>出参：<ol>
+<li>token: 自定义登录态凭证</li>
+<li>userInfo: 用户信息</li>
+</ol>
+</li>
+<li>说明：<ol>
+<li>后端利用 code 跟微信客户端换取用户标识，然后注册并登录用户，返回自定义登录态 <code>token</code> 给前端</li>
+<li><code>token</code> 前端会存起来，每个请求都会带上</li>
+<li>userInfo 需要包含<code>nickname</code>和<code>phone</code>字段，前端用于计算当前用户的授权阶段。当然这个状态的记录可以放在后端，但是我们认为放在前端，会更加灵活。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>更新用户信息 updateUser</strong><ol>
+<li>入参：<ol>
+<li>nickname: 用户昵称</li>
+<li>encrypt: 微信开放数据相关的 <code>iv</code>, <code>encryptedData</code></li>
+<li>以及其他如性别地址等非必要字段</li>
+</ol>
+</li>
+<li>出参：<ol>
+<li>userInfo：更新后的最新用户信息</li>
+</ol>
+</li>
+<li>说明：<ol>
+<li>后端解密微信开放数据，获取隐蔽数据，如：<code>unionId</code>等</li>
+<li>后端支持更新包括 <code>nickname</code>等用户基本信息。</li>
+<li>前端会把 userInfo 信息更新到 <code>session</code> 中，用于计算授权阶段。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>更新用户手机号 updatePhone</strong><ol>
+<li>入参：<ol>
+<li>encrypt：微信开放数据相关的 <code>iv</code>, <code>encryptedData</code></li>
+</ol>
+</li>
+<li>出参：<ol>
+<li>userInfo：更新后的最新用户信息</li>
+</ol>
+</li>
+<li>说明：<ol>
+<li>后端解密开放式局，获取手机号，并更新到用户信息中。 </li>
+<li>前端会把 userInfo 信息更新到 <code>session</code> 中，用于计算授权阶段。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>解绑手机号 unbindPhone</strong><ol>
+<li>入参：-</li>
+<li>出参：-</li>
+<li>说明：后端解绑用户手机号，成功与否，走业务定义的前后端协议。</li>
+</ol>
+</li>
+<li><strong>登录 logout</strong><ol>
+<li>入参：-</li>
+<li>出参：-</li>
+<li>说明：后端主动过期登录态，成功与否，走业务定义的前后端协议。</li>
+</ol>
+</li>
+</ol>
+<h1 id="五-架构图"><a href="#五-架构图" class="headerlink" title="五. 架构图"></a>五. 架构图</h1><p>最后我们来梳理一下整体的「登录服务」的架构图：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjqk8sm9dbj30v60fp0uc.jpg" alt="微信小程序登录服务架构图"></p>
+<p>由「登录服务」和「底层建设」组合提供的通用服务，业务层只需要去根据产品需求，定制授权的流程<code>&lt;auth-flow&gt;</code>，就能满足大部分场景了。</p>
+<h1 id="六-总结"><a href="#六-总结" class="headerlink" title="六. 总结"></a>六. 总结</h1><p>本篇文章通过一些常见的登录授权场景来展开来描述细节点。</p>
+<p>整理了「登录」、「授权」的概念。</p>
+<p>然后分别针对「登录」介绍了一些关键的技术实现：</p>
+<ol>
+<li>静默登录</li>
+<li>静默登录异步状态的处理</li>
+<li>自定义登录态过期的容错处理</li>
+<li>微信<code>session_key</code>过期的容错处理</li>
+</ol>
+<p>而对于「授权」，会有设计UI部分的逻辑，还需要涉及到组件的拆分：</p>
+<ol>
+<li>组件拆分与设计</li>
+<li>权限拦截的处理</li>
+</ol>
+<p>然后，梳理了这套登录授权方案所依赖的后端接口，和给出最简单的参考协议。</p>
+<p>最后，站在「秉着沉淀一套通用的小程序登录方案和服务为目标」的角度，梳理了一下架构层面上的分层。</p>
+<h1 id="七-参考"><a href="#七-参考" class="headerlink" title="七. 参考"></a>七. 参考</h1><ol>
+<li><a href="https://wendux.github.io/dist/#/doc/flyio/readme" target="_blank" rel="external">fly.js 官网</a></li>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html" target="_blank" rel="external">微信官方文档-授权</a></li>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html" target="_blank" rel="external">微信官方文档-服务端获取开放数据</a></li>
+<li>微信官方社区<ol>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000424005b89983f337a622c751000?highLine=wx.checkSession" target="_blank" rel="external">小程序解密手机号,隔一小段时间后,checksession:ok,但是解密失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/0008e429bd0c886e10699f59c51000?_at=1602745291452" target="_blank" rel="external">wx.checkSession有效，但是解密数据失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000a04ab4546d80d5428ffcee51800?_at=1602745291452" target="_blank" rel="external">checkSession判断session_key未失效，但是解密手机号失败</a></li>
+</ol>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;一-前言&quot;&gt;&lt;a href=&quot;#一-前言&quot; class=&quot;headerlink&quot; title=&quot;一. 前言&quot;&gt;&lt;/a&gt;一. 前言&lt;/h1&gt;&lt;p&gt;对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="搬砖码农" scheme="http://huang-jerryc.com/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/"/>
+    
+    
+      <category term="登录" scheme="http://huang-jerryc.com/tags/%E7%99%BB%E5%BD%95/"/>
+    
+  </entry>
   
   <entry>
     <title>一个失眠夜的胡思乱想</title>
@@ -1935,121 +2257,6 @@
     
     
       <category term="tcp" scheme="http://huang-jerryc.com/tags/tcp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Gulp 基础与原理</title>
-    <link href="http://huang-jerryc.com/2017/02/28/gulp-base/"/>
-    <id>http://huang-jerryc.com/2017/02/28/gulp-base/</id>
-    <published>2017-02-28T05:49:00.000Z</published>
-    <updated>2017-02-28T05:49:57.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Gulp-概述"><a href="#Gulp-概述" class="headerlink" title="Gulp 概述"></a>Gulp 概述</h1><p>Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。</p>
-<p>它的核心原理其实很简单，最主要是通过各种 Transform Stream 来实现文件的处理，然后再进行输出。Transform Streams 是 NodeJS Stream 的一种，是可读又可写的，它会对传给它的对象做一些转换的操作。</p>
-<blockquote>
-<p>文件输入 →  Gulp 插件处理 → 文件输出</p>
-</blockquote>
-<p>原则上，gulp 可以针对文件做任何有趣、有创造力事情。<br>而自动化构建，只是大家主要比较喜欢使用的方向。</p>
-<p>Gulp 的特点：</p>
-<ul>
-<li><strong>自动化</strong> - Gulp 为你的工作流而服务，自动运行那些费事费力任务。</li>
-<li><strong>平台透明</strong> - Gulp 被集成到各种 IDE 中，并且除了 NodeJS 之外，其他如 PHP、.NET、Java 平台都可以使用 Gulp。</li>
-<li><strong>强大生态系统</strong> - 你可以使用 npm 上 2000+ 的插件来构造你的工作流。</li>
-<li><strong>简单</strong> - Gulp 只提供几个 API，这可以很快地学习和上手。</li>
-</ul>
-<h1 id="使用-Gulp"><a href="#使用-Gulp" class="headerlink" title="使用 Gulp"></a>使用 Gulp</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ npm install gulp-cli -g // 全局安装 Gulp 命令行工具</div><div class="line">$ npm install gulp -D // 在项目中，作为 devDependencies 依赖安装 gulp</div></pre></td></tr></table></figure>
-<h2 id="Gulpfile-js"><a href="#Gulpfile-js" class="headerlink" title="Gulpfile.js"></a>Gulpfile.js</h2><p>在使用 CLI 工具的时候，会执行该文件，它是一个可执行的 NodeJS 文件。原理上，你可以在里面运行任何 NodeJS 代码，然后通过调用 gulp 提供的 API，来执行 gulp 任务。<br><code>gulpfile.js</code>  文件一般都会放在项目的根目录中。</p>
-<p>一个使用 <strong><a href="https://www.npmjs.com/package/gulp-babel2/" target="_blank" rel="external">gulp-babel</a></strong> 插件来支持 es2015 语法的案例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">const gulp = require(&apos;gulp&apos;);</div><div class="line">const babel = require(&apos;gulp-babel&apos;);</div><div class="line"></div><div class="line">gulp.task(&apos;default&apos;, () =&gt; &#123;</div><div class="line">    gulp.src(&apos;src/app.js&apos;)</div><div class="line">        .pipe(babel(&#123;</div><div class="line">            presets: [&apos;es2015&apos;]</div><div class="line">        &#125;))</div><div class="line">        .pipe(gulp.dest(&apos;dist&apos;));</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<h1 id="基本概念与原理"><a href="#基本概念与原理" class="headerlink" title="基本概念与原理"></a>基本概念与原理</h1><p>了解这些概念，对于了解 Gulp 的工作原理，和 API 的使用是很有帮助的。</p>
-<h2 id="认识-Glob"><a href="#认识-Glob" class="headerlink" title="认识 Glob"></a>认识 Glob</h2><p>Glob 是一种用来匹配路径与文件的模式。有点类似于正则表达式，但是语法又有点差异。<br>这种模式，被广泛用于命令行、Shell 等场景，大家熟悉的 <code>.gitignore</code> 文件也是使用这种模式。</p>
-<p>各大语言都有对于 Glob 的实现，例如 Go 和 PHP 的 <code>Glob</code> 函数，Python 中的 <code>glob</code> 模块。<br>而 NodeJS 的实现是 <strong><a href="https://github.com/isaacs/minimatch" target="_blank" rel="external">minimatch</a></strong>, 而在 Gulp 源码中，就用了对 minimatch 进行封装的 <strong><a href="https://github.com/isaacs/node-glob" target="_blank" rel="external">node-glob</a></strong> 模块。<br>Gulp 的 API <code>gulp.watch</code> 和 <code>gulp.src</code> 都有用到 Glob 来匹配对应的路径和文件。<br>下面是部分语法：</p>
-<ul>
-<li><code>*</code><br>匹配该路径段中 0 个或多个任意字符，<br>如：<code>js/*.js</code>， 匹配 js 目录下的所有 js 文件</li>
-<li><code>?</code><br>匹配该路径段中 1 个任意字符，<br>如：<code>js/?.js</code>，匹配 js 目录下所有名字只有 1 个字的 js</li>
-<li><p><code>[...]</code><br>匹配该路径段中在指定范围内字符，<br>如：<code>js/a[0-3].js</code>，匹配 js 目录下 a 开头,第二个字符为 0-3 之间（ 包括0和3 ）的 js（ a03.js不能被匹配到 ）</p>
-</li>
-<li><p><code>!(pattern|pattern|pattern)</code><br>匹配除所给出的模型以外的情况，<br>如：<code>js/!(a|b).js</code>，匹配 js 目录下名字中不包含 a ,也不包含 b 的所有文件.</p>
-</li>
-<li><p><code>?(pattern|pattern|pattern)</code><br>匹配所给出的模型中的 0 个或任意 1 个，<br>如：<code>js/?(a|a2|b).js</code>, 匹配 js 目录下 a.js , a2.js , b.js</p>
-</li>
-<li><p><code>+(pattern|pattern|pattern)</code><br>匹配所给出的模型中的 1 个或者多个，<br>如：<code>js/+(a|a1|b).js</code>, 匹配 js 目录下 a.js , a1.js , b.js , 或者 a, a1, b 这几个字符的组合的 js , 比如 ab.js</p>
-</li>
-<li><p><code>*(pattern|pattern|pattern)</code><br>匹配所给出的模型中的 0 个或多个或任意个的组合.<br>如：<code>js/*(a|a1|b).js</code>，匹配 js 目录下 a.js, a1.js, b.js 或者 a, a1, b这几个字符的组合的 js , 比如 ab.js</p>
-</li>
-<li><p><code>@(pattern|pat*|pat?erN)</code><br>匹配所给出的模型中的任意 1 个，<br>如：<code>js/@(a|a1|b)</code>, 匹配 js 目录下的 a.js, a1.js, b.js</p>
-</li>
-<li><p><code>**</code><br>与 <code>*</code> 一样可以匹配任何内容，但 <code>**</code>不仅匹配路径中的某一段,而且可以匹配 <code>a/b/c</code> 这样带有 <code>/</code> 的内容，所以，它还可以匹配子文件夹下的文件.<br>如：<code>js/**/*.js</code>，匹配 js 目录下及子文件夹中所有的 js 文件。</p>
-</li>
-</ul>
-<p>更多 Glob 的知识和语法，可以参考：<br><a href="https://www.wikiwand.com/en/Glob_(programming" target="_blank" rel="external">Glob - Wiki</a><br><a href="https://github.com/isaacs/node-glob#glob-primer" target="_blank" rel="external">Glob Primer</a></p>
-<h2 id="认识-Vinyl"><a href="#认识-Vinyl" class="headerlink" title="认识 Vinyl"></a>认识 Vinyl</h2><p><a href="https://github.com/gulpjs/vinyl" target="_blank" rel="external">Vinyl</a> 是 Gulp 自创的一种用来描述一个虚拟文件的类，其中主要包括文件的内容和文件的路径两大信息。vinyl 模块，只是提供了一个类，而实现却交由 <code>vinyl-fs</code></p>
-<p><a href="https://github.com/gulpjs/vinyl-fs" target="_blank" rel="external">Vinyl-fs</a>，它主要的工作是接受 glob 模式的参数，然后读取匹配的文件。然后利用 Vinyl 制作一个 Transform Stream，称为 Vinyl Stream 对象，并返回。</p>
-<p>在 Gulp 中的 API <code>gulp.src</code>、<code>gulp.watch</code>、<code>gulp.dest</code> 都返回一个 Vinyl Stream 实例对象。Vinyl Stream 实例之间可以通过管道（ <code>vinyl1.pipe(vinyl2)</code> ）的形式来互相传输数据。 </p>
-<p>从 Gulp 的 <a href="https://github.com/gulpjs/gulp/blob/master/index.js#L25-L41" target="_blank" rel="external">源码</a> 中也能看出，这三个 API 都是由 vinyl-fs 提供全部的实现。</p>
-<p>再一点是，从这两个模块的实现来看，Gulp 是把文件内容以 Buffer 的形式读到内存中，然后再进行处理的。</p>
-<h2 id="认识-Orchestrator"><a href="#认识-Orchestrator" class="headerlink" title="认识 Orchestrator"></a>认识 Orchestrator</h2><p><a href="https://github.com/robrich/orchestrator" target="_blank" rel="external">Orchestartor</a>，为 <code>gulp.task</code> 提供了全部实现，这可以从 <a href="https://github.com/gulpjs/gulp/blob/master/index.js#L14" target="_blank" rel="external">源码</a> 中看出。<br>它为 Gulp 提供了任务相关的功能，包括任务注册、任务执行以及相对应的任务进度、错误监控等功能。</p>
-<p>Orchestartor 模块，只提供了一个 Orchestartor 类，该类的实例维护着一个 tasks 数组，该数组的内容就是一个我们使用 <code>gulp.task</code> 时注册的函数列表，以及函数的依赖和名字。<br>通过 <a href="https://github.com/robrich/orchestrator/blob/master/index.js#L54-L57" target="_blank" rel="external">源码</a> 中，可以看到 tasks 的数据结构：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">this.tasks[name] = &#123;</div><div class="line">  <span class="attr">fn</span>: fn,   <span class="comment">// 任务的函数体</span></div><div class="line">  dep: dep,   <span class="comment">// 任务所依赖的其他任务名称</span></div><div class="line">  name: name  <span class="comment">// 该任务的名称</span></div><div class="line">&#125;;</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<h1 id="Gulp-核心-API"><a href="#Gulp-核心-API" class="headerlink" title="Gulp 核心 API"></a>Gulp 核心 API</h1><ul>
-<li>gulp.src：获取文件</li>
-<li>gulp.dest：写入文件</li>
-<li>gulp.tasks：注册任务</li>
-<li>gulp.watch：监控文件的改动</li>
-</ul>
-<h2 id="gulp-src"><a href="#gulp-src" class="headerlink" title="gulp.src"></a>gulp.src</h2><p><code>gulp.src( globs [, options] )</code></p>
-<p>接收一个 globs 模式的对象，可以是 Array 或者 String，返回一个 Vinyl Stream 实例。<br>而 options 有下面的值：</p>
-<ul>
-<li>buffer - Boolean, 控制 <code>file.contents</code> 是返回 buffer 还是 stream。</li>
-<li>read - Boolean，控制是否读取文件，如果 false，则 <code>file.contents</code> 为 <code>null</code></li>
-<li>base - String，控制 glob 的 base，默认值是 glob 所有表达式的前置，例如 <code>client/js/**/*.js</code>, base 值就为 <code>client/js/</code>。而 glob 在保存输出路径的时候，取的是 base 之后的路径。所以可以通过该值，来进行输出路径的改写。</li>
-</ul>
-<h2 id="gulp-dest"><a href="#gulp-dest" class="headerlink" title="gulp.dest"></a>gulp.dest</h2><p><code>gulp.dest( path [, options] )</code></p>
-<p>接收输出路径，返回一个 Vinyl Stream 实例。<br>而 options 有以下的值：</p>
-<ul>
-<li>cwd - String， 默认值 <code>process.pwd()</code>，输出目录的 cwd 参数，只在所给的输出目录是相对路径时候有效。</li>
-<li>mode -  String，八进制权限字符，用以定义所有在输出目录中所创建的目录的权限。</li>
-</ul>
-<h2 id="gulp-task"><a href="#gulp-task" class="headerlink" title="gulp.task"></a>gulp.task</h2><p><code>gulp.task( name [, deps ], fn )</code></p>
-<p>定义一个使用 Orchestrator 实现的任务（task）。<br>参数的描述如下：</p>
-<ul>
-<li>name - 任务名称</li>
-<li>deps - 是当前定义的任务需要依赖的其他任务，为一个数组。当前定义的任务会在所有依赖的任务执行完毕后才开始执行。如果没有依赖，则可省略这个参数</li>
-<li>fn - 为任务函数，我们把任务要执行的代码都写在里面。该参数也是可选的。</li>
-</ul>
-<h2 id="gulp-watch"><a href="#gulp-watch" class="headerlink" title="gulp.watch"></a>gulp.watch</h2><p><code>gulp.watch( glob [, opts ], tasks )</code><br>or<br><code>gulp.watch( glob [, opts, cb ] )</code></p>
-<p>用来监视文件的变化，当文件发生变化后，我们可以利用它来执行相应的任务。<br>各参数的描述如下：</p>
-<ul>
-<li>glob - 为要监视的文件 Glob 匹配模式。</li>
-<li>opts - 为一个可选的配置对象。</li>
-<li>tasks - 为文件变化后要执行的任务，为一个数组</li>
-</ul>
-<h1 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h1><ul>
-<li><a href="https://www.npmjs.com/package/gulp-load-plugins" target="_blank" rel="external">gulp-load-plugins</a>：自动加载 <code>package.json</code> 中的 gulp 插件</li>
-<li><a href="https://www.npmjs.com/package/gulp-rename" target="_blank" rel="external">gulp-rename</a>： 重命名</li>
-<li><a href="https://www.npmjs.com/package/gulp-uglify" target="_blank" rel="external">gulp-uglify</a>：文件压缩</li>
-<li><a href="https://www.npmjs.com/package/gulp-concat" target="_blank" rel="external">gulp-concat</a>：文件合并</li>
-<li><a href="https://www.npmjs.com/package/gulp-less" target="_blank" rel="external">gulp-less</a>：编译 less</li>
-<li><a href="https://www.npmjs.com/package/gulp-sass" target="_blank" rel="external">gulp-sass</a>：编译 sass</li>
-<li><a href="https://github.com/scniro/gulp-clean-css" target="_blank" rel="external">gulp-clean-css</a>：压缩 CSS 文件</li>
-<li><a href="https://github.com/jonschlinkert/gulp-htmlmin" target="_blank" rel="external">gulp-htmlmin</a>：压缩 HTML 文件</li>
-<li><a href="https://github.com/babel/gulp-babel" target="_blank" rel="external">gulp-babel</a>: 使用 babel 编译 JS 文件</li>
-<li><a href="https://www.npmjs.com/package/gulp-jshint" target="_blank" rel="external">gulp-jshint</a>：jshint 检查</li>
-<li><a href="https://github.com/sindresorhus/gulp-imagemin" target="_blank" rel="external">gulp-imagemin</a>：压缩jpg、png、gif等图片</li>
-<li><a href="https://github.com/vohof/gulp-livereload" target="_blank" rel="external">gulp-livereload</a>：当代码变化时，它可以帮我们自动刷新页面</li>
-</ul>
-<p>更多插件，可以搜索<a href="http://gulpjs.com/plugins/" target="_blank" rel="external">官方插件库</a>。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Gulp-概述&quot;&gt;&lt;a href=&quot;#Gulp-概述&quot; class=&quot;headerlink&quot; title=&quot;Gulp 概述&quot;&gt;&lt;/a&gt;Gulp 概述&lt;/h1&gt;&lt;p&gt;Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。&lt;/
-    
-    </summary>
-    
-      <category term="搬砖码农" scheme="http://huang-jerryc.com/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/"/>
-    
-    
-      <category term="前端构建" scheme="http://huang-jerryc.com/tags/%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA/"/>
     
   </entry>
   
