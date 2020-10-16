@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://huang-jerryc.com/"/>
-  <updated>2020-10-16T08:29:02.421Z</updated>
+  <updated>2020-10-16T08:34:10.889Z</updated>
   <id>http://huang-jerryc.com/</id>
   
   <author>
@@ -20,10 +20,9 @@
     <link href="http://huang-jerryc.com/2020/10/16/wxapp-login-design/"/>
     <id>http://huang-jerryc.com/2020/10/16/wxapp-login-design/</id>
     <published>2020-10-16T14:22:25.000Z</published>
-    <updated>2020-10-16T08:29:02.421Z</updated>
+    <updated>2020-10-16T08:34:10.889Z</updated>
     
-    <content type="html"><![CDATA[<p>[TOC]</p>
-<h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
+    <content type="html"><![CDATA[<h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
 <p>同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。</p>
 <p>登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。</p>
 <p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg" alt=""></p>
@@ -334,8 +333,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;[TOC]&lt;/p&gt;
-&lt;h1 id=&quot;一-前言&quot;&gt;&lt;a href=&quot;#一-前言&quot; class=&quot;headerlink&quot; title=&quot;一. 前言&quot;&gt;&lt;/a&gt;一. 前言&lt;/h1&gt;&lt;p&gt;对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免
+      &lt;h1 id=&quot;一-前言&quot;&gt;&lt;a href=&quot;#一-前言&quot; class=&quot;headerlink&quot; title=&quot;一. 前言&quot;&gt;&lt;/a&gt;一. 前言&lt;/h1&gt;&lt;p&gt;对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。&lt;/p&gt;
     
     </summary>
     

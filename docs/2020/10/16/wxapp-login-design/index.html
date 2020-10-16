@@ -15,22 +15,20 @@
     <meta name="keywords" content="登录," />
   
 
-  <meta name="description" content="[TOC]
-一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+  <meta name="description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
 同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
 登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
 
-在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之">
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信小程序登录功能的设计与实现">
 <meta property="og:url" content="http://huang-jerryc.com/2020/10/16/wxapp-login-design/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="[TOC]
-一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+<meta property="og:description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
 同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
 登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
 
-在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之">
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111059.jpg">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111042.jpg">
@@ -46,15 +44,14 @@
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113324.png">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016162606.png">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjqk8sm9dbj30v60fp0uc.jpg">
-<meta property="og:updated_time" content="2020-10-16T08:29:02.421Z">
+<meta property="og:updated_time" content="2020-10-16T08:34:10.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信小程序登录功能的设计与实现">
-<meta name="twitter:description" content="[TOC]
-一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+<meta name="twitter:description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
 同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
 登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
 
-在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之">
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
 <meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg">
 
   
@@ -254,8 +251,7 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <p>[TOC]</p>
-<h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
+      <h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
 <p>同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。</p>
 <p>登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。</p>
 <p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg" alt=""></p>
