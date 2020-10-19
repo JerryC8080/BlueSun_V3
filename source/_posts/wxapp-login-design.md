@@ -1,11 +1,10 @@
 ---
-title: 微信小程序登录功能的设计与实现
+title: 微信小程序登录的前端设计与实现
 category: 搬砖码农
 date: 2020-10-16 22:22:25
 tags: 
 - 登录 微信小程序
 ---
-
 
 # 一. 前言
 
@@ -129,17 +128,17 @@ tags:
 
 微信官方提供的登录方案，总结为三步：
 
-1. 前端通过`wx.login()` 获取一次性加密凭证 code，交给后端。
-2. 后端把这个 code 传输给微信服务器端，换取用户唯一标识`openId`和授权凭证`session_key`。（用于后续服务器端和微信服务器的特殊 API 调用，具体看：[微信官方文档-服务端获取开放数据](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html)）。
+1. 前端通过 `wx.login()` 获取一次性加密凭证 code，交给后端。
+2. 后端把这个 code 传输给微信服务器端，换取用户唯一标识 `openId` 和授权凭证 `session_key`。（用于后续服务器端和微信服务器的特殊 API 调用，具体看：[微信官方文档-服务端获取开放数据](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html)）。
 3. 后端把从微信服务器获取到的用户凭证与自行生成的登录态凭证（token），传输给前端。前端保存起来，下次请求的时候带给后端，就能识别哪个用户。
 
 如果只是实现这个流程的话，挺简单的。
 
 但要实现一个健壮的登录过程，还需要注意更多的边界情况：
 
-1. **收拢`wx.login()`的调用**：
+1. **收拢 `wx.login()` 的调用**：
 
-	由于 `wx.login()` 会产生不可预测的副作用，例如会可能导致`session_key`失效，从而导致后续的授权解密场景中的失败。我们这里可以提供一个像`session.login()`的方法，掌握`wx.login()`控制权，对其做一系列的封装和容错处理。
+	由于 `wx.login()` 会产生不可预测的副作用，例如会可能导致`session_key`失效，从而导致后续的授权解密场景中的失败。我们这里可以提供一个像 `session.login()` 的方法，掌握 `wx.login()` 控制权，对其做一系列的封装和容错处理。
 
 2. **调用的时机**：
 
@@ -163,11 +162,11 @@ tags:
 
 **1. 应用启动的时候调用**
 
-因为大部分情况都需要依赖登录态，我们会很自然而然的想到把这个调用的时机放到应用启动的时候（`app.onLaunch()`）来调用。
+因为大部分情况都需要依赖登录态，我们会很自然而然的想到把这个调用的时机放到应用启动的时候（ `app.onLaunch()` ）来调用。
 
 但是由于原生的小程序启动流程中， `App`，`Page`，`Component` 的生命周期钩子函数，都不支持异步阻塞。
 
-那么我们很容易会遇到 `app.onLaunch` 发起的「登录过程」在 `page.onLoad`的时候还没有完成，我们就无法正确去做一些依赖登录态的操作。
+那么我们很容易会遇到 `app.onLaunch` 发起的「登录过程」在 `page.onLoad` 的时候还没有完成，我们就无法正确去做一些依赖登录态的操作。
 
 针对这种情况，我们设计了一个状态机的工具：[status](http://beautywejs.com/#/remote/plugin-status?id=plugin-statusl)
 
@@ -252,7 +251,7 @@ fly.interceptors.request.use(async (req)=>{
 
 ### 3.1.3 自定义登录态过期的容错处理
 
-当自定义登录态过期的时候，后端需要返回特定的状态码，例如：`AUTH_EXPIRED` 、 `AUTH_INVALID`等。
+当自定义登录态过期的时候，后端需要返回特定的状态码，例如：`AUTH_EXPIRED` 、 `AUTH_INVALID` 等。
 
 前端可以在「网络请求层」去监听所有请求的这个状态码，然后发起刷新登录态，再去重放失败的请求：
 
@@ -363,7 +362,7 @@ class Session {
 
 ### 3.1.4 微信 session_key 过期的容错处理
 
-我们从上面的「静默登录」之后，微信服务器端会下发一个`session_key`给后端，而这个会在需要获取[微信开放数据](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html)的时候会用到。
+我们从上面的「静默登录」之后，微信服务器端会下发一个 `session_key` 给后端，而这个会在需要获取[微信开放数据](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html)的时候会用到。
 
 ![微信开放数据](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016110824.png)
 
@@ -383,7 +382,7 @@ class Session {
 翻译成简单的两句话：
 
 1. `session_key` 时效性由微信控制，开发者不可预测。
-2. `wx.login`可能会导致`session_key`过期，可以在使用接口之前用`wx.checkSession`检查一下。
+2. `wx.login` 可能会导致 `session_key` 过期，可以在使用接口之前用` wx.checkSession` 检查一下。
 
 而对于第二点，我们通过实验发现，偶发性的在 `session_key` 已过期的情况下，`wx.checkSession` 会概率性返回 `true`
 
@@ -400,7 +399,7 @@ class Session {
 基于以上，我们需要对 `session_key` 的过期做一些容错处理：
 
 1. 发起需要使用 `session_key` 的请求前，做一次 `wx.checkSession` 操作，如果失败了刷新登录态。
-2. 后端使用`session_key`解密开放数据失败之后，返回特定错误码（如：`DECRYPT_WX_OPEN_DATA_FAIL`），前端刷新登录态。
+2. 后端使用 `session_key` 解密开放数据失败之后，返回特定错误码（如：`DECRYPT_WX_OPEN_DATA_FAIL`），前端刷新登录态。
 
 示例代码：
 
@@ -488,7 +487,7 @@ export enum AuthStep {
 }
 ```
 
-`AuthStep` 的推进过程是不可逆的，我们可以定义一个 `nextStep` 函数来封装 AuthStep 更新的逻辑。外部使用的话，只要无脑调用 `nextStep`方法，等待回调结果就行。
+`AuthStep` 的推进过程是不可逆的，我们可以定义一个 `nextStep` 函数来封装 AuthStep 更新的逻辑。外部使用的话，只要无脑调用 `nextStep` 方法，等待回调结果就行。
 
 示例伪代码：
 
@@ -565,7 +564,7 @@ Component({
 });
 ```
 
-那么我们的 `<auth-flow>` 中就可以根据 `currAuthStep `和 `mustAuthStep`来去做不同的 UI 展示。需要注意的是使用 `<user-container>`、`<phone-container>` 的时候连接上 `nextStep(e)` 函数。
+那么我们的 `<auth-flow>` 中就可以根据 `currAuthStep` 和 `mustAuthStep` 来去做不同的 UI 展示。需要注意的是使用 `<user-container>`、`<phone-container>` 的时候连接上 `nextStep(e)` 函数。
 
 示例伪代码：
 
@@ -598,7 +597,7 @@ Component({
 
 ### 3.2.2 权限拦截的处理
 
-到这里，我们制作好了用来承载授权流程的组件 `<auth-flow>`，那么接下来就是决定要使用它的时机了。
+到这里，我们制作好了用来承载授权流程的组件 `<auth-flow>` ，那么接下来就是决定要使用它的时机了。
 
 我们梳理需要授权的场景：
 
@@ -629,7 +628,7 @@ export enum AuthDisplayMode {
   POPUP = 'button',
 
   // 以页面形式
-	PAGE = 'page',
+  PAGE = 'page',
 }
 ```
 
@@ -794,7 +793,7 @@ Page({
 
 ![微信小程序登录服务架构图](https://tva1.sinaimg.cn/large/007S8ZIlgy1gjqk8sm9dbj30v60fp0uc.jpg)
 
-由「登录服务」和「底层建设」组合提供的通用服务，业务层只需要去根据产品需求，定制授权的流程`<auth-flow>`，就能满足大部分场景了。
+由「登录服务」和「底层建设」组合提供的通用服务，业务层只需要去根据产品需求，定制授权的流程 `<auth-flow>` ，就能满足大部分场景了。
 
 # 六. 总结
 
@@ -807,7 +806,7 @@ Page({
 1. 静默登录
 2. 静默登录异步状态的处理
 3. 自定义登录态过期的容错处理
-4. 微信`session_key`过期的容错处理
+4. 微信 `session_key` 过期的容错处理
 
 而对于「授权」，会有设计UI部分的逻辑，还需要涉及到组件的拆分：
 
