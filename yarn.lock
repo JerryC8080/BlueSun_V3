@@ -904,8 +904,8 @@ hexo@^3.1.1:
     warehouse "^2.2.0"
 
 highlight.js@^9.4.0:
-  version "9.8.0"
-  resolved "http://registry.npm.taobao.org/highlight.js/download/highlight.js-9.8.0.tgz#38eeef40cd45eaddbec8c9e5238fb7a783a3b685"
+  version "9.18.5"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
 
 hoek@2.x.x:
   version "2.16.3"
