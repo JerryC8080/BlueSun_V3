@@ -498,12 +498,16 @@ ga('send', 'pageview');
       var dsq = document.createElement('script');
       dsq.type = 'text/javascript';
       dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
   </script>
 
-  <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
 
 
 
