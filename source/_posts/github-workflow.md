@@ -1,16 +1,8 @@
 ---
-title: Module Seed: 一套优雅的 Github 工作流
+title: "Module Seed: 一套优雅的 Github 工作流"
 category: 搬砖码农
 date: 2021-01-28 17:51:00
 ---
-
-> 一个为模块开发集成了常用工作流的种子仓库。
-
-[![CircleCI](https://img.shields.io/circleci/build/github/JerryC8080/module-seed/master?style=for-the-badge)](https://circleci.com/gh/JerryC8080/module-seed/tree/master)
-[![Coveralls github branch](https://img.shields.io/coveralls/github/JerryC8080/module-seed/master?style=for-the-badge)](https://coveralls.io/github/JerryC8080/module-seed?branch=master)
-[![NPM Version](https://img.shields.io/npm/v/@jerryc/module-seed.svg?style=for-the-badge)](https://www.npmjs.com/package/@jerryc/module-seed)
-[![NPM Downloads](https://img.shields.io/npm/dm/@jerryc/module-seed.svg?style=for-the-badge)](https://www.npmjs.com/package/@jerryc/module-seed)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/@jerryc/mini-logger.svg?style=for-the-badge)
 
 ## Motivation
 
@@ -257,8 +249,3 @@ deploy:
         command: npm publish
 ...
 ```
-
-## License
-
-This project is licensed under the [MIT license](LICENSE).  
-Copyright (c) JerryC Huang (huangjerryc@gmail.com)
