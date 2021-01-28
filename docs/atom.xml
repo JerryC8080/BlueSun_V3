@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://huang-jerryc.com/"/>
-  <updated>2020-10-19T02:24:42.620Z</updated>
+  <updated>2021-01-28T09:36:07.795Z</updated>
   <id>http://huang-jerryc.com/</id>
   
   <author>
@@ -14,6 +14,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>函数保险丝：避免函数过热调用</title>
+    <link href="http://huang-jerryc.com/2021/01/28/method-fuse/"/>
+    <id>http://huang-jerryc.com/2021/01/28/method-fuse/</id>
+    <published>2021-01-28T07:34:00.000Z</published>
+    <updated>2021-01-28T09:36:07.795Z</updated>
+    
+    <content type="html"><![CDATA[<p>  <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20210128154439.png" width="300"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在日常开发中，我们会遇到很多这样的场景：</p>
+<ol>
+<li>在抢购活动中，用户往往会频繁刷新接口，要给接口加上防护，频繁调用停止响应。</li>
+<li>在弱网环境中，往往会实现失败重试功能，如果失败次数多了，频繁的重试需要制止。</li>
+<li>在股票市场中，当价格波动的幅度在交易时间中达到某一个限定的熔断点时，对其暂停交易一段时间的机制。</li>
+<li>……</li>
+</ol>
+<p>这类问题，本质是：<strong>「过热的调用」</strong></p>
+<p>在物理电路中，对于「过热的调用」有一种大家生活中都常见的电子元件：<strong>保险丝</strong></p>
+<p>保险丝会在电流异常升高到一定的高度和热度的时候，自身熔断切断电流，保护电路安全运行。</p>
+<p>我们可以模仿这样的思路，去解决编程中的「过热的调用」问题：</p>
+<ol>
+<li>设定一个阈值，如果函数在短时间内调用次数达到这个阈值，就熔断一段时间。</li>
+<li>在函数有一段时间没有被调用了，让函数的热度降下来。</li>
+</ol>
+<h2 id="函数保险丝的功能实现"><a href="#函数保险丝的功能实现" class="headerlink" title="函数保险丝的功能实现"></a>函数保险丝的功能实现</h2><p>基于以上的思路，我实现了一个 npm 库：<a href="https://github.com/JerryC8080/method-fuse" target="_blank" rel="external">Method Fuse</a></p>
+<p>使用方式如下：</p>
+<h3 id="Step1：安装"><a href="#Step1：安装" class="headerlink" title="Step1：安装"></a>Step1：安装</h3><p><code>npm install @jerryc/method-fuse</code></p>
+<h3 id="Step2：快速使用"><a href="#Step2：快速使用" class="headerlink" title="Step2：快速使用"></a>Step2：快速使用</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; MethodFuse &#125; <span class="keyword">from</span> <span class="string">'@jerryc/method-fuse'</span>;</div><div class="line"></div><div class="line"><span class="comment">// 一个请求远程资源的异步函数</span></div><div class="line"><span class="keyword">const</span> getAssets = <span class="keyword">async</span> () =&gt; API.requestAssets();</div><div class="line"></div><div class="line"><span class="comment">// 创建 MethodFuse 实例</span></div><div class="line"><span class="keyword">const</span> fuse = <span class="keyword">new</span> MethodFuse(&#123;</div><div class="line">  <span class="comment">// 命名，用于日志输出</span></div><div class="line">  name: <span class="string">'TestFuse'</span>,</div><div class="line"></div><div class="line">  <span class="comment">// 最大负荷，默认：3</span></div><div class="line">  maxLoad: <span class="number">3</span>,</div><div class="line"></div><div class="line">  <span class="comment">// 每次熔断时间。每次熔断之后，间隔 N 毫秒之后重铸，默认：5000ms</span></div><div class="line">  breakingTime: <span class="number">5000</span>,</div><div class="line"></div><div class="line">  <span class="comment">// 自动冷却时间。在最后一次调用间隔 N 毫秒之后自动重铸，默认：1000ms</span></div><div class="line">  coolDownTime: <span class="number">1000</span>,</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 代理原函数</span></div><div class="line"><span class="keyword">const</span> getAssetsProxy = fuse.proxy(getAssets);</div><div class="line"></div><div class="line"><span class="comment">// 高频并发调用 getAssetsProxy。</span></div><div class="line">getAssetsProxy();</div><div class="line">getAssetsProxy();</div><div class="line">getAssetsProxy();</div><div class="line">getAssetsProxy(); <span class="comment">// 此次调用会熔断</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> getAssetsProxy(), <span class="number">5000</span>); <span class="comment">// 等待熔断重铸后，方可重新调用。</span></div><div class="line"></div><div class="line"><span class="comment">// 以上会打印日志：</span></div><div class="line"><span class="comment">// [method-fuse:info] TestFuse-通过保险丝(1/3)</span></div><div class="line"><span class="comment">// [method-fuse:info] TestFuse-通过保险丝(2/3)</span></div><div class="line"><span class="comment">// [method-fuse:info] TestFuse-通过保险丝(3/3)</span></div><div class="line"><span class="comment">// [method-fuse:error] TestFuse-保险丝熔断，5000ms 之后重铸</span></div><div class="line"><span class="comment">// [method-fuse:info] TestFuse-保险丝重置</span></div><div class="line"><span class="comment">// [method-fuse:info] TestFuse-通过保险丝(1/3)</span></div></pre></td></tr></table></figure>
+<h3 id="Step3：使用装饰器"><a href="#Step3：使用装饰器" class="headerlink" title="Step3：使用装饰器"></a>Step3：使用装饰器</h3><p>如果你的项目中支持 <code>TS</code> 或者 <code>ES Decorator</code>，那么 <code>MethodFuse</code> 提供了快捷使用的装饰器。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; decorator <span class="keyword">as</span> methodFuse &#125; <span class="keyword">from</span> <span class="string">'@jerryc/method-fuse'</span>;</div><div class="line"></div><div class="line">@methodFuse(&#123; <span class="attr">name</span>: <span class="string">'TestFuse'</span> &#125;)</div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getAsset</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> API.requestAssets();</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="Step4：修改日志级别"><a href="#Step4：修改日志级别" class="headerlink" title="Step4：修改日志级别"></a>Step4：修改日志级别</h3><p><code>MethodFuse</code> 内置了一个迷你 logger（power by <a href="https://github.com/JerryC8080/mini-logger" target="_blank" rel="external">@jerryc/mini-logger</a>），方便内部日志打印，外部可以获得 <code>Logger</code> 的实例，进行 log level 的控制。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; LoggerLevel &#125; <span class="keyword">from</span> <span class="string">'@jerryc/mini-logger'</span>;</div><div class="line"><span class="keyword">import</span> &#123; logger, MethodFuse &#125; <span class="keyword">from</span> <span class="string">'@jerryc/method-fuse'</span>;</div><div class="line"></div><div class="line"><span class="comment">// 创建 MethodFuse 实例</span></div><div class="line"><span class="keyword">const</span> MethodFuse = <span class="keyword">new</span> MethodFuse(&#123; <span class="attr">name</span>: <span class="string">'TestFuse'</span> &#125;);</div><div class="line"></div><div class="line"><span class="comment">// 下调 Log level</span></div><div class="line">logger.level = LoggerLevel.ERROR;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;  &lt;img src=&quot;https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20210128154439.png&quot; width=&quot;300&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; c
+    
+    </summary>
+    
+      <category term="搬砖码农" scheme="http://huang-jerryc.com/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>微信小程序登录的前端设计与实现</title>
@@ -2176,81 +2221,6 @@
 <h3 id="校验和-TCP-Checksum"><a href="#校验和-TCP-Checksum" class="headerlink" title="校验和 TCP Checksum"></a>校验和 TCP Checksum</h3><p>占 2 个字节。<br>由发送端填充，接收端对 TCP 报文段执行 CRC 算法，以检验 TCP 报文段在传输过程中是否损坏，如果损坏这丢弃。<br>检验范围包括首部和数据两部分，这也是 TCP 可靠传输的一个重要保障。    </p>
 <h3 id="紧急指针-Urgent-Pointer"><a href="#紧急指针-Urgent-Pointer" class="headerlink" title="紧急指针 Urgent Pointer"></a>紧急指针 Urgent Pointer</h3><p>占 2 个字节。<br>仅在 URG = 1 时才有意义，它指出本报文段中的紧急数据的字节数。<br>当 URG = 1 时，发送方 TCP 就把紧急数据插入到本报文段数据的<strong>最前面</strong>，而在紧急数据后面的数据仍是普通数据。<br>因此，紧急指针指出了紧急数据的末尾在报文段中的位置。    </p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://book.douban.com/subject/26850616/" target="_blank" rel="external">《后台开发 核心技术与应用实践》</a><br><a href="https://book.douban.com/subject/2970300/" target="_blank" rel="external">《计算机网络》</a>ect/2970300/)</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;更好阅读体验：&lt;a href=&quot;https://jerryc8080.gitbooks.io/understand-tcp-and-udp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《理解 TCP 和 UDP》— By Gi
-    
-    </summary>
-    
-      <category term="搬砖码农" scheme="http://huang-jerryc.com/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/"/>
-    
-    
-      <category term="tcp" scheme="http://huang-jerryc.com/tags/tcp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>理解TCP（一）：端口</title>
-    <link href="http://huang-jerryc.com/2017/03/02/understand-tcp-1/"/>
-    <id>http://huang-jerryc.com/2017/03/02/understand-tcp-1/</id>
-    <published>2017-03-02T07:56:25.000Z</published>
-    <updated>2018-05-01T16:16:02.082Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote>
-<p>更好阅读体验：<a href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/" target="_blank" rel="external">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
-</blockquote>
-<h2 id="端口与进程"><a href="#端口与进程" class="headerlink" title="端口与进程"></a>端口与进程</h2><p>TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。<br>就是说，端口这一东西，是属于 TCP 知识范畴的。    </p>
-<p>我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。<br>而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程通讯中我们可以使用 <strong>「PID(进程标识符)」</strong> 来唯一标识一个进程。<br>但 PID 只在本地唯一，如果把两个进程放到了不同的两台计算机，然后他们要通信的话，PID 就不够用了，这样就需要另外一种手段了。    </p>
-<p>解决这个问题的方法就是在运输层使用 <strong>「协议端口号 (protocol port number)」</strong>，简称 <strong>「端口 (port)」</strong>.<br>我们知道 IP 层的 ip 地址可以唯一标识主机，而 TCP 层协议和端口号可以唯一标识主机的一个进程，这样我们可以利用：<strong>「ip地址＋协议＋端口号」</strong>唯一标示网络中的一个进程。<br>在一些场合，也把这种唯一标识的模式称为<strong>「套接字 (Socket)」</strong>。    </p>
-<p>这就是说，虽然通信的重点是应用进程，但我们只要把要传送的报文交到目的主机的某一个合适的端口，剩下的工作就由 TCP 来完成了。    </p>
-<h2 id="认识端口"><a href="#认识端口" class="headerlink" title="认识端口"></a>认识端口</h2><p>TCP 用一个 16 位端口号来标识一个端口，可允许有 65536 ( 2的16次方) 个不同的端口号，范围在 0 ~ 65535 之间。    </p>
-<p>端口号根据服务器使用还是客户端使用，以及常见不常见的维度来区分，主要有以下类别：</p>
-<ol>
-<li>服务器端使用的端口号<ul>
-<li>熟知端口号</li>
-<li>登记端口号</li>
-</ul>
-</li>
-<li>客户端使用的端口号</li>
-</ol>
-<p>下面展开来说说。    </p>
-<h3 id="端口号的分类"><a href="#端口号的分类" class="headerlink" title="端口号的分类"></a>端口号的分类</h3><h4 id="服务器端使用的端口号"><a href="#服务器端使用的端口号" class="headerlink" title="服务器端使用的端口号"></a>服务器端使用的端口号</h4><p><strong>熟知端口号</strong>：<br>取值范围：0 ~ 1023。<br>可以在 www.iana.org 查到，服务器机器一接通电源，服务器程序就运行起来，为了让因特网上所有的客户程序都能找到服务器程序，服务器程序所使用的端口就必须是固定的，并且总所众所周知的。    </p>
-<p>一些常见的端口号：    </p>
-<table>
-<thead>
-<tr>
-<th>应用程序</th>
-<th>FTP</th>
-<th>TELNET</th>
-<th>SMTP</th>
-<th>DNS</th>
-<th>TFTP</th>
-<th>HTTP</th>
-<th>HTTPS</th>
-<th>SNMP</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>熟知端口号</td>
-<td><strong>21</strong></td>
-<td>23</td>
-<td>25</td>
-<td>53</td>
-<td>69</td>
-<td><strong>80</strong></td>
-<td><strong>443</strong></td>
-<td>161</td>
-</tr>
-</tbody>
-</table>
-<p><strong>登记端口号</strong>：<br>取值范围：1024 ~ 49151。<br>这类端口没有熟知的应用程序使用，但是需要登记，以防重复</p>
-<h4 id="客户端使用的端口号"><a href="#客户端使用的端口号" class="headerlink" title="客户端使用的端口号"></a>客户端使用的端口号</h4><p>取值范围：49152 ~ 65535。<br>这类端口仅在客户端进程运行时才动态选择。<br>又叫 短暂端口号，表示这种端口的存在时间是短暂的，客户进程并不在意操作系统给它分配的是哪一个端口号，因为客户进程之所以必须有一个端口号，是为了让传输层的实体能够找到自己。    </p>
-<p><em>PS：在<code>/etc/services</code>文件中可以查看所有知名服务使用的端口。</em></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://book.douban.com/subject/26850616/" target="_blank" rel="external">《后台开发 核心技术与应用实践》</a><br><a href="https://book.douban.com/subject/2970300/" target="_blank" rel="external">《计算机网络》</a></p>
 ]]></content>
     
     <summary type="html">
