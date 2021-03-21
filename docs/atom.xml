@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://huang-jerryc.com/"/>
-  <updated>2021-03-21T12:29:05.378Z</updated>
+  <updated>2021-03-21T12:40:39.210Z</updated>
   <id>http://huang-jerryc.com/</id>
   
   <author>
@@ -20,9 +20,28 @@
     <link href="http://huang-jerryc.com/2021/03/21/wxapp-router-experience/"/>
     <id>http://huang-jerryc.com/2021/03/21/wxapp-router-experience/</id>
     <published>2021-03-21T12:28:00.000Z</published>
-    <updated>2021-03-21T12:29:05.378Z</updated>
+    <updated>2021-03-21T12:40:39.210Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在微信小程序由一个 <code>App()</code>实例，和众多<code>Page()</code>组成。而在小程序中所有页面的路由全部由框架进行管理，框架以栈的形式维护了所有页面，然后提供了以下 API 来进行路由之间的跳转：</p>
+    <content type="html"><![CDATA[<h1 id="0-目录"><a href="#0-目录" class="headerlink" title="0. 目录"></a>0. 目录</h1><ul>
+<li><a href="#1-前言">1. 前言</a></li>
+<li><a href="#2-智能路由跳转--navigator-模块">2. 智能路由跳转 — Navigator 模块</a></li>
+<li><a href="#3-虚拟路由策略--router-模块">3. 虚拟路由策略 — Router 模块</a></li>
+<li><a href="#4-落地中转策略--landtransfer-模块">4. 落地中转策略 — LandTransfer 模块</a><ul>
+<li><a href="#41-对于要解决的第一个问题统一的落地页">4.1. 对于要解决的第一个问题：统一的落地页</a></li>
+<li><a href="#42-对于第二个要解决的问题短链参数">4.2. 对于第二个要解决的问题：短链参数</a></li>
+<li><a href="#43-landtransfer-模块设计">4.3. LandTransfer 模块设计</a></li>
+</ul>
+</li>
+<li><a href="#5-更好的开发体验">5. 更好的开发体验</a><ul>
+<li><a href="#51-typescript--router">5.1. Typescript + Router</a></li>
+<li><a href="#52-智能生成路由配置">5.2. 智能生成路由配置</a></li>
+<li><a href="#53-自定义组件跳转">5.3. 自定义组件跳转</a></li>
+</ul>
+</li>
+<li><a href="#6-整体架构图">6. 整体架构图</a></li>
+<li><a href="#7-最后的最后">7. 最后的最后</a></li>
+</ul>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>在微信小程序由一个 <code>App()</code>实例，和众多<code>Page()</code>组成。而在小程序中所有页面的路由全部由框架进行管理，框架以栈的形式维护了所有页面，然后提供了以下 API 来进行路由之间的跳转：</p>
 <ol>
 <li><code>wx.navigateTo</code></li>
 <li><code>wx.redirectTo</code></li>
@@ -39,7 +58,7 @@
 <li>额外的，对于小程序码，要使用无数量限制 API <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html" target="_blank" rel="external">wxacode.getUnlimited</a> ，存在参数长度限制32位以内。需要开发者自行解决。</li>
 </ol>
 <p>而本文，期望能对这若干问题，逐个提供解决方案。</p>
-<h2 id="智能路由跳转-—-Navigator-模块"><a href="#智能路由跳转-—-Navigator-模块" class="headerlink" title="智能路由跳转 — Navigator 模块"></a>智能路由跳转 — Navigator 模块</h2><p>在这里我们一起解决：</p>
+<h1 id="2-智能路由跳转-—-Navigator-模块"><a href="#2-智能路由跳转-—-Navigator-模块" class="headerlink" title="2. 智能路由跳转 — Navigator 模块"></a>2. 智能路由跳转 — Navigator 模块</h1><p>在这里我们一起解决：</p>
 <ol>
 <li>原生 API 非 Promsie</li>
 <li>页面栈突破十层时特殊处理</li>
@@ -64,7 +83,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> navigator = <span class="keyword">new</span> Navigator();</div><div class="line">navigator.gotoPage(...);</div><div class="line">navigator.navigateTo(...);</div><div class="line">navigator.switchTab(...);</div><div class="line">navigator.redirectTo(...);</div><div class="line">navigator.navigateBack(...);</div></pre></td></tr></table></figure>
 <p>模块设计：</p>
 <p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20210321202552.png" alt="navigator-class"></p>
-<h2 id="虚拟路由策略-—-Router-模块"><a href="#虚拟路由策略-—-Router-模块" class="headerlink" title="虚拟路由策略 — Router 模块"></a>虚拟路由策略 — Router 模块</h2><p>在这里，我们解决：</p>
+<h1 id="3-虚拟路由策略-—-Router-模块"><a href="#3-虚拟路由策略-—-Router-模块" class="headerlink" title="3. 虚拟路由策略 — Router 模块"></a>3. 虚拟路由策略 — Router 模块</h1><p>在这里，我们解决：</p>
 <ol>
 <li>对外暴露了真实路由，导致历史包袱沉重的问题。</li>
 </ol>
@@ -89,12 +108,12 @@
 <li>Route: 为每个路径创建路由器，存储每个路由的虚拟路径和真实路由的关系。</li>
 <li>Router：整合内部各模块，对外提供统一且优雅的调用方式。</li>
 </ol>
-<h2 id="落地中转策略-—-LandTransfer-模块"><a href="#落地中转策略-—-LandTransfer-模块" class="headerlink" title="落地中转策略 — LandTransfer 模块"></a>落地中转策略 — LandTransfer 模块</h2><p>在这里，我们解决：</p>
+<h1 id="4-落地中转策略-—-LandTransfer-模块"><a href="#4-落地中转策略-—-LandTransfer-模块" class="headerlink" title="4. 落地中转策略 — LandTransfer 模块"></a>4. 落地中转策略 — LandTransfer 模块</h1><p>在这里，我们解决：</p>
 <ol>
 <li>小程序扫码、公众号链接等场景下的落地页统一。</li>
 <li>小程序码，对于无限量API <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html" target="_blank" rel="external">wxacode.getUnlimited</a> ，突破参数32位长度限制。</li>
 </ol>
-<h3 id="对于要解决的第一个问题：统一的落地页"><a href="#对于要解决的第一个问题：统一的落地页" class="headerlink" title="对于要解决的第一个问题：统一的落地页"></a>对于要解决的第一个问题：统一的落地页</h3><p>我们把如：扫小程序码、公众号菜单、公众号文章等方式打开小程序某个页面的路径称为「外部路由」。</p>
+<h2 id="4-1-对于要解决的第一个问题：统一的落地页"><a href="#4-1-对于要解决的第一个问题：统一的落地页" class="headerlink" title="4.1. 对于要解决的第一个问题：统一的落地页"></a>4.1. 对于要解决的第一个问题：统一的落地页</h2><p>我们把如：扫小程序码、公众号菜单、公众号文章等方式打开小程序某个页面的路径称为「外部路由」。</p>
 <p>根据小程序的设计，暴露给外部的连接是真实的页面路径，如：<code>/pages/home/index</code>，该设计在实践中存在的弊端：<strong>各个落地页分散，后期修改真实文件路径难度大。</strong></p>
 <p>在 <strong>「中长生命周期」</strong> 产品中，随着产品的迭代，我们难免会遇到项目的重构。如果分发出去的都是没经过处理的真实路径的话，我们重构时就会束手束脚，要做很多的兼容操作。因为你不知道，分发出去的小程序二维码， 有多少被打印到实体物料中。</p>
 <p>那么，<strong>「虚拟路由」+「落地中转」</strong> 的策略就显得基本且重要了。</p>
@@ -109,7 +128,7 @@
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// /pages/land-page/index.ts</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> landTransfer = <span class="keyword">new</span> LandTransfer(landTransferOptions);</div><div class="line"></div><div class="line">Page(&#123;</div><div class="line">  onLoad(options) &#123;</div><div class="line">      landTransfer</div><div class="line">        .run(options)</div><div class="line">        .then(() =&gt; &#123;...&#125;)</div><div class="line">        .catch(() =&gt; &#123;...&#125;);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>然后针对 TS，我们还可以使用装饰器版本，更加简便：</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; landTransferDecorator &#125; from <span class="string">'wxapp-router'</span>;</div><div class="line"></div><div class="line">Page(&#123;</div><div class="line">  @landTransferDecorator(landTransferOptions)</div><div class="line">  onLoad(options) &#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h3 id="对于第二个要解决的问题：短链参数"><a href="#对于第二个要解决的问题：短链参数" class="headerlink" title="对于第二个要解决的问题：短链参数"></a>对于第二个要解决的问题：短链参数</h3><p>微信小程序主要提供了两个接口去生成小程序码：</p>
+<h2 id="4-2-对于第二个要解决的问题：短链参数"><a href="#4-2-对于第二个要解决的问题：短链参数" class="headerlink" title="4.2. 对于第二个要解决的问题：短链参数"></a>4.2. 对于第二个要解决的问题：短链参数</h2><p>微信小程序主要提供了两个接口去生成小程序码：</p>
 <ol>
 <li><a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.get.html" target="_blank" rel="external">wxacode.get</a>: 获取小程序码，适用于需要的码数量较少的业务场景。<strong>通过该接口生成的小程序码，永久有效，数量限制为 100,000</strong> 个</li>
 <li><a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html" target="_blank" rel="external">wxacode.getUnlimited</a>: 获取小程序码，适用于需要的码数量极多的业务场景。<strong>通过该接口生成的小程序码，永久有效，数量暂无限制。</strong></li>
@@ -133,8 +152,8 @@
 <p>代码层面上，我们我们只需要多定义转换短链参数的方式：<code>convertScenePrams</code></p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// in /pages/land-page/index.js</span></div><div class="line"><span class="keyword">import</span> &#123; landTransferDecorator &#125; from <span class="string">'wxapp-router'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> landTransferOptions = &#123;</div><div class="line">  <span class="comment">// 此处接收 onLoad(options) 中的 options.scene</span></div><div class="line">  convertSceneParams: (sceneParams) =&gt; &#123;</div><div class="line">    <span class="keyword">return</span> API.convertScene(&#123; sceneParams &#125;).then((content) =&gt; &#123;</div><div class="line">      <span class="comment">// 假如后端存的是 JSON 字符串，前端decode</span></div><div class="line">      <span class="comment">// 要求 content = &#123; path: '/home', a: 1, b:2 &#125;</span></div><div class="line">      <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(content);</div><div class="line">    &#125;);</div><div class="line">  &#125;,</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Page(&#123;</div><div class="line">  @landTransferDecorator(landTransferOptions)</div><div class="line">  onLoad(options) &#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>而其中的 <code>API.convertScene</code> 就对接服务端提供 HTTP 接口服务来完成。</p>
-<h3 id="LandTransfer-模块设计"><a href="#LandTransfer-模块设计" class="headerlink" title="LandTransfer 模块设计"></a>LandTransfer 模块设计</h3><p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20210321202654.png" alt="land-transfer"></p>
-<h2 id="更好的开发体验"><a href="#更好的开发体验" class="headerlink" title="更好的开发体验"></a>更好的开发体验</h2><h3 id="Typescript-Router"><a href="#Typescript-Router" class="headerlink" title="Typescript + Router"></a>Typescript + Router</h3><p>对于小程序内部的路由跳转，我们除了指定一个字符串的路由，我们是否也可以通过链式调用，像调用函数那样去跳转页面呢？类似这样；</p>
+<h2 id="4-3-LandTransfer-模块设计"><a href="#4-3-LandTransfer-模块设计" class="headerlink" title="4.3. LandTransfer 模块设计"></a>4.3. LandTransfer 模块设计</h2><p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20210321202654.png" alt="land-transfer"></p>
+<h1 id="5-更好的开发体验"><a href="#5-更好的开发体验" class="headerlink" title="5. 更好的开发体验"></a>5. 更好的开发体验</h1><h2 id="5-1-Typescript-Router"><a href="#5-1-Typescript-Router" class="headerlink" title="5.1. Typescript + Router"></a>5.1. Typescript + Router</h2><p>对于小程序内部的路由跳转，我们除了指定一个字符串的路由，我们是否也可以通过链式调用，像调用函数那样去跳转页面呢？类似这样；</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">routes.pages.user.go(&#123; name: <span class="string">'jc'</span> &#125;);</div></pre></td></tr></table></figure>
 <p>这样做的好处是：</p>
 <ol>
@@ -146,19 +165,19 @@
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// config/routes.ts</span></div><div class="line"></div><div class="line"><span class="comment">// 创建路由实例</span></div><div class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> Router();</div><div class="line"></div><div class="line"><span class="keyword">const</span> routesConfig = [&#123;</div><div class="line">  path: <span class="string">'/user'</span>,</div><div class="line">  route: <span class="string">'/pages/user/index'</span>,</div><div class="line">&#125;, &#123;</div><div class="line">  path: <span class="string">'/goods'</span>,</div><div class="line">  route: <span class="string">'/pages/goods/index'</span>,</div><div class="line">&#125;]；</div><div class="line"></div><div class="line"><span class="keyword">type</span> RoutesType &#123;</div><div class="line">  paegs: &#123;</div><div class="line">    user: Route&lt;&#123;name: <span class="built_in">string</span>&#125;&gt;,</div><div class="line">    goods: Route,</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 注册路由</span></div><div class="line">router.batchRegister(routesConfig);</div><div class="line"></div><div class="line"><span class="comment">// 获取 routes</span></div><div class="line"><span class="keyword">const</span> routes: RoutesType = router.getRoutes();</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> routes;</div></pre></td></tr></table></figure>
 <p>然后在别的地方使用它：</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> routes from <span class="string">'./routes.ts'</span>;</div><div class="line"></div><div class="line">routes.pages.user.go(&#123; name: <span class="string">'jc'</span> &#125;);</div></pre></td></tr></table></figure>
-<h3 id="智能生成路由配置"><a href="#智能生成路由配置" class="headerlink" title="智能生成路由配置"></a>智能生成路由配置</h3><p>如果路由变多的时候，我们还需要对每个路由手动去编写 <code>RoutesType</code> 的话，就有点难受了。</p>
+<h2 id="5-2-智能生成路由配置"><a href="#5-2-智能生成路由配置" class="headerlink" title="5.2. 智能生成路由配置"></a>5.2. 智能生成路由配置</h2><p>如果路由变多的时候，我们还需要对每个路由手动去编写 <code>RoutesType</code> 的话，就有点难受了。</p>
 <p>在小程序中，我们把正式路由都配置到 <code>app.json</code> ，那么在遵循既定的项目结构情况下，我们可以通过自动构建，完成大部分工作，例如：</p>
 <ol>
 <li>智能注册路由</li>
 <li>智能识别页面入参声明</li>
 </ol>
-<h3 id="自定义组件跳转"><a href="#自定义组件跳转" class="headerlink" title="自定义组件跳转"></a>自定义组件跳转</h3><p>以上都是脚本层面的使用，小程序中还有 <code>wxml</code>, 我们希望能在有个组件快速使用：</p>
+<h2 id="5-3-自定义组件跳转"><a href="#5-3-自定义组件跳转" class="headerlink" title="5.3. 自定义组件跳转"></a>5.3. 自定义组件跳转</h2><p>以上都是脚本层面的使用，小程序中还有 <code>wxml</code>, 我们希望能在有个组件快速使用：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Router</span> <span class="attr">path</span>=<span class="string">"/pageA"</span> <span class="attr">query</span>=<span class="string">"&#123;&#123;pageAQuery&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">Router</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">Router</span> <span class="attr">path</span>=<span class="string">"/pageB"</span> <span class="attr">query</span>=<span class="string">"&#123;&#123;pageBQuery&#125;&#125;"</span> <span class="attr">type</span>=<span class="string">"redirectTo"</span>&gt;</span><span class="tag">&lt;/<span class="name">Router</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">Router</span> <span class="attr">path</span>=<span class="string">"/pageC/katy"</span>&gt;</span><span class="tag">&lt;/<span class="name">Router</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>那么，实现一个自定义组件，然后把 <strong>Router</strong>模块包装一下，问题就不大了。</p>
 <p>示例代码：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// components/router.wxml</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"wxapp-router"</span> <span class="attr">bind:tap</span>=<span class="string">"gotoPage"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">slot</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// components/router.ts</span></div><div class="line"></div><div class="line">Component(&#123;</div><div class="line">    properties: &#123;</div><div class="line">        path: <span class="built_in">String</span>,</div><div class="line">        <span class="keyword">type</span>: &#123;</div><div class="line">            <span class="keyword">type</span>: <span class="built_in">String</span>,</div><div class="line">            value: <span class="string">'gotoPage'</span></div><div class="line">        &#125;,</div><div class="line">        route: <span class="built_in">String</span>,</div><div class="line">        query: <span class="built_in">Object</span>,</div><div class="line">        delta: <span class="built_in">Number</span>,</div><div class="line">        setData: <span class="built_in">Object</span>,</div><div class="line">    &#125;,</div><div class="line"></div><div class="line">    methods: &#123;</div><div class="line">        gotoPage(event) &#123;</div><div class="line">            <span class="keyword">const</span> router = getApp().router;</div><div class="line">            <span class="keyword">const</span> &#123; path, route, <span class="keyword">type</span>, query&#125; = <span class="keyword">this</span>.data;</div><div class="line">            <span class="keyword">const</span> toPath = route || path;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> ([<span class="string">'gotoPage'</span>, <span class="string">'navigateTo'</span>, <span class="string">'switchTab'</span>, <span class="string">'redirectTo'</span>].includes(<span class="keyword">type</span>)) &#123;</div><div class="line">                (router as <span class="built_in">any</span>)[<span class="keyword">type</span>](toPath, query);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (<span class="keyword">type</span> === <span class="string">'navigateBack'</span>) &#123;</div><div class="line">                <span class="keyword">const</span> &#123; delta, setData &#125; = <span class="keyword">this</span>.data;</div><div class="line">                router.navigateBack(&#123; delta &#125;, &#123; setData &#125;)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<h2 id="整体架构图"><a href="#整体架构图" class="headerlink" title="整体架构图"></a>整体架构图</h2><p>最后，我们来整体回顾一下各模块的设计</p>
+<h1 id="6-整体架构图"><a href="#6-整体架构图" class="headerlink" title="6. 整体架构图"></a>6. 整体架构图</h1><p>最后，我们来整体回顾一下各模块的设计</p>
 <p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20210321202700.png" alt="架构设计"></p>
 <ol>
 <li>Navigator：封装微信原生路由 API，提供智能跳转策略。</li>
@@ -169,13 +188,15 @@
 <li>Logger：内部日志器。</li>
 <li>Path-to-regexp: 开源社区的路由匹配引擎。</li>
 </ol>
-<h1 id="最后的最后"><a href="#最后的最后" class="headerlink" title="最后的最后"></a>最后的最后</h1><p>鉴于写过很多的实战类的文章，会有不少同学想要到整体的示例代码，这次我就索性写了一个工具，Enjoy it!</p>
+<h1 id="7-最后的最后"><a href="#7-最后的最后" class="headerlink" title="7. 最后的最后"></a>7. 最后的最后</h1><p>鉴于写过很多的实战类的文章，会有不少同学想要到整体的示例代码，这次我就索性写了一个工具，Enjoy it!</p>
 <p><a href="https://github.com/JerryC8080/wxapp-router" target="_blank" rel="external">wxapp-router</a>： 🛵 The router for Wechat Miniprogram</p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在微信小程序由一个 &lt;code&gt;App()&lt;/code&gt;实例，和众多&lt;code&gt;Page()&lt;/code&gt;组成。而在小程序中所有页面的路由全
+      &lt;h1 id=&quot;0-目录&quot;&gt;&lt;a href=&quot;#0-目录&quot; class=&quot;headerlink&quot; title=&quot;0. 目录&quot;&gt;&lt;/a&gt;0. 目录&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#1-前言&quot;&gt;1. 前言&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#2-智能路由跳转-
     
     </summary>
     
