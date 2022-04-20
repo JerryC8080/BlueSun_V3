@@ -165,7 +165,9 @@ self.addEventListener('message', event => {
 
 我们知道 Koa.js 著名的洋葱模型：
 
-![Koa洋葱模型](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20200827101330.png)
+<p align="center">
+  <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20200827101330.png" />
+</p>
 
 
 
