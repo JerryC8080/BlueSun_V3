@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>微信小程序登录的前端设计与实现 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="登录 微信小程序," />
+  
+
+  <meta name="description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
+登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
+
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序登录的前端设计与实现">
+<meta property="og:url" content="http://huang-jerryc.com/2020/10/16/wxapp-login-design/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
+登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
+
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111059.jpg">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111042.jpg">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111006.jpg">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105159.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105005.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105120.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111135.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016110706.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016110824.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111006.jpg">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113312.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113324.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016162606.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjqk8sm9dbj30v60fp0uc.jpg">
+<meta property="og:updated_time" content="2020-10-19T02:24:42.620Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序登录的前端设计与实现">
+<meta name="twitter:description" content="一. 前言对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。
+同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。
+登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。
+
+在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#u4E00-__u524D_u8A00"><span class="toc-text">一. 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u4E8C-__u4E1A_u52A1_u573A_u666F"><span class="toc-text">二. 业务场景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u4E09-__u6982_u5FF5"><span class="toc-text">三. 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1__u5173_u4E8E_u300C_u767B_u5F55_u300D"><span class="toc-text">2.1 关于「登录」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2__u5173_u4E8E_u300C_u6388_u6743_u300D"><span class="toc-text">2.2 关于「授权」</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u56DB-__u8BE6_u7EC6_u8BBE_u8BA1"><span class="toc-text">四. 详细设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1__u767B_u5F55_u7684_u5B9E_u73B0"><span class="toc-text">3.1 登录的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1__u9759_u9ED8_u767B_u5F55"><span class="toc-text">3.1.1 静默登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2__u9759_u9ED8_u767B_u5F55_u5F02_u6B65_u72B6_u6001_u7684_u5904_u7406"><span class="toc-text">3.1.2 静默登录异步状态的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3__u81EA_u5B9A_u4E49_u767B_u5F55_u6001_u8FC7_u671F_u7684_u5BB9_u9519_u5904_u7406"><span class="toc-text">3.1.3 自定义登录态过期的容错处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4__u5FAE_u4FE1_session_key__u8FC7_u671F_u7684_u5BB9_u9519_u5904_u7406"><span class="toc-text">3.1.4 微信 session_key 过期的容错处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#u4F1A_u8BDD_u5BC6_u94A5_session_key__u6709_u6548_u6027"><span class="toc-text">会话密钥 session_key 有效性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2__u6388_u6743_u7684_u5B9E_u73B0"><span class="toc-text">3.2 授权的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1__u7EC4_u4EF6_u62C6_u5206_u4E0E_u8BBE_u8BA1"><span class="toc-text">3.2.1 组件拆分与设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2__u6743_u9650_u62E6_u622A_u7684_u5904_u7406"><span class="toc-text">3.2.2 权限拦截的处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-__u524D_u540E_u7AEF_u4EA4_u4E92_u534F_u8BAE_u6574_u7406"><span class="toc-text">3.3. 前后端交互协议整理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u4E94-__u67B6_u6784_u56FE"><span class="toc-text">五. 架构图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u516D-__u603B_u7ED3"><span class="toc-text">六. 总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u4E03-__u53C2_u8003"><span class="toc-text">七. 参考</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-wxapp-login-design" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">微信小程序登录的前端设计与实现</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.10.16</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2020/10/16/wxapp-login-design/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="u4E00-__u524D_u8A00"><a href="#u4E00-__u524D_u8A00" class="headerlink" title="一. 前言"></a>一. 前言</h1><p>对于登录/注册的设计如此精雕细琢的目的，当然是想让这个作为应用的基础能力，有足够的健壮性，避免出现全站性的阻塞。</p>
+<p>同时要充分考虑如何解耦和封装，在开展新的小程序的时候，能更快的去复用能力，避免重复采坑。</p>
+<p>登录注册这模块，就像个冰山，我们以为它就是「输入账号密码，就完成登录了」，但实际下面还有各种需要考虑的问题。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016104626.jpg" alt></p>
+<p>在此，跟在座的各位分享一下，最近做完一个小程序登录/注册模块之后，沉淀下来的一些设计经验和想法。</p>
+<h1 id="u4E8C-__u4E1A_u52A1_u573A_u666F"><a href="#u4E8C-__u4E1A_u52A1_u573A_u666F" class="headerlink" title="二. 业务场景"></a>二. 业务场景</h1><p>在用户浏览小程序的过程中，由业务需要，往往需要获取用户的一些基本信息，常见的有：</p>
+<ol>
+<li>微信昵称</li>
+<li>微信手机号</li>
+</ol>
+<p>而不同的产品，对于用户的信息要求不尽相同，也会有不一样的授权流程。</p>
+<p>第一种，常见于电商系统中，用户购买商品的时候，为了识别用户多平台的账号，往往用手机号去做一个联系，这时候需要用户去授权手机号。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111059.jpg" alt="授权手机号"></p>
+<p>第二种，为了让用户信息得到基本的初始化，往往需要更进一步获取用户信息：如微信昵称，<code>unionId</code> 等，就需要询问用户授权。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111042.jpg" alt="授权用户信息"></p>
+<p>第三种，囊括第一种，第二种。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111006.jpg" alt="完整授权流程"></p>
+<h1 id="u4E09-__u6982_u5FF5"><a href="#u4E09-__u6982_u5FF5" class="headerlink" title="三. 概念"></a>三. 概念</h1><p>秉着沉淀一套通用的小程序登录方案和服务为目标，我们去分析一下业务，得出变量。</p>
+<p>在做技术设计之前，讲点必要的废话，对一些概念进行基本调频。</p>
+<h2 id="2-1__u5173_u4E8E_u300C_u767B_u5F55_u300D"><a href="#2-1__u5173_u4E8E_u300C_u767B_u5F55_u300D" class="headerlink" title="2.1 关于「登录」"></a>2.1 关于「登录」</h2><p>登录在英文中是 「login」，对应的还有 「logout」。而登录之前，你需要拥有一个账号，就要 「register」（or sign up）。</p>
+<p>话说一开始的产品是没有登录/注册功能的，用的人多了就慢慢有了。出于产品本身的需求，需要对「用户」进行身份识别。</p>
+<p>在现实社会中，我们每个人都有一个身份ID：身份证。当我到了16岁的时候，第一次去公安局领身份证的时候，就完成了一次「注册」行为。然后我去网吧上网，身份证刷一下，完成了一次「登录」行为。</p>
+<p>那么对于虚拟世界的互联网来说，这个身份证明就是「账号+密码」。</p>
+<p>常见的登录/注册方式有：</p>
+<ol>
+<li><p><strong>账号密码注册</strong></p>
+<p> 在互联网的早期，个人邮箱和手机覆盖度小。所以，就需要用户自己想一个账号名，我们注册个QQ号，就是这种形式。</p>
+<p> <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105159.png" alt="from 汽车之家">    </p>
+</li>
+<li><p><strong>邮箱地址注册</strong></p>
+<p> 千禧年之后，PC互联网时代快速普及，我们都创建了属于自己的个人邮箱。加上QQ也自带邮箱账号。由于邮箱具有个人私密性，且能够进行信息的沟通，因此，大部分网站开始采用邮箱账号作为用户名来进行注册，并且会在注册的过程中要求登录到相应邮箱内查收激活邮件，验证我们对该注册邮箱的所有权。</p>
+<p> <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105005.png" alt="from 支付宝"></p>
+</li>
+<li><p><strong>手机号码注册</strong></p>
+<p> 在互联网普及之后，智能手机与移动互联网发展迅猛。手机也成为每个人必不可少的移动设备，同时移动互联网也已经深深融入每个人的现代生活当中。所以，相较于邮箱，目前手机号码与个人的联系更加紧密，而且越来越多的移动应用出现，采用手机号码作为用户名的注册方式也得到了广泛的使用。   </p>
+<p> <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016105120.png" alt="from 知乎"></p>
+</li>
+</ol>
+<p>到了 2020 年，微信用户规模达 12 亿。那么，微信账号，起码在中国，已成为新一代互联网世界的「身份标识」。</p>
+<p>而对微信小程序而言，天然就能知道当前用户的微信账号ID。微信允许小程序应用，能在用户无感知的情况下，悄无声息的「登录」到我们的小程序应用中去，这个就是我们经常称之为的「静默登录」。</p>
+<p>其实微信小程序的登录，跟传统 Web 应用的「单点登录」本质是一样的概念。</p>
+<ol>
+<li>单点登录：在 A 站登录了，C 站和 B 站能实现快速的「静默登录」。</li>
+<li>微信小程序登录：在微信中，登录了微信账号，那么在整个小程序生态中，都可以实现「静默登录」。</li>
+</ol>
+<p>由于 Http 本来是无状态的，业界基本对于登录态的一般做法：</p>
+<ol>
+<li>cookie-session：常用于浏览器应用中</li>
+<li>access token：常用于移动端等非浏览器应用</li>
+</ol>
+<p>在微信小程序来说，对于「JS逻辑层」并不是一个浏览器环境，自然没有 <code>Cookie</code>，那么通常会使用 <code>access token</code> 的方式。</p>
+<h2 id="2-2__u5173_u4E8E_u300C_u6388_u6743_u300D"><a href="#2-2__u5173_u4E8E_u300C_u6388_u6743_u300D" class="headerlink" title="2.2 关于「授权」"></a>2.2 关于「授权」</h2><p>对于需要更进一步获取用的用户昵称、用户手机号等信息的产品来说。微信出于用户隐私的考虑，需要用户主动同意授权。小程序应用才能获取到这部分信息，这就有了目前流行的小程序「授权用户信息」、「授权手机号」的交互了。</p>
+<p>出于不同的用户信息敏感度不同的考虑，微信小程序对于不同的用户信息提供「授权」的方式不尽相同：</p>
+<ol>
+<li>调用具体 API 方式，弹窗授权。<ol>
+<li>例如调用 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/location/wx.getLocation.html" target="_blank" rel="external"><code>wx.getLocation()</code></a> 的时候，如果用户未授权，则会弹出地址授权界面。</li>
+<li>如果拒绝了，就不会再次弹窗，<code>wx.getLocation()</code>直接返回失败。</li>
+</ol>
+</li>
+<li><code>&lt;button open-type=&quot;xxx&quot; /&gt;</code> 方式。<ol>
+<li>仅支持：用户敏感信息，用户手机号，需要配合后端进行对称加解密，方能拿到数据。</li>
+<li>用户已拒绝，再次点击按钮，仍然会弹窗。</li>
+</ol>
+</li>
+<li>通过 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/authorize/wx.authorize.html" target="_blank" rel="external"><code>wx.authorize()</code></a>，提前询问授权，之后需要获取相关信息的时候不用再次弹出授权。</li>
+</ol>
+<h1 id="u56DB-__u8BE6_u7EC6_u8BBE_u8BA1"><a href="#u56DB-__u8BE6_u7EC6_u8BBE_u8BA1" class="headerlink" title="四. 详细设计"></a>四. 详细设计</h1><p>梳理清楚了概念之后，我们模块的划分上，可以拆分为两大块：</p>
+<ol>
+<li><strong>登录</strong>：负责与服务端创建起一个会话，这个会话实现静默登录以及相关的容错处理等，模块命名为：<code>Session</code></li>
+<li><strong>授权</strong>：负责与用户交互，获取与更新信息，以及权限的控制处理等，模块命名为：<code>Auth</code></li>
+</ol>
+<h2 id="3-1__u767B_u5F55_u7684_u5B9E_u73B0"><a href="#3-1__u767B_u5F55_u7684_u5B9E_u73B0" class="headerlink" title="3.1 登录的实现"></a>3.1 登录的实现</h2><h3 id="3-1-1__u9759_u9ED8_u767B_u5F55"><a href="#3-1-1__u9759_u9ED8_u767B_u5F55" class="headerlink" title="3.1.1 静默登录"></a>3.1.1 静默登录</h3><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111135.png" alt="微信登录"></p>
+<p>微信官方提供的登录方案，总结为三步：</p>
+<ol>
+<li>前端通过 <code>wx.login()</code> 获取一次性加密凭证 code，交给后端。</li>
+<li>后端把这个 code 传输给微信服务器端，换取用户唯一标识 <code>openId</code> 和授权凭证 <code>session_key</code>。（用于后续服务器端和微信服务器的特殊 API 调用，具体看：<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html" target="_blank" rel="external">微信官方文档-服务端获取开放数据</a>）。</li>
+<li>后端把从微信服务器获取到的用户凭证与自行生成的登录态凭证（token），传输给前端。前端保存起来，下次请求的时候带给后端，就能识别哪个用户。</li>
+</ol>
+<p>如果只是实现这个流程的话，挺简单的。</p>
+<p>但要实现一个健壮的登录过程，还需要注意更多的边界情况：</p>
+<ol>
+<li><p><strong>收拢 <code>wx.login()</code> 的调用</strong>：</p>
+<p> 由于 <code>wx.login()</code> 会产生不可预测的副作用，例如会可能导致<code>session_key</code>失效，从而导致后续的授权解密场景中的失败。我们这里可以提供一个像 <code>session.login()</code> 的方法，掌握 <code>wx.login()</code> 控制权，对其做一系列的封装和容错处理。</p>
+</li>
+<li><p><strong>调用的时机</strong>：</p>
+<p> 通常我们会在应用启动的时候（ <code>app.onLaunch()</code> ），去发起静默登录。但这里会由小程序生命周期设计问题而导致的一个异步问题：加载页面的时候，去调用一个需要登录态的后端 API 的时候，前面异步的静态登录过程有可能还没有完成，从而导致请求失败。</p>
+<p> 当然也可以在第一个需要登录态的接口调用的时候以异步阻塞的方式发起登录调用，这个需要结合良好设计的接口层。</p>
+<p> 以上讲到的两种场景的详细设计思路下文会讲到。</p>
+</li>
+<li><p><strong>并发调用的问题</strong>：</p>
+<p> 在业务场景中，难免会出现多处代码需要触发登录，如果遇到极端情况，这多处代码同时间发起调用。那就会造成短时间多次发起登录过程，尽管之前的请求还没有完成。针对这种情况，我们可以以第一个调用为阻塞，后续调用等待结果，就像精子和卵子结合的过程。</p>
+</li>
+<li><p><strong>未过期调用的问题</strong>：</p>
+<p> 如果我们的登录态未过期，完全可以正常使用的，默认情况就不需再去发起登录过程了。这时候我们可以默认情况下先去检查登录态是否可用，不能用，我们再发起请求。然后还可以提供一个类似 <code>session.login({ force: true })</code>的参数去强行发起登录。</p>
+</li>
+</ol>
+<h3 id="3-1-2__u9759_u9ED8_u767B_u5F55_u5F02_u6B65_u72B6_u6001_u7684_u5904_u7406"><a href="#3-1-2__u9759_u9ED8_u767B_u5F55_u5F02_u6B65_u72B6_u6001_u7684_u5904_u7406" class="headerlink" title="3.1.2 静默登录异步状态的处理"></a>3.1.2 静默登录异步状态的处理</h3><p><strong>1. 应用启动的时候调用</strong></p>
+<p>因为大部分情况都需要依赖登录态，我们会很自然而然的想到把这个调用的时机放到应用启动的时候（ <code>app.onLaunch()</code> ）来调用。</p>
+<p>但是由于原生的小程序启动流程中， <code>App</code>，<code>Page</code>，<code>Component</code> 的生命周期钩子函数，都不支持异步阻塞。</p>
+<p>那么我们很容易会遇到 <code>app.onLaunch</code> 发起的「登录过程」在 <code>page.onLoad</code> 的时候还没有完成，我们就无法正确去做一些依赖登录态的操作。</p>
+<p>针对这种情况，我们设计了一个状态机的工具：<a href="http://beautywejs.com/#/remote/plugin-status?id=plugin-statusl" target="_blank" rel="external">status</a></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016110706.png" alt="状态机"></p>
+<p>基于状态机，我们就可以编写这样的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Status &#125; <span class="keyword">from</span> <span class="string">'@beautywe/plugin-status'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// on app.js</span></span><br><span class="line">App(&#123;</span><br><span class="line">    status: &#123;</span><br><span class="line">       login: <span class="keyword">new</span> Status(<span class="string">'login'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    onLaunch() &#123;</span><br><span class="line">        session</span><br><span class="line">            <span class="comment">// 发起静默登录调用</span></span><br><span class="line">            .login()</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 把状态机设置为 success</span></span><br><span class="line">            .then(() =&gt; <span class="keyword">this</span>.status.login.success())</span><br><span class="line">      </span><br><span class="line">            <span class="comment">// 把状态机设置为 fail</span></span><br><span class="line">            .catch(() =&gt; <span class="keyword">this</span>.status.login.fail());</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// on page.js</span></span><br><span class="line">Page(&#123;</span><br><span class="line">    onLoad() &#123;</span><br><span class="line">      <span class="keyword">const</span> loginStatus = getApp().status.login;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// must 里面会进行状态的判断，例如登录中就等待，登录成功就直接返回，登录失败抛出等。</span></span><br><span class="line">      loginStatus().status.login.must(() =&gt; &#123;</span><br><span class="line">        <span class="comment">// 进行一些需要登录态的操作...</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>2. 在「第一个需要登录态接口」被调用的时候去发起登录</strong></p>
+<p>更进一步，我们会发现，需要登录态的更深层次的节点是在发起的「需要登录态的后端 API 」的时候。</p>
+<p>那么我们可以在调用「需要登录态的后端 API」的时候再去发起「静默登录」，对于并发的场景，让其他请求等待一下就好了。</p>
+<p>以 <a href="https://wendux.github.io/dist/#/doc/flyio/readme" target="_blank" rel="external">fly.js</a> 作为 <code>wx.request()</code> 封装的「网络请求层」，做一个简单的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发起请求，并表明该请求是需要登录态的</span></span><br><span class="line">fly.post(<span class="string">'https://...'</span>, params, &#123; needLogin: <span class="literal">true</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 fly 拦截器中处理逻辑</span></span><br><span class="line">fly.interceptors.request.use(<span class="keyword">async</span> (req)=&gt;&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 在请求需要登录态的时候</span></span><br><span class="line">  <span class="keyword">if</span> (req.needLogin !== <span class="literal">false</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ensureLogin 核心逻辑是：判断是否已登录，如否发起登录调用，如果正在登录，则进入队列等待回调。</span></span><br><span class="line">    <span class="keyword">await</span> session.ensureLogin();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 登录成功后，获取 token，通过 headers 传递给后端。</span></span><br><span class="line">    <span class="keyword">const</span> token = <span class="keyword">await</span> session.getToken();</span><br><span class="line">    <span class="built_in">Object</span>.assign(req.headers, &#123; [AUTH_KEY_NAME]: token &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> req;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="3-1-3__u81EA_u5B9A_u4E49_u767B_u5F55_u6001_u8FC7_u671F_u7684_u5BB9_u9519_u5904_u7406"><a href="#3-1-3__u81EA_u5B9A_u4E49_u767B_u5F55_u6001_u8FC7_u671F_u7684_u5BB9_u9519_u5904_u7406" class="headerlink" title="3.1.3 自定义登录态过期的容错处理"></a>3.1.3 自定义登录态过期的容错处理</h3><p>当自定义登录态过期的时候，后端需要返回特定的状态码，例如：<code>AUTH_EXPIRED</code> 、 <code>AUTH_INVALID</code> 等。</p>
+<p>前端可以在「网络请求层」去监听所有请求的这个状态码，然后发起刷新登录态，再去重放失败的请求：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加响应拦截器</span></span><br><span class="line">fly.interceptors.response.use(</span><br><span class="line">    (response) =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> code = res.data;</span><br><span class="line">        </span><br><span class="line">      <span class="comment">// 登录态过期或失效</span></span><br><span class="line">      <span class="keyword">if</span> ( [<span class="string">'AUTH_EXPIRED'</span>, <span class="string">'AUTH_INVALID'</span>].includes(code) ) &#123;</span><br><span class="line">      </span><br><span class="line">        <span class="comment">// 刷新登录态</span></span><br><span class="line">        <span class="keyword">await</span> session.refreshLogin();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 然后重新发起请求</span></span><br><span class="line">        <span class="keyword">return</span> fly.request(request);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>那么如果并发的发起多个请求，都返回了登录态失效的状态码，上述代码就会被执行多次。</p>
+<p>我们需要对 <code>session.refreshLogin()</code> 做一些特殊的容错处理：</p>
+<ol>
+<li><strong>请求锁</strong>：同一时间，只允许一个正在过程中的网络请求。</li>
+<li><strong>等待队列</strong>：请求被锁定之后，调用该方法的所有调用，都推入一个队列中，等待网络请求完成之后共用返回结果。</li>
+<li><strong>熔断机制</strong>：如果短时间内多次调用，则停止响应一段时间，类似于 TCP 慢启动。</li>
+</ol>
+<p>示例代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Session</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ....</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 刷新登录保险丝，最多重复 3 次，然后熔断，5s 后恢复</span></span><br><span class="line">  refreshLoginFuseLine = REFRESH_LOGIN_FUSELINE_DEFAULT;</span><br><span class="line">  refreshLoginFuseLocked = <span class="literal">false</span>;</span><br><span class="line">  refreshLoginFuseRestoreTime = <span class="number">5000</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 熔断控制</span></span><br><span class="line">  refreshLoginFuse(): <span class="built_in">Promise</span>&lt;<span class="keyword">void</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginFuseLocked) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="string">'刷新登录-保险丝已熔断，请稍后'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginFuseLine &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.refreshLoginFuseLine = <span class="keyword">this</span>.refreshLoginFuseLine - <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.refreshLoginFuseLocked = <span class="literal">true</span>;</span><br><span class="line">      setTimeout(() =&gt; &#123;</span><br><span class="line">        <span class="keyword">this</span>.refreshLoginFuseLocked = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">this</span>.refreshLoginFuseLine = REFRESH_LOGIN_FUSELINE_DEFAULT;</span><br><span class="line">        logger.info(<span class="string">'刷新登录-保险丝熔断解除'</span>);</span><br><span class="line">      &#125;, <span class="keyword">this</span>.refreshLoginFuseRestoreTime);</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="string">'刷新登录-保险丝熔断!!'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 并发回调队列</span></span><br><span class="line">  refreshLoginQueueMaxLength = <span class="number">100</span>;</span><br><span class="line">  refreshLoginQueue: any[] = [];</span><br><span class="line">  refreshLoginLocked = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 刷新登录态</span></span><br><span class="line">  refreshLogin(): <span class="built_in">Promise</span>&lt;<span class="keyword">void</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve()</span><br><span class="line">    </span><br><span class="line">      <span class="comment">// 回调队列 + 熔断 控制</span></span><br><span class="line">      .then(() =&gt; <span class="keyword">this</span>.refreshLoginFuse())</span><br><span class="line">      .then(() =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginLocked) &#123;</span><br><span class="line">          <span class="keyword">const</span> maxLength = <span class="keyword">this</span>.refreshLoginQueueMaxLength;</span><br><span class="line">          <span class="keyword">if</span> (<span class="keyword">this</span>.refreshLoginQueue.length &gt;= maxLength) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="string">`refreshLoginQueue 超出容量：<span class="subst">$&#123;maxLength&#125;</span>`</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>((resolve, reject) =&gt; &#123;</span><br><span class="line">            <span class="keyword">this</span>.refreshLoginQueue.push([resolve, reject]);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.refreshLoginLocked = <span class="literal">true</span>;</span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 通过前置控制之后，发起登录过程</span></span><br><span class="line">      .then(() =&gt; &#123;</span><br><span class="line">        <span class="keyword">this</span>.clearSession();</span><br><span class="line">        wx.showLoading(&#123; title: <span class="string">'刷新登录态中'</span>, mask: <span class="literal">true</span> &#125;);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.login()</span><br><span class="line">          .then(() =&gt; &#123;</span><br><span class="line">            wx.hideLoading();</span><br><span class="line">            wx.showToast(&#123; icon: <span class="string">'none'</span>, title: <span class="string">'登录成功'</span> &#125;);</span><br><span class="line">            <span class="keyword">this</span>.refreshLoginQueue.forEach(([resolve]) =&gt; resolve());</span><br><span class="line">            <span class="keyword">this</span>.refreshLoginLocked = <span class="literal">false</span>;</span><br><span class="line">          &#125;)</span><br><span class="line">          .catch(err =&gt; &#123;</span><br><span class="line">            wx.hideLoading();</span><br><span class="line">            wx.showToast(&#123; icon: <span class="string">'none'</span>, title: <span class="string">'登录失败'</span> &#125;);</span><br><span class="line">            <span class="keyword">this</span>.refreshLoginQueue.forEach(([, reject]) =&gt; reject());</span><br><span class="line">            <span class="keyword">this</span>.refreshLoginLocked = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">throw</span> err;</span><br><span class="line">          &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-1-4__u5FAE_u4FE1_session_key__u8FC7_u671F_u7684_u5BB9_u9519_u5904_u7406"><a href="#3-1-4__u5FAE_u4FE1_session_key__u8FC7_u671F_u7684_u5BB9_u9519_u5904_u7406" class="headerlink" title="3.1.4 微信 session_key 过期的容错处理"></a>3.1.4 微信 session_key 过期的容错处理</h3><p>我们从上面的「静默登录」之后，微信服务器端会下发一个 <code>session_key</code> 给后端，而这个会在需要获取<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html" target="_blank" rel="external">微信开放数据</a>的时候会用到。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016110824.png" alt="微信开放数据"></p>
+<p>而 <code>session_key</code> 是有时效性的，以下摘自微信官方描述：</p>
+<blockquote>
+<h4 id="u4F1A_u8BDD_u5BC6_u94A5_session_key__u6709_u6548_u6027"><a href="#u4F1A_u8BDD_u5BC6_u94A5_session_key__u6709_u6548_u6027" class="headerlink" title="会话密钥 session_key 有效性"></a>会话密钥 session_key 有效性</h4><p>开发者如果遇到因为 session_key 不正确而校验签名失败或解密失败，请关注下面几个与 session_key 有关的注意事项。</p>
+<ol>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html" target="_blank" rel="external">wx.login</a> 调用时，用户的 session_key <strong>可能</strong>会被更新而致使旧 session_key 失效（刷新机制存在最短周期，如果同一个用户短时间内多次调用 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html" target="_blank" rel="external">wx.login</a>，并非每次调用都导致 session_key 刷新）。开发者应该在明确需要重新登录时才调用 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html" target="_blank" rel="external">wx.login</a>，及时通过 <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html" target="_blank" rel="external">auth.code2Session</a> 接口更新服务器存储的 session_key。</li>
+<li>微信不会把 session_key 的有效期告知开发者。我们会根据用户使用小程序的行为对 session_key 进行续期。用户越频繁使用小程序，session_key 有效期越长。</li>
+<li>开发者在 session_key 失效时，可以通过重新执行登录流程获取有效的 session_key。使用接口 <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.checkSession.html" target="_blank" rel="external">wx.checkSession</a>可以校验 session_key 是否有效，从而避免小程序反复执行登录流程。</li>
+<li>当开发者在实现自定义登录态时，可以考虑以 session_key 有效期作为自身登录态有效期，也可以实现自定义的时效性策略。</li>
+</ol>
+</blockquote>
+<p>翻译成简单的两句话：</p>
+<ol>
+<li><code>session_key</code> 时效性由微信控制，开发者不可预测。</li>
+<li><code>wx.login</code> 可能会导致 <code>session_key</code> 过期，可以在使用接口之前用<code>wx.checkSession</code> 检查一下。</li>
+</ol>
+<p>而对于第二点，我们通过实验发现，偶发性的在 <code>session_key</code> 已过期的情况下，<code>wx.checkSession</code> 会概率性返回 <code>true</code></p>
+<p>社区也有相关的反馈未得到解决：</p>
+<ul>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000424005b89983f337a622c751000?highLine=wx.checkSession" target="_blank" rel="external">小程序解密手机号,隔一小段时间后,checksession:ok,但是解密失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/0008e429bd0c886e10699f59c51000?_at=1602745291452" target="_blank" rel="external">wx.checkSession有效，但是解密数据失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000a04ab4546d80d5428ffcee51800?_at=1602745291452" target="_blank" rel="external">checkSession判断session_key未失效，但是解密手机号失败</a></li>
+</ul>
+<p><strong>所以结论是：<code>wx.checkSession</code>可靠性是不达 100% 的。</strong></p>
+<p>基于以上，我们需要对 <code>session_key</code> 的过期做一些容错处理：</p>
+<ol>
+<li>发起需要使用 <code>session_key</code> 的请求前，做一次 <code>wx.checkSession</code> 操作，如果失败了刷新登录态。</li>
+<li>后端使用 <code>session_key</code> 解密开放数据失败之后，返回特定错误码（如：<code>DECRYPT_WX_OPEN_DATA_FAIL</code>），前端刷新登录态。</li>
+</ol>
+<p>示例代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义检查 session_key 有效性的操作</span></span><br><span class="line"><span class="keyword">const</span> ensureSessionKey = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> hasSession = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(resolve =&gt; &#123;</span><br><span class="line">    wx.checkSession(&#123;</span><br><span class="line">      success: () =&gt; resolve(<span class="literal">true</span>),</span><br><span class="line">      fail: () =&gt; resolve(<span class="literal">false</span>),</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!hasSession) &#123;</span><br><span class="line">    logger.info(<span class="string">'sessionKey 已过期，刷新登录态'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 接上面提到的刷新登录逻辑</span></span><br><span class="line">    <span class="keyword">return</span> session.refreshLogin();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在发起请求的时候，先做一次确保 session_key 最新的操作（以 fly.js 作为网络请求层为例）</span></span><br><span class="line"><span class="keyword">const</span> updatePhone = <span class="keyword">async</span> (params) =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> ensureSessionKey();</span><br><span class="line">  <span class="keyword">const</span> res = <span class="keyword">await</span> fly.post(<span class="string">'https://xxx'</span>, params);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加响应拦截器, 监听网络请求返回</span></span><br><span class="line">fly.interceptors.response.use(</span><br><span class="line">    (response) =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> code = res.data;</span><br><span class="line">        </span><br><span class="line">      <span class="comment">// 登录态过期或失效</span></span><br><span class="line">      <span class="keyword">if</span> ( [<span class="string">'DECRYPT_WX_OPEN_DATA_FAIL'</span>].includes(code)) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 刷新登录态</span></span><br><span class="line">        <span class="keyword">await</span> session.refreshLogin();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 由于加密场景的加密数据由用户点击产生，session_key 可能已经更改，需要用户重新点击一遍。</span></span><br><span class="line">        wx.showToast(&#123; title: <span class="string">'网络出小差了，请稍后重试'</span>, icon: <span class="string">'none'</span> &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="3-2__u6388_u6743_u7684_u5B9E_u73B0"><a href="#3-2__u6388_u6743_u7684_u5B9E_u73B0" class="headerlink" title="3.2 授权的实现"></a>3.2 授权的实现</h2><h3 id="3-2-1__u7EC4_u4EF6_u62C6_u5206_u4E0E_u8BBE_u8BA1"><a href="#3-2-1__u7EC4_u4EF6_u62C6_u5206_u4E0E_u8BBE_u8BA1" class="headerlink" title="3.2.1 组件拆分与设计"></a>3.2.1 组件拆分与设计</h3><p>在用户信息和手机号获取的方式上，微信是以 <code>&lt;button open-type=&#39;xxx&#39; /&gt;</code> 的方式，让用户主动点击授权的。</p>
+<p>那么为了让代码更解耦，我们设计这样三个组件：</p>
+<ol>
+<li><code>&lt;user-contaienr getUserInfo=&quot;onUserInfoAuth&quot;&gt;</code>: 包装点击交互，通过 <code>&lt;slot&gt;</code> 支持点击区域的自定义UI。</li>
+<li><code>&lt;phone-container getPhonenNmber=&quot;onPhoneAuth&quot;&gt;</code> : 与 <code>&lt;user-container&gt;</code> 同理。</li>
+<li><code>&lt;auth-flow&gt;</code>: 根据业务需要，组合 <code>&lt;user-container&gt;</code>、<code>&lt;phone-container&gt;</code> 组合来定义不同的授权流程。</li>
+</ol>
+<p>以开头的业务场景的流程为例，它有这样的要求：</p>
+<ol>
+<li>有多个步骤。</li>
+<li>如果中途断掉了，可以从中间接上。</li>
+<li>有些场景中，只要求达到「用户信息授权」，而不需要完成「用户手机号」。</li>
+</ol>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016111006.jpg" alt="完整授权流程"></p>
+<p>那么授权的阶段可以分三层：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用户登录的阶段</span></span><br><span class="line"><span class="keyword">export</span> enum AuthStep &#123;</span><br><span class="line">  <span class="comment">// 阶段一：只有登录态，没有用户信息，没有手机号</span></span><br><span class="line">  ONE = <span class="number">1</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 阶段二：有用户信息，没有手机号</span></span><br><span class="line">  TWO = <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 阶段三：有用户信息，有手机号</span></span><br><span class="line">  THREE = <span class="number">3</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>AuthStep</code> 的推进过程是不可逆的，我们可以定义一个 <code>nextStep</code> 函数来封装 AuthStep 更新的逻辑。外部使用的话，只要无脑调用 <code>nextStep</code> 方法，等待回调结果就行。</p>
+<p>示例伪代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auth-flow component</span></span><br><span class="line"></span><br><span class="line">Component(&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  </span><br><span class="line">  data: &#123;</span><br><span class="line">    <span class="comment">// 默认情况下，只需要到达阶段二。</span></span><br><span class="line">    mustAuthStep: AuthStep.TWO</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 允许临时更改组件的需要达到的阶段。</span></span><br><span class="line">  setMustAuthStep(mustAuthStep: AuthStep) &#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123; mustAuthStep &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 根据用户当前的信息，计算用户处在授权的阶段</span></span><br><span class="line">  getAuthStep() &#123;</span><br><span class="line">    <span class="keyword">let</span> currAuthStep;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 没有用户信息，尚在第一步</span></span><br><span class="line">    <span class="keyword">if</span> (!session.hasUser() || !session.hasUnionId()) &#123;</span><br><span class="line">      currAuthStep = AuthStepType.ONE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 没有手机号，尚在第二步</span></span><br><span class="line">    <span class="keyword">if</span> (!session.hasPhone()) &#123;</span><br><span class="line">      currAuthStep = AuthStepType.TWO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 都有，尚在第三步</span></span><br><span class="line">    currAuthStep = AuthStepType.THREE;</span><br><span class="line">    <span class="keyword">return</span> currAuthStep;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 发起下一步授权，如果都已经完成，就直接返回成功。</span></span><br><span class="line">  nextStep(e) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; mustAuthStep &#125; = <span class="keyword">this</span>.data;</span><br><span class="line">    <span class="keyword">const</span> currAuthStep = <span class="keyword">this</span>.updateAuthStep();</span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 已完成授权</span></span><br><span class="line">    <span class="keyword">if</span> (currAuthStep &gt;= mustAuthStep || currAuthStep === AuthStepType.THREE) &#123;</span><br><span class="line">      <span class="comment">// 更新全局的授权状态机，广播消息给订阅者。</span></span><br><span class="line">      <span class="keyword">return</span> getApp().status.auth.success();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第一步：更新用户信息</span></span><br><span class="line">    <span class="keyword">if</span> (currAuthStep === AuthStepType.ONE) &#123;</span><br><span class="line">      <span class="comment">// 已有密文信息，更新用户信息</span></span><br><span class="line">      <span class="keyword">if</span> (e) session.updateUser(e);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 更新到视图层，展示对应UI，等待获取用户信息</span></span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">this</span>.setData(&#123; currAuthStep &#125;);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二步：更新手机信息</span></span><br><span class="line">    <span class="keyword">if</span> (currAuthStep === AuthStepType.TWO) &#123;</span><br><span class="line">      <span class="comment">// 已有密文信息，更新手机号</span></span><br><span class="line">      <span class="keyword">if</span> (e) <span class="keyword">this</span>.bindPhone(e);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 未有密文信息，弹出获取窗口</span></span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">this</span>.setData(&#123; currAuthStep &#125;);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.warn(<span class="string">'auth.nextStep 错误'</span>, &#123; currAuthStep, mustAuthStep &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>那么我们的 <code>&lt;auth-flow&gt;</code> 中就可以根据 <code>currAuthStep</code> 和 <code>mustAuthStep</code> 来去做不同的 UI 展示。需要注意的是使用 <code>&lt;user-container&gt;</code>、<code>&lt;phone-container&gt;</code> 的时候连接上 <code>nextStep(e)</code> 函数。</p>
+<p>示例伪代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">view</span> <span class="attribute">class</span>=<span class="value">"auth-flow"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 已完成授权 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">block</span> <span class="attribute">wx:if</span>=<span class="value">"&#123;&#123;currAuthStep === mustAuthStep || currAuthStep === AuthStep.THREE&#125;&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">view</span>&gt;</span>已完成授权<span class="tag">&lt;/<span class="title">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">block</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 未完成授权，第一步：授权用户信息 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">block</span> <span class="attribute">wx:elif</span>=<span class="value">"&#123;&#123;currAuthStep === AuthStep.ONE&#125;&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">user-container</span> <span class="attribute">bind:getuserinfo</span>=<span class="value">"nextStep"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">view</span>&gt;</span>授权用户信息<span class="tag">&lt;/<span class="title">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">user-container</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">block</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 未完成授权，第二步：授权手机号 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">block</span> <span class="attribute">wx:elif</span>=<span class="value">"&#123;&#123;currAuthStep === AuthStep.TWO&#125;&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">phone-container</span> <span class="attribute">bind:getphonenumber</span>=<span class="value">"nextStep"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">view</span>&gt;</span>授权手机号<span class="tag">&lt;/<span class="title">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">phone-container</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">block</span>&gt;</span></span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="title">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-2-2__u6743_u9650_u62E6_u622A_u7684_u5904_u7406"><a href="#3-2-2__u6743_u9650_u62E6_u622A_u7684_u5904_u7406" class="headerlink" title="3.2.2 权限拦截的处理"></a>3.2.2 权限拦截的处理</h3><p>到这里，我们制作好了用来承载授权流程的组件 <code>&lt;auth-flow&gt;</code> ，那么接下来就是决定要使用它的时机了。</p>
+<p>我们梳理需要授权的场景：</p>
+<ol>
+<li><p>点击某个按钮，例如：购买某个商品。</p>
+<p>对于这种场景，常见的是通过弹窗完成授权，用户可以选择关闭。</p>
+</li>
+</ol>
+<p>   <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113312.png" alt="授权模型-弹窗"></p>
+<ol start="2">
+<li><p>浏览某个页面，例如：访问个人中心。</p>
+<p>对于这种场景，我们可以在点击跳转某个页面的时候，进行拦截，弹窗处理。但这样的缺点是，跳转到目标页面的地方可能会很多，每个都拦截，难免会错漏。而且当目标页面作为「小程序落地页面」的时候，就避免不了。</p>
+<p>这时候，我们可以通过重定向到授权页面来完成授权流程，完成之后，再回来。</p>
+</li>
+</ol>
+<p>   <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016113324.png" alt="授权模型-页面"></p>
+<p>那么我们定义一个枚举变量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 授权的展示形式</span></span><br><span class="line"><span class="keyword">export</span> enum AuthDisplayMode &#123;</span><br><span class="line">  <span class="comment">// 以弹窗形式</span></span><br><span class="line">  POPUP = <span class="string">'button'</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 以页面形式</span></span><br><span class="line">  PAGE = <span class="string">'page'</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以设计一个 <code>mustAuth</code> 方法，在点击某个按钮，或者页面加载的时候，进行授权控制。</p>
+<p>伪代码示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Session</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  </span><br><span class="line">  mustAuth(&#123;</span><br><span class="line">    mustAuthStep = AuthStepType.TWO, <span class="comment">// 需要授权的LEVEL，默认需要获取用户资料</span></span><br><span class="line">    popupCompName = <span class="string">'auth-popup'</span>,	<span class="comment">// 授权弹窗组件的 id</span></span><br><span class="line">    mode = AuthDisplayMode.POPUP, <span class="comment">// 默认以弹窗模式</span></span><br><span class="line">  &#125; = &#123;&#125;): <span class="built_in">Promise</span>&lt;<span class="keyword">void</span>&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果当前的授权步骤已经达标，则返回成功</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.currentAuthStep() &gt;= mustAuthStep) <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 尝试获取当前页面的 &lt;auth-popup id="auth-popup" /&gt; 组件实例</span></span><br><span class="line">    <span class="keyword">const</span> pages = getCurrentPages();</span><br><span class="line">    <span class="keyword">const</span> curPage = pages[pages.length - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">const</span> popupComp = curPage.selectComponent(<span class="string">`#<span class="subst">$&#123;popupCompName&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 组件不存在或者显示指定页面，跳转到授权页面</span></span><br><span class="line">    <span class="keyword">if</span> (!popupComp || mode === AuthDisplayMode.PAGE) &#123;</span><br><span class="line">      <span class="keyword">const</span> curRoute = curPage.route;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 跳转到授权页面，带上当前页面路由，授权完成之后，回到当前页面。</span></span><br><span class="line">      wx.redirectTo(&#123; url: <span class="string">`authPage?backTo=<span class="subst">$&#123;encodeURIComponent(curRoute)&#125;</span>`</span> &#125;);</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置授权 LEVEL，然后调用 &lt;auth-popup&gt; 的 nextStep 方法，进行进一步的授权。</span></span><br><span class="line">    popupComp.setMustAuthStep(mustAuthStep);</span><br><span class="line">    popupComp.nextStep();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待成功回调或者失败回调</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>((resolve, reject) =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> authStatus = getApp().status.auth;</span><br><span class="line">      authStatus.onceSuccess(resolve);</span><br><span class="line">      authStatus.onceFail(reject);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们就能在按钮点击，或者页面加载的时候进行授权拦截：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  onLoad() &#123;</span><br><span class="line">    session.mustAuth().then(() =&gt; &#123;</span><br><span class="line">      <span class="comment">// 开始初始化页面...</span></span><br><span class="line">    &#125;)；</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  onClick(e) &#123;</span><br><span class="line">    session.mustAuth().then(() =&gt; &#123;</span><br><span class="line">      <span class="comment">// 开始处理回调逻辑...</span></span><br><span class="line">    &#125;)；</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>当然，如果项目使用了 TS 的话，或者支持 ES7 Decorator 特性的话，我们可以为 <code>mustAuth</code> 提供一个装饰器版本：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">mustAuth</span>(<span class="params">option = &#123;&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span><br><span class="line">    _target,</span><br><span class="line">    _propertyName,</span><br><span class="line">    descriptor,</span><br><span class="line">  </span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 劫持目标方法</span></span><br><span class="line">    <span class="keyword">const</span> method = descriptor.value;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 重写目标方法</span></span><br><span class="line">    descriptor.value = <span class="function"><span class="keyword">function</span>(<span class="params">...args: any[]</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> session.mustAuth(option).then(() =&gt; &#123;</span><br><span class="line">        <span class="comment">// 登录完成之后，重放原来方法</span></span><br><span class="line">        <span class="keyword">if</span> (method) <span class="keyword">return</span> method.apply(<span class="keyword">this</span>, args);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么使用方式就简单一些了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  @mustAuth();</span><br><span class="line">  onLoad() &#123;</span><br><span class="line">    <span class="comment">// 开始初始化页面...</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  @mustAuth();</span><br><span class="line">  onClick(e) &#123;</span><br><span class="line">    <span class="comment">// 开始处理回调逻辑...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="3-3-__u524D_u540E_u7AEF_u4EA4_u4E92_u534F_u8BAE_u6574_u7406"><a href="#3-3-__u524D_u540E_u7AEF_u4EA4_u4E92_u534F_u8BAE_u6574_u7406" class="headerlink" title="3.3. 前后端交互协议整理"></a>3.3. 前后端交互协议整理</h2><p>作为一套可复用的小程序登录方案，当然需要去定义好前后端的交互协议。</p>
+<p>那么整套登录流程下来，需要的接口有这么几个：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201016162606.png" alt="登录注册前后端接口协议"></p>
+<ol>
+<li><p><strong>静默登录 silentLogin</strong></p>
+<ol>
+<li>入参：<ol>
+<li>code: 产自 wx.login()</li>
+</ol>
+</li>
+<li>出参：<ol>
+<li>token: 自定义登录态凭证</li>
+<li>userInfo: 用户信息</li>
+</ol>
+</li>
+<li>说明：<ol>
+<li>后端利用 code 跟微信客户端换取用户标识，然后注册并登录用户，返回自定义登录态 <code>token</code> 给前端</li>
+<li><code>token</code> 前端会存起来，每个请求都会带上</li>
+<li>userInfo 需要包含<code>nickname</code>和<code>phone</code>字段，前端用于计算当前用户的授权阶段。当然这个状态的记录可以放在后端，但是我们认为放在前端，会更加灵活。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>更新用户信息 updateUser</strong><ol>
+<li>入参：<ol>
+<li>nickname: 用户昵称</li>
+<li>encrypt: 微信开放数据相关的 <code>iv</code>, <code>encryptedData</code></li>
+<li>以及其他如性别地址等非必要字段</li>
+</ol>
+</li>
+<li>出参：<ol>
+<li>userInfo：更新后的最新用户信息</li>
+</ol>
+</li>
+<li>说明：<ol>
+<li>后端解密微信开放数据，获取隐蔽数据，如：<code>unionId</code>等</li>
+<li>后端支持更新包括 <code>nickname</code>等用户基本信息。</li>
+<li>前端会把 userInfo 信息更新到 <code>session</code> 中，用于计算授权阶段。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>更新用户手机号 updatePhone</strong><ol>
+<li>入参：<ol>
+<li>encrypt：微信开放数据相关的 <code>iv</code>, <code>encryptedData</code></li>
+</ol>
+</li>
+<li>出参：<ol>
+<li>userInfo：更新后的最新用户信息</li>
+</ol>
+</li>
+<li>说明：<ol>
+<li>后端解密开放式局，获取手机号，并更新到用户信息中。 </li>
+<li>前端会把 userInfo 信息更新到 <code>session</code> 中，用于计算授权阶段。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>解绑手机号 unbindPhone</strong><ol>
+<li>入参：-</li>
+<li>出参：-</li>
+<li>说明：后端解绑用户手机号，成功与否，走业务定义的前后端协议。</li>
+</ol>
+</li>
+<li><strong>登录 logout</strong><ol>
+<li>入参：-</li>
+<li>出参：-</li>
+<li>说明：后端主动过期登录态，成功与否，走业务定义的前后端协议。</li>
+</ol>
+</li>
+</ol>
+<h1 id="u4E94-__u67B6_u6784_u56FE"><a href="#u4E94-__u67B6_u6784_u56FE" class="headerlink" title="五. 架构图"></a>五. 架构图</h1><p>最后我们来梳理一下整体的「登录服务」的架构图：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjqk8sm9dbj30v60fp0uc.jpg" alt="微信小程序登录服务架构图"></p>
+<p>由「登录服务」和「底层建设」组合提供的通用服务，业务层只需要去根据产品需求，定制授权的流程 <code>&lt;auth-flow&gt;</code> ，就能满足大部分场景了。</p>
+<h1 id="u516D-__u603B_u7ED3"><a href="#u516D-__u603B_u7ED3" class="headerlink" title="六. 总结"></a>六. 总结</h1><p>本篇文章通过一些常见的登录授权场景来展开来描述细节点。</p>
+<p>整理了「登录」、「授权」的概念。</p>
+<p>然后分别针对「登录」介绍了一些关键的技术实现：</p>
+<ol>
+<li>静默登录</li>
+<li>静默登录异步状态的处理</li>
+<li>自定义登录态过期的容错处理</li>
+<li>微信 <code>session_key</code> 过期的容错处理</li>
+</ol>
+<p>而对于「授权」，会有设计UI部分的逻辑，还需要涉及到组件的拆分：</p>
+<ol>
+<li>组件拆分与设计</li>
+<li>权限拦截的处理</li>
+</ol>
+<p>然后，梳理了这套登录授权方案所依赖的后端接口，和给出最简单的参考协议。</p>
+<p>最后，站在「秉着沉淀一套通用的小程序登录方案和服务为目标」的角度，梳理了一下架构层面上的分层。</p>
+<ol>
+<li>业务定制层</li>
+<li>登录服务层</li>
+<li>底层建设</li>
+</ol>
+<h1 id="u4E03-__u53C2_u8003"><a href="#u4E03-__u53C2_u8003" class="headerlink" title="七. 参考"></a>七. 参考</h1><ol>
+<li><a href="https://wendux.github.io/dist/#/doc/flyio/readme" target="_blank" rel="external">fly.js 官网</a></li>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html" target="_blank" rel="external">微信官方文档-授权</a></li>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html" target="_blank" rel="external">微信官方文档-服务端获取开放数据</a></li>
+<li>微信官方社区<ol>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000424005b89983f337a622c751000?highLine=wx.checkSession" target="_blank" rel="external">小程序解密手机号,隔一小段时间后,checksession:ok,但是解密失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/0008e429bd0c886e10699f59c51000?_at=1602745291452" target="_blank" rel="external">wx.checkSession有效，但是解密数据失败</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/doc/000a04ab4546d80d5428ffcee51800?_at=1602745291452" target="_blank" rel="external">checkSession判断session_key未失效，但是解密手机号失败</a></li>
+</ol>
+</li>
+</ol>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/07/06/about-okr/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2021/01/28/method-fuse/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2020/10/16/wxapp-login-design/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>

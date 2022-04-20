@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>打造高效个性Terminal（一）之 iTerm | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Tool Kit," />
+  
+
+  <meta name="description" content="前言作为一个集效率控、颜值控、强迫症患者标签于一身的患者，对待自己工作用到的Terminal，自然是诸多要求。本文首先会讲一下怎么弄一个高颜值、个性化的Terminal，然后再说说怎么利用一些工具来提高Terminal的效率。
+PS：文末有彩蛋。
+iTerm简介 Introduction
+iTerm2 is a replacement for Terminal and the successor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打造高效个性Terminal（一）之 iTerm">
+<meta property="og:url" content="http://huang-jerryc.com/2016/08/11/打造高效个性Terminal（一）之 iTerm/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="前言作为一个集效率控、颜值控、强迫症患者标签于一身的患者，对待自己工作用到的Terminal，自然是诸多要求。本文首先会讲一下怎么弄一个高颜值、个性化的Terminal，然后再说说怎么利用一些工具来提高Terminal的效率。
+PS：文末有彩蛋。
+iTerm简介 Introduction
+iTerm2 is a replacement for Terminal and the successor">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/5961B48A3EE1C7C5AC59C7653ABBC9CF.gif">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/1EA60589F1F6EC96B2F1BD36EF6DE854.gif">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/C19BBDC28A01A98CD1D202CBC94A6B29.jpg">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/4E35E0BAF7B7CA5EB11BE4BFF22977FD.jpg">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/46AD20F0070843F9804B1717D5CD6661.jpg">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/526B5DF9BC09C70065BB863ABCDB942D.jpg">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/5622AB0237BACE99D299D43D98D359DF.jpg">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/32CFF9E358032E50DB87B07D6B6B0F9E.jpg">
+<meta property="og:image" content="http://huang-jerryc.com/image/blog/make-beauty-and-productify-terminal-part1/14C8AD735CDD1B4A0460FEF930AAB9F0.jpg">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打造高效个性Terminal（一）之 iTerm">
+<meta name="twitter:description" content="前言作为一个集效率控、颜值控、强迫症患者标签于一身的患者，对待自己工作用到的Terminal，自然是诸多要求。本文首先会讲一下怎么弄一个高颜值、个性化的Terminal，然后再说说怎么利用一些工具来提高Terminal的效率。
+PS：文末有彩蛋。
+iTerm简介 Introduction
+iTerm2 is a replacement for Terminal and the successor">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#u524D_u8A00"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iTerm"><span class="toc-text">iTerm</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#u7B80_u4ECB_Introduction"><span class="toc-text">简介 Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5851_u9020_u9AD8_u989C_u503CTerminal"><span class="toc-text">塑造高颜值Terminal</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u4E00_u6B65_u4E00_u6B65_u5F80_u524D_u8D70"><span class="toc-text">一步一步往前走</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-1__u521B_u5EFA_u7B2C_u4E00_u79CDProfile"><span class="toc-text">Step.1 创建第一种Profile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-2__u80CC_u666F_u900F_u660E_u4E0E_u6A21_u7CCA_u8BBE_u7F6E"><span class="toc-text">Step.2 背景透明与模糊设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-3__u7A97_u53E3_u98CE_u683C_u914D_u7F6E"><span class="toc-text">Step.3 窗口风格配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-4__u8BBE_u7F6EHotKey"><span class="toc-text">Step.4 设置HotKey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-5__u521B_u5EFA_u7B2C_u4E8C_u4E2AProfile"><span class="toc-text">Step.5 创建第二个Profile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-6__u7A97_u53E3_u98CE_u683C_u914D_u7F6E"><span class="toc-text">Step.6 窗口风格配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-7__u8BBE_u7F6E_u9ED8_u8BA4"><span class="toc-text">Step.7 设置默认</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5E38_u7528_u529F_u80FD_u5FEB_u6377_u952E"><span class="toc-text">常用功能快捷键</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-打造高效个性Terminal（一）之 iTerm" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">打造高效个性Terminal（一）之 iTerm</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.08.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2016/08/11/打造高效个性Terminal（一）之 iTerm/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h1><p>作为一个集效率控、颜值控、强迫症患者标签于一身的患者，对待自己工作用到的Terminal，自然是诸多要求。本文首先会讲一下怎么弄一个高颜值、个性化的Terminal，然后再说说怎么利用一些工具来提高Terminal的效率。</p>
+<p><del>PS：文末有彩蛋。</del></p>
+<h1 id="iTerm"><a href="#iTerm" class="headerlink" title="iTerm"></a>iTerm</h1><h2 id="u7B80_u4ECB_Introduction"><a href="#u7B80_u4ECB_Introduction" class="headerlink" title="简介 Introduction"></a>简介 <small>Introduction</small></h2><blockquote>
+<p>iTerm2 is a replacement for Terminal and the successor to iTerm. It works on Macs with OS X 10.8 or newer. iTerm2 brings the terminal into the modern age with features you never knew you always wanted.</p>
+</blockquote>
+<p><strong>iTerm</strong>是一款免费的，专为Mac OS用户打造的命令行应用。作为系统自带<strong>Terminal</strong>的替代，它提供了很多方便且极客的功能。诸如隔离的面板、透明窗口、强大的正则表达式搜索、自动补全等、剪贴板历史记录，快照返回等功能，更多iTerm的特性见<a href="http://www.iterm2.com/features.html" target="_blank" rel="external">iTerm Feature</a>。<br>下载见官网(<a href="http://www.iterm2.com/" target="_blank" rel="external">http://www.iterm2.com/</a>)，如果你不是Mac用户，那就跳过<strong>iTerm</strong>，直接看提高效率的<strong>oh-my-zsh</strong></p>
+<h2 id="u5851_u9020_u9AD8_u989C_u503CTerminal"><a href="#u5851_u9020_u9AD8_u989C_u503CTerminal" class="headerlink" title="塑造高颜值Terminal"></a>塑造高颜值Terminal</h2><p><strong>iTerm</strong>吸引我的地方，除了各种方面的特性之外，就是炫酷可定制的界面。<br>满足我的视觉强迫症之外还可以提供方便的功能，应当是每个MacOS程序员必备的利器。</p>
+<p>对于使用命令行，我一般会有两个这样的使用场景<br>一、快速打开，执行一两条命令，然后关闭，诸如打开文件，启动服务等等。<br>二、长时间使用命令行，诸如调试程序，VIM编程等等。</p>
+<p>对于第一种情况，我希望是可以通过快捷键快速的打开命令行，然后同样的快捷键快速的隐藏它，直到我需要的时候再次来到我面前。<br>而第二种情况，我希望是可以和正常的命令窗口界面那样，让我安安静静的调试程序。</p>
+<p>所以，在iTerm，我会建两个Profile配置。</p>
+<p><strong>第一种Profile</strong><br><img src="/image/blog/make-beauty-and-productify-terminal-part1/5961B48A3EE1C7C5AC59C7653ABBC9CF.gif" alt="my terminal part 1.gif"></p>
+<p><strong>第二种Profile</strong><br><img src="/image/blog/make-beauty-and-productify-terminal-part1/1EA60589F1F6EC96B2F1BD36EF6DE854.gif" alt="my terminal part 2.gif"></p>
+<h2 id="u4E00_u6B65_u4E00_u6B65_u5F80_u524D_u8D70"><a href="#u4E00_u6B65_u4E00_u6B65_u5F80_u524D_u8D70" class="headerlink" title="一步一步往前走"></a>一步一步往前走</h2><h3 id="Step-1__u521B_u5EFA_u7B2C_u4E00_u79CDProfile"><a href="#Step-1__u521B_u5EFA_u7B2C_u4E00_u79CDProfile" class="headerlink" title="Step.1 创建第一种Profile"></a>Step.1 创建第一种Profile</h3><p>首先在<code>Preperence → Profiles</code>，建立一个<code>Profiles</code>， 取名<code>HotKey Window</code></p>
+<p><img src="/image/blog/make-beauty-and-productify-terminal-part1/C19BBDC28A01A98CD1D202CBC94A6B29.jpg" alt="建立Profile"></p>
+<h3 id="Step-2__u80CC_u666F_u900F_u660E_u4E0E_u6A21_u7CCA_u8BBE_u7F6E"><a href="#Step-2__u80CC_u666F_u900F_u660E_u4E0E_u6A21_u7CCA_u8BBE_u7F6E" class="headerlink" title="Step.2 背景透明与模糊设置"></a>Step.2 背景透明与模糊设置</h3><p>在<code>Preperence → Profiles → Window → Window Appearance</code> 进行设置</p>
+<p><img src="/image/blog/make-beauty-and-productify-terminal-part1/4E35E0BAF7B7CA5EB11BE4BFF22977FD.jpg" alt="配置模糊透明背景"></p>
+<h3 id="Step-3__u7A97_u53E3_u98CE_u683C_u914D_u7F6E"><a href="#Step-3__u7A97_u53E3_u98CE_u683C_u914D_u7F6E" class="headerlink" title="Step.3 窗口风格配置"></a>Step.3 窗口风格配置</h3><p>在<code>Preperence → Profiles → Window → Settings for New Windows</code> 进行设置</p>
+<p><img src="/image/blog/make-beauty-and-productify-terminal-part1/46AD20F0070843F9804B1717D5CD6661.jpg" alt="窗口风格配置"></p>
+<h3 id="Step-4__u8BBE_u7F6EHotKey"><a href="#Step-4__u8BBE_u7F6EHotKey" class="headerlink" title="Step.4 设置HotKey"></a>Step.4 设置HotKey</h3><p>在<code>Preperence → Profiles → Keys → HotKey</code> 进行设置</p>
+<p><img src="/image/blog/make-beauty-and-productify-terminal-part1/526B5DF9BC09C70065BB863ABCDB942D.jpg" alt="设置HotKey"></p>
+<p>到目前为止，第一种Profile配置完成，你可以按下你设置的<code>HotKey</code>来方便快速打开和隐藏命令行。<br>如果你需要打开一个会长时间使用的命令行窗口的话，按下<code>cmd + n</code>，但是你会发现窗口的样式又回到默认的了，所以下面进行第二个Profiles的配置。</p>
+<h3 id="Step-5__u521B_u5EFA_u7B2C_u4E8C_u4E2AProfile"><a href="#Step-5__u521B_u5EFA_u7B2C_u4E8C_u4E2AProfile" class="headerlink" title="Step.5 创建第二个Profile"></a>Step.5 创建第二个Profile</h3><p>我们只需要在第一个窗口的基础上，进行「窗口风格」配置就可以了。</p>
+<p>在<code>Preperence → Profiles</code>，复制<code>HotKey Window</code>， 取名<code>Default of Hotkey Window</code></p>
+<p><img src="/image/blog/make-beauty-and-productify-terminal-part1/5622AB0237BACE99D299D43D98D359DF.jpg" alt="第二个Profile"></p>
+<h3 id="Step-6__u7A97_u53E3_u98CE_u683C_u914D_u7F6E"><a href="#Step-6__u7A97_u53E3_u98CE_u683C_u914D_u7F6E" class="headerlink" title="Step.6 窗口风格配置"></a>Step.6 窗口风格配置</h3><p>在<code>Preperence → Profiles → Window → Settings for New Windows</code> 进行设置</p>
+<p><img src="/image/blog/make-beauty-and-productify-terminal-part1/32CFF9E358032E50DB87B07D6B6B0F9E.jpg" alt="设置窗口风格配置"></p>
+<h3 id="Step-7__u8BBE_u7F6E_u9ED8_u8BA4"><a href="#Step-7__u8BBE_u7F6E_u9ED8_u8BA4" class="headerlink" title="Step.7 设置默认"></a>Step.7 设置默认</h3><p>在<code>Preperence → Profiles</code> 中，选中 <code>Default of HotKey Window</code>, 并设置为默认</p>
+<p><img src="/image/blog/make-beauty-and-productify-terminal-part1/14C8AD735CDD1B4A0460FEF930AAB9F0.jpg" alt="设置默认"></p>
+<p>自此，就完成了两种Profile的设置。</p>
+<h2 id="u5E38_u7528_u529F_u80FD_u5FEB_u6377_u952E"><a href="#u5E38_u7528_u529F_u80FD_u5FEB_u6377_u952E" class="headerlink" title="常用功能快捷键"></a>常用功能快捷键</h2><p>在使用<strong>iTerm</strong>的过程中，下面对于控制窗口的快捷键使用频率会很高，不用记，用多了就形成肌肉记忆了。</p>
+<ul>
+<li>cmd + n : 新建窗口</li>
+<li>cmd + t : 新建TAB</li>
+<li>cmd + d : 垂直新建TAB</li>
+<li>cmd + shift + d : 水平新建TAB</li>
+</ul>
+<blockquote>
+<p><a href="/2016/08/11/打造高效个性Terminal（二）之%20zsh/">《打造高效个性Terminal（二）之 zsh》</a></p>
+</blockquote>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/07/07/读《重来》/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/08/11/打造高效个性Terminal（二）之 zsh/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2016/08/11/打造高效个性Terminal（一）之 iTerm/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>

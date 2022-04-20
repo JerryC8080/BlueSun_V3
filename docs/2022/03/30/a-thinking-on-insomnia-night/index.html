@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>基于jQuery的2048游戏 | BlueSun</title>
+  <title>一个失眠夜的胡思乱想 | BlueSun</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,30 +15,22 @@
     <meta name="keywords" content="huang-jerrryc,JerryC8080,jerryc,JC_Huang,前端,设计,前端开发,用户体验,设计,frontend,design,nodejs,JavaScript" />
   
 
-  <meta name="description" content="前言受网上看到的一个2048视频游戏制作的启发，做了一个网页版的，很多细节参照了一下别人的。暂时还没有分数统计功能，找时间再做好。先上一个demo版。
-截图
-程序架构
-演示地址：http://jerryc8080.github.io/My2048/程序地址：https://github.com/JerryC8080/My2048
-代码：太多了就不贴了，有兴趣的看管请到以上地址下载吧。">
+  <meta name="description" content="现在是凌晨 2:06，今晚喝了两瓶科罗娜。以为喝了酒能好好睡，结果，还是失眠了。
+是兴奋也罢，是焦虑也罢。既然明天不用上班，那么就让这个失眠夜来的更放纵些。
+刚才躺在床上，竟然在构想起自己的退休生活。希望自己的退休生活，会更有趣些，在衣食上没有基本的担忧，身体虽然有些毛病，但还是能健康的活着，然后和老伴持续的二人世界。有一个独立的孩子，有空可以来看看我们。以及有一两个能持续以恒的爱好。然后，还顺利">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于jQuery的2048游戏">
-<meta property="og:url" content="http://huang-jerryc.com/2014/07/12/基于jQuery的2048游戏/index.html">
+<meta property="og:title" content="一个失眠夜的胡思乱想">
+<meta property="og:url" content="http://huang-jerryc.com/2022/03/30/a-thinking-on-insomnia-night/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="前言受网上看到的一个2048视频游戏制作的启发，做了一个网页版的，很多细节参照了一下别人的。暂时还没有分数统计功能，找时间再做好。先上一个demo版。
-截图
-程序架构
-演示地址：http://jerryc8080.github.io/My2048/程序地址：https://github.com/JerryC8080/My2048
-代码：太多了就不贴了，有兴趣的看管请到以上地址下载吧。">
-<meta property="og:image" content="http://huang-jerryc.com/image/blog/imgFile1412172676130.jpg">
-<meta property="og:image" content="http://huang-jerryc.com/image/blog/imgFile1412172691061.jpeg">
-<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta property="og:description" content="现在是凌晨 2:06，今晚喝了两瓶科罗娜。以为喝了酒能好好睡，结果，还是失眠了。
+是兴奋也罢，是焦虑也罢。既然明天不用上班，那么就让这个失眠夜来的更放纵些。
+刚才躺在床上，竟然在构想起自己的退休生活。希望自己的退休生活，会更有趣些，在衣食上没有基本的担忧，身体虽然有些毛病，但还是能健康的活着，然后和老伴持续的二人世界。有一个独立的孩子，有空可以来看看我们。以及有一两个能持续以恒的爱好。然后，还顺利">
+<meta property="og:updated_time" content="2019-08-16T19:26:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基于jQuery的2048游戏">
-<meta name="twitter:description" content="前言受网上看到的一个2048视频游戏制作的启发，做了一个网页版的，很多细节参照了一下别人的。暂时还没有分数统计功能，找时间再做好。先上一个demo版。
-截图
-程序架构
-演示地址：http://jerryc8080.github.io/My2048/程序地址：https://github.com/JerryC8080/My2048
-代码：太多了就不贴了，有兴趣的看管请到以上地址下载吧。">
+<meta name="twitter:title" content="一个失眠夜的胡思乱想">
+<meta name="twitter:description" content="现在是凌晨 2:06，今晚喝了两瓶科罗娜。以为喝了酒能好好睡，结果，还是失眠了。
+是兴奋也罢，是焦虑也罢。既然明天不用上班，那么就让这个失眠夜来的更放纵些。
+刚才躺在床上，竟然在构想起自己的退休生活。希望自己的退休生活，会更有趣些，在衣食上没有基本的担忧，身体虽然有些毛病，但还是能健康的活着，然后和老伴持续的二人世界。有一个独立的孩子，有空可以来看看我们。以及有一两个能持续以恒的爱好。然后，还顺利">
 
   
 
@@ -184,22 +176,17 @@ ga('send', 'pageview');
 </div>
 
 
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#u524D_u8A00"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u622A_u56FE"><span class="toc-text">截图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u7A0B_u5E8F_u67B6_u6784"><span class="toc-text">程序架构</span></a></li></ol>
-  </div>
-
 
 
 <div class="content content-post CENTER">
-   <article id="post-基于jQuery的2048游戏" class="article article-type-post" itemprop="blogPost">
+   <article id="post-a-thinking-on-insomnia-night" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">基于jQuery的2048游戏</h1>
+    <h1 class="post-title">一个失眠夜的胡思乱想</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2014.07.12</span>
+        <span>2022.03.30</span>
       </span>
 
       
@@ -212,7 +199,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/三省吾身/">三省吾身</a>
   </span>
 
 
@@ -220,7 +207,7 @@ ga('send', 'pageview');
       
         <span>
           <i class="icon-comment"></i>
-          <a href="http://huang-jerryc.com//2014/07/12/基于jQuery的2048游戏/#disqus_thread"></a>
+          <a href="http://huang-jerryc.com//2022/03/30/a-thinking-on-insomnia-night/#disqus_thread"></a>
         </span>
       
 
@@ -237,11 +224,20 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h3 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h3><p>受网上看到的一个2048视频游戏制作的启发，做了一个网页版的，很多细节参照了一下别人的。暂时还没有分数统计功能，找时间再做好。先上一个demo版。</p>
-<h3 id="u622A_u56FE"><a href="#u622A_u56FE" class="headerlink" title="截图"></a>截图</h3><p><img src="/image/blog/imgFile1412172676130.jpg" alt="截图"></p>
-<h3 id="u7A0B_u5E8F_u67B6_u6784"><a href="#u7A0B_u5E8F_u67B6_u6784" class="headerlink" title="程序架构"></a>程序架构</h3><p><img src="/image/blog/imgFile1412172691061.jpeg" alt="脑图"></p>
-<p><strong>演示地址</strong>：<a href="http://jerryc8080.github.io/My2048/" target="_blank" rel="external">http://jerryc8080.github.io/My2048/</a><br><strong>程序地址</strong>：<a href="http://jerryc8080.github.io/My2048/" target="_blank" rel="external">https://github.com/JerryC8080/My2048</a></p>
-<p>代码：太多了就不贴了，有兴趣的看管请到以上地址下载吧。</p>
+      <p>现在是凌晨 2:06，今晚喝了两瓶科罗娜。<br>以为喝了酒能好好睡，结果，还是失眠了。</p>
+<p>是兴奋也罢，是焦虑也罢。既然明天不用上班，那么就让这个失眠夜来的更放纵些。</p>
+<p>刚才躺在床上，竟然在构想起自己的退休生活。<br>希望自己的退休生活，会更有趣些，在衣食上没有基本的担忧，身体虽然有些毛病，但还是能健康的活着，然后和老伴持续的二人世界。有一个独立的孩子，有空可以来看看我们。以及有一两个能持续以恒的爱好。然后，还顺利的养成了终身学习的习惯，作为一个 fasion 的老头。</p>
+<p>培养个啥兴趣好呢？回顾过去的众多爱好，找一个能持续发展的。就拿音乐来说，假如我能把音乐这件事学深了，学广了，把玩几门乐器，就算是个糟老头，也能搞搞创作吧。然后有些积蓄，结合着年轻时的阅历和朋友，也能做些小生意吧？又或者也能做做教育吧？</p>
+<p>顺着思考如何去过上喜欢的退休生活，似乎有了个更长远的目标，时间跨度更大的目标。</p>
+<p>于是乎，才意识到这几年来，只凭借着年少轻狂的那股劲在奔跑，却没有一个可以长远追逐的愿景。</p>
+<p>以至于，在碰到人生大事上，如结婚、买房、小孩这些问题上，却有了一种却步感。在碰到职业发展瓶颈上，会满满的焦虑感。还常常回忆过去，留恋过去。</p>
+<p>看过一个说法：20 岁年轻人和 50 岁老人做计划，年轻人最多只能做 2 年计划，老人却可以做 5 年甚至 10 年计划。因为 5 年，对年轻人来说是他生命的 1/4，而对老人来说只是他生命的 1/10。 唯一忧桑的是，老人所剩的生命时间不敌年轻的。</p>
+<p>从这个例子来看，我认为人类对时间的感受，是相对的，并且是可变化的。<br>那么假如年轻人能够去模拟感受老人对时间维度的感受，是不是也能做出更长远些的计划？然后更加淡定？</p>
+<p>倘若把时间维度拉长，如果 30 年后来看今天，却稍稍有一种豁达的感觉。虽然离想清楚，想明白，还有些距离。</p>
+<p>这样回去看，所谓的中年危机，互联网 35 岁命劫，在一个更长远的时间跨度中，也只能是件小事情，那么一跨，就过去了。</p>
+<p>那么如何回来看当下？<br>毕竟我还是 27 岁的年龄，那就应该在这个时期，去好好感受属于这个时期的生活。<br>好好去感受职场，持续提高个体价值，给这个社会输出贡献，以换取个体生活条件。<br>好好去感受生活，结婚、买房、生子、赡养老人，去感受人生这个阶段必须经历的生活。<br>还有，好好爱惜身体，毕竟生命只有一次。</p>
+<p>在历史长流的维度来看，一个人就几十年光景的寿命，诞生、成长、衰老，然后回归自然。<br>那么，这短短的生命，该怎么演绎？<br>第一，感谢父母亲把我们带到这个世界上。<br>第二，去好好感受生命的整个周期。</p>
+<p>现在是凌晨 3:16，祝晚安。</p>
 
     
   </div>
@@ -279,10 +275,10 @@ ga('send', 'pageview');
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2014/07/12/原生JavaScript实现拖拽效果/">
+    <a class="show pull-left" href="/2021/03/21/wxapp-router-experience/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2014/07/19/HTML-CSS-JS打造Windows桌面版《2048》/">
+    <a class="show pull-right" href="/2022/04/20/build-a-extensible-reliable-controllable-PWA-app/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -385,7 +381,7 @@ ga('send', 'pageview');
   <script>
     var disqus_shortname = 'bluesun-jerryc';
     
-    var disqus_url = 'http://huang-jerryc.com/2014/07/12/基于jQuery的2048游戏/';
+    var disqus_url = 'http://huang-jerryc.com/2022/03/30/a-thinking-on-insomnia-night/';
     
     (function(){
       var dsq = document.createElement('script');

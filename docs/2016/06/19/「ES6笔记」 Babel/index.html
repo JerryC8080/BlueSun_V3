@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>「ES6笔记」Babel | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="ES6,babel," />
+  
+
+  <meta name="description" content=".babelrcBabel的配置文件是.babelrc，存放在项目的根目录下。使用Babel的第一步，就是配置这个文件。规则如下：1&amp;#123;&amp;#10;  &amp;#34;presets&amp;#34;: [],&amp;#10;  &amp;#34;plugins&amp;#34;: []&amp;#10;&amp;#125;
+presets字段设定转码规则，官方提供以下的规则集，你可以根据需要安装。1# ES2015&amp;#36716;&amp;#307">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「ES6笔记」Babel">
+<meta property="og:url" content="http://huang-jerryc.com/2016/06/19/「ES6笔记」 Babel/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content=".babelrcBabel的配置文件是.babelrc，存放在项目的根目录下。使用Babel的第一步，就是配置这个文件。规则如下：1&amp;#123;&amp;#10;  &amp;#34;presets&amp;#34;: [],&amp;#10;  &amp;#34;plugins&amp;#34;: []&amp;#10;&amp;#125;
+presets字段设定转码规则，官方提供以下的规则集，你可以根据需要安装。1# ES2015&amp;#36716;&amp;#307">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「ES6笔记」Babel">
+<meta name="twitter:description" content=".babelrcBabel的配置文件是.babelrc，存放在项目的根目录下。使用Babel的第一步，就是配置这个文件。规则如下：1&amp;#123;&amp;#10;  &amp;#34;presets&amp;#34;: [],&amp;#10;  &amp;#34;plugins&amp;#34;: []&amp;#10;&amp;#125;
+presets字段设定转码规则，官方提供以下的规则集，你可以根据需要安装。1# ES2015&amp;#36716;&amp;#307">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#babelrc"><span class="toc-text">.babelrc</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel-cli"><span class="toc-text">babel-cli</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#u4F7F_u7528npm_script__u6784_u5EFA"><span class="toc-text">使用npm script 构建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel-node"><span class="toc-text">babel-node</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel-register"><span class="toc-text">babel-register</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel-core"><span class="toc-text">babel-core</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel-polyfill"><span class="toc-text">babel-polyfill</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel-browser"><span class="toc-text">babel-browser</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel-standalone"><span class="toc-text">babel-standalone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel_in_mocha"><span class="toc-text">babel in mocha</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#babel_with_webpack"><span class="toc-text">babel with webpack</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-「ES6笔记」 Babel" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">「ES6笔记」Babel</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.06.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2016/06/19/「ES6笔记」 Babel/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="babelrc"><a href="#babelrc" class="headerlink" title=".babelrc"></a>.babelrc</h1><p>Babel的配置文件是.babelrc，存放在项目的根目录下。使用Babel的第一步，就是配置这个文件。<br>规则如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;presets&#34;: [],&#10;  &#34;plugins&#34;: []&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>presets</code>字段设定转码规则，官方提供以下的规则集，你可以根据需要安装。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ES2015&#36716;&#30721;&#35268;&#21017;&#10;$ npm install --save-dev babel-preset-es2015&#10;&#10;# react&#36716;&#30721;&#35268;&#21017;&#10;$ npm install --save-dev babel-preset-react&#10;&#10;# ES7&#19981;&#21516;&#38454;&#27573;&#35821;&#27861;&#25552;&#26696;&#30340;&#36716;&#30721;&#35268;&#21017;&#65288;&#20849;&#26377;4&#20010;&#38454;&#27573;&#65289;&#65292;&#36873;&#35013;&#19968;&#20010;&#10;$ npm install --save-dev babel-preset-stage-0&#10;$ npm install --save-dev babel-preset-stage-1&#10;$ npm install --save-dev babel-preset-stage-2&#10;$ npm install --save-dev babel-preset-stage-3</span><br></pre></td></tr></table></figure></p>
+<p>然后讲这些规则加入<code>.babelrc</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;presets&#34;: [&#10;    &#34;es2015&#34;,&#10;    &#34;react&#34;,&#10;    &#34;stage-2&#34;&#10;  ],&#10;  &#34;plugins&#34;: []&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="babel-cli"><a href="#babel-cli" class="headerlink" title="babel-cli"></a>babel-cli</h1><p><code>npm install babel-cli --save-dev</code><br>该工具用于命令行转码<br>基本用法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># &#36716;&#30721;&#32467;&#26524;&#36755;&#20986;&#21040;&#26631;&#20934;&#36755;&#20986;&#10;$ babel example.js&#10;&#10;# &#36716;&#30721;&#32467;&#26524;&#20889;&#20837;&#19968;&#20010;&#25991;&#20214;&#10;# --out-file &#25110; -o &#21442;&#25968;&#25351;&#23450;&#36755;&#20986;&#25991;&#20214;&#10;$ babel example.js --out-file compiled.js&#10;# &#25110;&#32773;&#10;$ babel example.js -o compiled.js&#10;&#10;# &#25972;&#20010;&#30446;&#24405;&#36716;&#30721;&#10;# --out-dir &#25110; -d &#21442;&#25968;&#25351;&#23450;&#36755;&#20986;&#30446;&#24405;&#10;$ babel src --out-dir lib&#10;# &#25110;&#32773;&#10;$ babel src -d lib&#10;&#10;# -s &#21442;&#25968;&#29983;&#25104;source map&#25991;&#20214;&#10;$ babel src -d lib -s</span><br></pre></td></tr></table></figure></p>
+<h2 id="u4F7F_u7528npm_script__u6784_u5EFA"><a href="#u4F7F_u7528npm_script__u6784_u5EFA" class="headerlink" title="使用npm script 构建"></a>使用npm script 构建</h2><p>把<code>node-cli</code>安装在项目中，然后改写<code>package.json</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  // ...&#10;  &#34;devDependencies&#34;: &#123;&#10;    &#34;babel-cli&#34;: &#34;^6.0.0&#34;&#10;  &#125;,&#10;  &#34;scripts&#34;: &#123;&#10;    &#34;build&#34;: &#34;babel src -d lib&#34;&#10;  &#125;,&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="babel-node"><a href="#babel-node" class="headerlink" title="babel-node"></a>babel-node</h1><p><code>babel-node</code>给<code>node</code>包上一层外衣，使得可以像使用<code>node</code>那样执行js文件，这个过程是运行时编译。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">babel-node index.js</span><br></pre></td></tr></table></figure></p>
+<p><code>babel-node</code>随着<code>babel-cli</code>安装。</p>
+<h1 id="babel-register"><a href="#babel-register" class="headerlink" title="babel-register"></a>babel-register</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install babel-register --save-dev</span><br></pre></td></tr></table></figure>
+<p><code>babel-register</code>模块改写<code>require</code>命令，为它加上一个钩子。此后，每当使用<code>require</code>加载<code>.js、.jsx、.es、.es6</code>后缀名的文件，就会先用Babel进行转码。<br>然后，在<code>require</code>之前，引入<code>babel-register</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(&#34;babel-register&#34;);&#10;require(&#34;./index.js&#34;);</span><br></pre></td></tr></table></figure></p>
+<p>这个过程是运行时编译，只适用于开发环境中</p>
+<h1 id="babel-core"><a href="#babel-core" class="headerlink" title="babel-core"></a>babel-core</h1><p><code>npm install --save-dev babel-core</code><br><code>babel-core</code>可以使在代码中使用<code>babel</code>的API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var babel = require(&#39;babel-core&#39;);&#10;&#10;// &#23383;&#31526;&#20018;&#36716;&#30721;&#10;babel.transform(&#39;code();&#39;, options);&#10;// =&#62; &#123; code, map, ast &#125;&#10;&#10;// &#25991;&#20214;&#36716;&#30721;&#65288;&#24322;&#27493;&#65289;&#10;babel.transformFile(&#39;filename.js&#39;, options, function(err, result) &#123;&#10;  result; // =&#62; &#123; code, map, ast &#125;&#10;&#125;);&#10;&#10;// &#25991;&#20214;&#36716;&#30721;&#65288;&#21516;&#27493;&#65289;&#10;babel.transformFileSync(&#39;filename.js&#39;, options);&#10;// =&#62; &#123; code, map, ast &#125;&#10;&#10;// Babel AST&#36716;&#30721;&#10;babel.transformFromAst(ast, code, options);&#10;// =&#62; &#123; code, map, ast &#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="babel-polyfill"><a href="#babel-polyfill" class="headerlink" title="babel-polyfill"></a>babel-polyfill</h1><p>由于<code>babel</code>默认转换的是语法，而一些ES6环境扩展的API，却没有转换。像<code>Array.from</code>、<code>String.padStart</code>并不会转换，如果要使用到这部分API，那就需要在文件中引入<code>babel-polyfill</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// script.js&#10;require(&#34;babel-polyfill&#34;);&#10;const name = &#39;jc&#39;;&#10;console.log(name.padStart(10));</span><br></pre></td></tr></table></figure></p>
+<p>以上脚本会被转换成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// complied.js&#10;&#34;use strict&#34;;&#10;require(&#34;babel-polyfill&#34;);&#10;var name = &#39;jc&#39;;&#10;console.log(name.padStart(10));</span><br></pre></td></tr></table></figure></p>
+<p>直接在低版本Node环境中执行转换后的脚本，会正常运行。<br>注意的是，<code>babel-node script.js</code>会报<code>only one instance of babel-polyfill is allowed</code>错误</p>
+<h1 id="babel-browser"><a href="#babel-browser" class="headerlink" title="babel-browser"></a>babel-browser</h1><p>在浏览器中运行时编译，可以引入<code>babel-core@5</code> 文件中的 <code>browser.min.js</code>文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js&#34;&#62;&#60;/script&#62;</span><br></pre></td></tr></table></figure></p>
+<p>注意的是，在Babel6.0之后中，babel-core不会再提供<code>browser.min.js</code></p>
+<h1 id="babel-standalone"><a href="#babel-standalone" class="headerlink" title="babel-standalone"></a>babel-standalone</h1><p><code>babel-standalone</code>是给那些非Node.js环境中使用最新的JavaScript而服务的。<br>这部分描述见于<a href="https://github.com/Daniel15/babel-standalone" target="_blank" rel="external">babel-standalone</a>;</p>
+<p>使用<code>babel-standalone</code>可以取代<code>babel-browser</code>的方案，在脚本中引入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.4.4/babel.min.js&#34;&#62;&#60;/script&#62;&#10;&#60;script type=&#34;text/babel&#34;&#62;&#10;// Your ES6 code&#10;&#60;/script&#62;</span><br></pre></td></tr></table></figure></p>
+<h1 id="babel_in_mocha"><a href="#babel_in_mocha" class="headerlink" title="babel in mocha"></a>babel in mocha</h1><p>在使用mocha的时候，除了可以使用<code>babel-register</code>，也可以使用以下方式<br>在<code>package.json</code>中添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#34;scripts&#34;: &#123;&#10;  &#34;test&#34;: &#34;mocha --ui qunit --compilers js:babel-core/register&#34;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面命令中，<code>--compilers</code>参数指定脚本的转码器，规定后缀名为js的文件，都需要使用<code>babel-core/register</code>先转码。</p>
+<h1 id="babel_with_webpack"><a href="#babel_with_webpack" class="headerlink" title="babel with webpack"></a>babel with webpack</h1><p>使用<code>babel-loader</code>可以在webpack打包过程中编译ES2015的代码。<br>安装以下依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install babel-core babel-loader babel-preset-2015 webpack --save-dev</span><br></pre></td></tr></table></figure></p>
+<p>然后在项目中新建<code>webpack.config.js</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;&#10;  entry: &#34;./src/app.js&#34;,&#10;  output: &#123;&#10;    path: &#39;./bin&#39;,&#10;    filename: &#39;app.bunble.js&#39;&#10;  &#125;,&#10;  module: &#123;&#10;    loaders: [&#123;&#10;      loader: &#39;babel-loader&#39;,&#10;      test: /.js$/,&#10;      exclude: /node_modules/&#10;    &#125;]&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过配置<code>loaders</code>，把所用<code>.js</code>后缀的文件通过babel编译。<br>在这里为了避免编译依赖模块的代码，剔除<code>node_modules</code>文件夹。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/05/28/下雨天的夜晚，特别容易失眠/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/06/28/JavaScript原型中的哲学思想/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2016/06/19/「ES6笔记」 Babel/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>原生JavaScript实现拖拽效果 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Javascript," />
+  
+
+  <meta name="description" content="前言闲着无事干，突然想做一个类Q+ Web桌面的东西，当然那是一个大工程（对本菜鸟来说）。那么，这个Demo就是第一步，起码可以实现图标的拖拽效果。截图：
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生JavaScript实现拖拽效果">
+<meta property="og:url" content="http://huang-jerryc.com/2014/07/12/原生JavaScript实现拖拽效果/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="前言闲着无事干，突然想做一个类Q+ Web桌面的东西，当然那是一个大工程（对本菜鸟来说）。那么，这个Demo就是第一步，起码可以实现图标的拖拽效果。截图：
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656">
+<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生JavaScript实现拖拽效果">
+<meta name="twitter:description" content="前言闲着无事干，突然想做一个类Q+ Web桌面的东西，当然那是一个大工程（对本菜鸟来说）。那么，这个Demo就是第一步，起码可以实现图标的拖拽效果。截图：
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u524D_u8A00"><span class="toc-text">前言</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-原生JavaScript实现拖拽效果" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">原生JavaScript实现拖拽效果</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2014.07.12</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2014/07/12/原生JavaScript实现拖拽效果/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>闲着无事干，突然想做一个类Q+ Web桌面的东西，当然那是一个大工程（对本菜鸟来说）。那么，这个Demo就是第一步，起码可以实现图标的拖拽效果。<br>截图：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="doctype">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">head</span> <span class="attribute">lang</span>=<span class="value">"en"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">title</span>&gt;</span>Drag Demo<span class="tag">&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line">        <span class="tag">body</span><span class="rules">&#123;</span><br><span class="line">            <span class="rule"><span class="attribute">background</span>:<span class="value"><span class="function">url</span>(images/bg.jpg) no-repeat</span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">background-size</span>:<span class="value"><span class="number">100%</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">20px</span> </span></span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">        <span class="class">.icon</span><span class="rules">&#123;</span><br><span class="line">            <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100px</span></span></span>;<span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100px</span></span></span>;<span class="rule"><span class="attribute">margin-bottom</span>:<span class="value"><span class="number">15px</span></span></span>;<span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;<span class="rule"><span class="attribute">cursor</span>:<span class="value"> move</span></span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">        <span class="class">.icon-0</span><span class="rules">&#123;</span><br><span class="line">            <span class="rule"><span class="attribute">background</span>:<span class="value"> <span class="function">url</span>(<span class="string">"images/png/0.png"</span>) no-repeat</span></span>;<span class="rule"><span class="attribute">background-size</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">        <span class="class">.icon-1</span><span class="rules">&#123;</span><br><span class="line">            <span class="rule"><span class="attribute">background</span>:<span class="value"> <span class="function">url</span>(<span class="string">"images/png/1.png"</span>) no-repeat</span></span>;<span class="rule"><span class="attribute">background-size</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">140px</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">        <span class="class">.icon-2</span><span class="rules">&#123;</span><br><span class="line">            <span class="rule"><span class="attribute">background</span>:<span class="value"> <span class="function">url</span>(<span class="string">"images/png/2.png"</span>) no-repeat</span></span>;<span class="rule"><span class="attribute">background-size</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">260px</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">        <span class="class">.icon-3</span><span class="rules">&#123;</span><br><span class="line">            <span class="rule"><span class="attribute">background</span>:<span class="value"> <span class="function">url</span>(<span class="string">"images/png/3.png"</span>) no-repeat</span></span>;<span class="rule"><span class="attribute">background-size</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">380px</span></span></span>;</span><br><span class="line">            <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">        <span class="class">.icon-4</span><span class="rules">&#123;</span><br><span class="line">             <span class="rule"><span class="attribute">background</span>:<span class="value"> <span class="function">url</span>(<span class="string">"images/png/4.png"</span>) no-repeat</span></span>;<span class="rule"><span class="attribute">background-size</span>:<span class="value"> <span class="number">100%</span></span></span>;</span><br><span class="line">             <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">500px</span></span></span>;</span><br><span class="line">             <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">        &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"icon icon-0"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"icon icon-1"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"icon icon-2"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"icon icon-3"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"icon icon-4"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">g</span>(<span class="params">el</span>)</span>&#123; <span class="keyword">return</span> <span class="built_in">document</span>.getElementsByClassName(el);&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> icons = g(<span class="string">'icon'</span>);</span><br><span class="line">    <span class="keyword">var</span> instace = <span class="literal">false</span>; <span class="comment">//存放当前移动对象信息</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i =<span class="number">0</span> ; i&lt;icons.length ; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(icons[i]) &#123;</span><br><span class="line">            icons[i].addEventListener(<span class="string">'mousedown'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">                instace = &#123;&#125;;</span><br><span class="line">                <span class="keyword">var</span> e = e || <span class="built_in">window</span>.event;</span><br><span class="line">                <span class="keyword">var</span> el = e.toElement || e.target;</span><br><span class="line">                <span class="built_in">console</span>.log(e);</span><br><span class="line">                instace.moveElement = el;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//  获取鼠标的坐标</span></span><br><span class="line">                <span class="keyword">var</span> mouseX = e.pageX;</span><br><span class="line">                <span class="keyword">var</span> mouseY = e.pageY;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//  获取元素左上角的坐标</span></span><br><span class="line">                <span class="keyword">var</span> elX = el.offsetLeft;</span><br><span class="line">                <span class="keyword">var</span> elY = el.offsetTop;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//  计算出偏移量</span></span><br><span class="line">                instace.offSetX = mouseX - elX;</span><br><span class="line">                instace.offSetY = mouseY - elY;</span><br><span class="line"></span><br><span class="line">                instace.moveElement.style.zIndex = <span class="number">9000</span>;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">document</span>.onmouseup = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">        instace.moveElement.style.zIndex = <span class="number">2</span>;</span><br><span class="line">        instace = <span class="literal">false</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">document</span>.onmousemove = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(instace)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//  获取当前鼠标坐标</span></span><br><span class="line">            <span class="keyword">var</span> mouseX = e.pageX;</span><br><span class="line">            <span class="keyword">var</span> mouseY = e.pageY;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//  计算元素移动坐标</span></span><br><span class="line">            <span class="keyword">var</span> moveX = mouseX - instace.offSetX;</span><br><span class="line">            <span class="keyword">var</span> moveY = mouseY - instace.offSetY;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//  计算最大移动坐标</span></span><br><span class="line">            <span class="keyword">var</span> maxX = <span class="built_in">document</span>.documentElement.clientWidth  - instace.moveElement.offsetWidth;</span><br><span class="line">            <span class="keyword">var</span> maxY = <span class="built_in">document</span>.documentElement.clientHeight - instace.moveElement.offsetHeight;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//  设置元素的坐标</span></span><br><span class="line">            instace.moveElement.style.left = <span class="built_in">Math</span>.max(<span class="number">0</span>,<span class="built_in">Math</span>.min(maxX,moveX)) + <span class="string">'px'</span>;</span><br><span class="line">            instace.moveElement.style.top  = <span class="built_in">Math</span>.max(<span class="number">0</span>,<span class="built_in">Math</span>.min(maxY,moveY)) + <span class="string">'px'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>演示地址：<a href="http://jerryc8080.github.io/dragDemo/" target="_blank" rel="external">http://jerryc8080.github.io/dragDemo/</a><br>项目地址：<a href="https://github.com/JerryC8080/dragDemo/" target="_blank" rel="external">https://github.com/JerryC8080/dragDemo/</a></p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2014/07/08/Javascript那些书籍/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2014/07/12/基于jQuery的2048游戏/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2014/07/12/原生JavaScript实现拖拽效果/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>
