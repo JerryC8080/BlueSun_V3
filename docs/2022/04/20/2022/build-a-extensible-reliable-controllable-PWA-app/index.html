@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何构建可控,可靠,可扩展的 PWA 应用 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="PWA," />
+  
+
+  <meta name="description" content="如何构建可控,可靠,可扩展的 PWA 应用概述PWA （Progressive Web App）指的是使用指定技术和标准模式来开发的 Web 应用，让 Web 应用具有原生应用的特性和体验。比如我们觉得本地应用使用便捷，响应速度更加快等。 PWA 由 Google 于 2016 年提出，于 2017 年正式技术落地，并在 2018 年迎来重大突破，全球顶级的浏览器厂商，Google、Microso">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何构建可控,可靠,可扩展的 PWA 应用">
+<meta property="og:url" content="http://huang-jerryc.com/2022/04/20/2022/build-a-extensible-reliable-controllable-PWA-app/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="如何构建可控,可靠,可扩展的 PWA 应用概述PWA （Progressive Web App）指的是使用指定技术和标准模式来开发的 Web 应用，让 Web 应用具有原生应用的特性和体验。比如我们觉得本地应用使用便捷，响应速度更加快等。 PWA 由 Google 于 2016 年提出，于 2017 年正式技术落地，并在 2018 年迎来重大突破，全球顶级的浏览器厂商，Google、Microso">
+<meta property="og:locale">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20200827101330.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204121006999.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204121158786.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204131004508.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220414092530.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220417015441.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220417013001.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220417013006.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220418092022.png">
+<meta property="article:published_time" content="2022-04-20T03:06:27.392Z">
+<meta property="article:modified_time" content="2022-04-20T03:46:27.769Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="PWA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20200827101330.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E5%8F%AF%E6%8E%A7-%E5%8F%AF%E9%9D%A0-%E5%8F%AF%E6%89%A9%E5%B1%95%E7%9A%84-PWA-%E5%BA%94%E7%94%A8"><span class="toc-text">如何构建可控,可靠,可扩展的 PWA 应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%A1%86%E6%9E%B6"><span class="toc-text">工具与框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%97%9B%E7%82%B9"><span class="toc-text">痛点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%80%A6"><span class="toc-text">代码解耦</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%86%B2%E7%AA%81"><span class="toc-text">作用域冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%BC%93%E5%AD%98"><span class="toc-text">资源缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="toc-text">远程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86"><span class="toc-text">数据收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">单元测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-2022/build-a-extensible-reliable-controllable-PWA-app" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">如何构建可控,可靠,可扩展的 PWA 应用</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2022.04.20</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2022/04/20/2022/build-a-extensible-reliable-controllable-PWA-app/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="如何构建可控-可靠-可扩展的-PWA-应用"><a href="#如何构建可控-可靠-可扩展的-PWA-应用" class="headerlink" title="如何构建可控,可靠,可扩展的 PWA 应用"></a>如何构建可控,可靠,可扩展的 PWA 应用</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>PWA （Progressive Web App）指的是使用指定技术和标准模式来开发的 Web 应用，让 Web 应用具有原生应用的特性和体验。比如我们觉得本地应用使用便捷，响应速度更加快等。</p>
+<p>PWA 由 Google 于 2016 年提出，于 2017 年正式技术落地，并在 2018 年迎来重大突破，全球顶级的浏览器厂商，Google、Microsoft、Apple 已经全数宣布支持 PWA 技术。</p>
+<p>PWA 的关键技术有两个：</p>
+<ol>
+<li>Manifest：浏览器允许你提供一个清单文件，从而实现 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Add_to_home_screen">A2HS</a></li>
+<li>ServiceWorker：通过对网络请求的代理，从而实现资源缓存、站点加速、离线应用等场景。</li>
+</ol>
+<p>这两个是目前绝大部分开发者构建 PWA 应用所使用的最多的技术。</p>
+<p>其次还有诸如：消息推送、WebStream、Web蓝牙、Web分享、硬件访问等API。出于浏览器厂商的支持不一，普及度还不高。</p>
+<p>不管怎么样，使用 ServiceWorker 来优化用户体验，已经成为Web前端优化的主流技术。</p>
+<h2 id="工具与框架"><a href="#工具与框架" class="headerlink" title="工具与框架"></a>工具与框架</h2><p>2018 年之前，主流的工具是：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/GoogleChromeLabs/sw-toolbox">google&#x2F;sw-toolbox</a>: 提供了一套工具，用于方便的构建 ServiceWorker。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/GoogleChromeLabs/sw-precache">google&#x2F;sw-precache</a>: 提供在构建阶段，注入资源清单到 ServiceWorker 中，从而实现预缓存功能。 </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lavas-project/lavas">baidu&#x2F;Lavas</a>: 百度开发的基于 Vue 的 PWA 集成解决方案。</li>
+</ol>
+<p>后来由于 Google 开发了更加优秀的工具集 <a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/workbox">Workbox</a>，<code>sw-toolbox</code> 和 <code>sw-precache</code> 得以退出舞台。</p>
+<p>而 Lavas 由于团队解散，主要作者离职，已处于停止维护状态。</p>
+<h2 id="痛点"><a href="#痛点" class="headerlink" title="痛点"></a>痛点</h2><p>Workbox 提供了一套工具集合，用以帮助我们管理 ServiceWorker ，它对 CacheStorage 的封装，也得以让我们更轻松的去管理资源。</p>
+<p>但是在构建实际的 PWA 应用的时候，我们还需要关心很多问题：</p>
+<ol>
+<li>如何组织工程和代码？</li>
+<li>如何进行单元测试？</li>
+<li>如何解决 MPA (Multiple Page Application) 应用间的 ServiceWorker 作用域冲突问题？</li>
+<li>如何远程控制我们的 ServiceWorker？</li>
+<li>最优的资源缓存方案？</li>
+<li>如何监控我们的 ServiceWorker，收集数据？</li>
+</ol>
+<p>由于 Workbox 的定位是 <strong>「Library」</strong>，而我们需要一个 <strong>「Framework」</strong> 去为这些通用问题提供统一的解决方案。</p>
+<p>并且， 我们希望它是渐进式（Progressive）的，就犹如 PWA 所提倡的那样。</p>
+<h2 id="代码解耦"><a href="#代码解耦" class="headerlink" title="代码解耦"></a>代码解耦</h2><p><strong>是什么问题？</strong></p>
+<p>当我们的 ServiceWorker 程序代码越来越多的时候，会造成代码臃肿，管理混乱，复用困难。<br>同时一些常见的实现，如：远程控制、进程通讯、数据上报等，希望能实现按需插拔式的复用，这样才能达到「渐进式」的目的。</p>
+<p>我们都知道，ServiceWorker 在运行时提供了一系列事件，常用的有：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;install&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123; &#125;);</span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;activate&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123; &#125;);</span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&quot;fetch&quot;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123; &#125;);</span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123; &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>当我们有多个功能实现都要监听相同的事件，就会导致同个文件的代码越来越臃肿：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;install&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 远程控制模块 - 配置初始化</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 资源预缓存模块 - 缓存资源</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  ...</span><br><span class="line">&#125;);</span><br><span class="line">  </span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;activate&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 远程控制模块 - 刷新配置</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  ...</span><br><span class="line">&#125;);</span><br><span class="line">  </span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&quot;fetch&quot;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 远程控制模块 - 心跳检查</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 资源缓存模块 - 缓存匹配</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  ...</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  ...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>你可能会说可以进行「模块化」：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> remoteController <span class="keyword">from</span> <span class="string">&#x27;./remoete-controller.ts&#x27;</span>;  <span class="comment">// 远程控制模块</span></span><br><span class="line"><span class="keyword">import</span> assetsCache <span class="keyword">from</span> <span class="string">&#x27;./assets-cache.ts&#x27;</span>;  <span class="comment">// 资源缓存模块</span></span><br><span class="line"><span class="keyword">import</span> collector <span class="keyword">from</span> <span class="string">&#x27;./collector.ts&#x27;</span>;  <span class="comment">// 数据收集模块</span></span><br><span class="line"><span class="keyword">import</span> precache <span class="keyword">from</span> <span class="string">&#x27;./pre-cache.ts&#x27;</span>;  <span class="comment">// 资源预缓存模块</span></span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;install&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 远程控制模块 - 配置初始化</span></span><br><span class="line">  remoteController.<span class="title function_">init</span>(...);</span><br><span class="line">  <span class="comment">// 资源预缓存模块 - 缓存资源</span></span><br><span class="line">  assetsCache.<span class="title function_">store</span>(...);</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  collector.<span class="title function_">log</span>(...);</span><br><span class="line">&#125;);</span><br><span class="line">  </span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;activate&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 远程控制模块 - 刷新配置</span></span><br><span class="line">  remoteController.<span class="title function_">refresh</span>(..);</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  collector.<span class="title function_">log</span>(...);</span><br><span class="line">&#125;);</span><br><span class="line">  </span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&quot;fetch&quot;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 远程控制模块 - 心跳检查</span></span><br><span class="line">  remoteController.<span class="title function_">heartbeat</span>(...);</span><br><span class="line">  <span class="comment">// 资源缓存模块 - 缓存匹配</span></span><br><span class="line">  assetsCache.<span class="title function_">match</span>(...);</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  collector.<span class="title function_">log</span>(...);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 数据上报模块 - 收集事件</span></span><br><span class="line">  collector.<span class="title function_">log</span>(...);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>模块化能减少主文件的代码量，同时也一定程度上对功能进行了解耦，但是这种方式还存在一些问题：</p>
+<ol>
+<li><strong>复用困难</strong>：当要使用一个模块的功能时，要在多个事件中去正确的调用模块的接口。同样，要去掉一个模块事，也要多个事件中去修改。</li>
+<li><strong>使用成本高</strong>：模块暴露各种接口，使用者必须了解透彻模块的运转方式，以及接口的使用，才能很好的使用。</li>
+<li><strong>解耦有限</strong>：如果模块更多，甚至要解决同域名下多个前端应用的命名空间冲突问题，就会显得捉襟见肘。</li>
+</ol>
+<p>要达到我们目的：<strong>「渐进式」</strong>，我们需要对代码的组织再优化一下。</p>
+<p><strong>插件化实现</strong></p>
+<p>我们可以把 ServiceWorker 的一系列事件的控制权交出去，各模块通过插件的方式来使用这些事件。</p>
+<p>我们知道 Koa.js 著名的洋葱模型：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20200827101330.png" alt="koa洋葱模型"></p>
+<p>洋葱模型是「插件化」的很好的思想，但是它是 <strong>「一维」</strong> 的，Koa 完成一次网络请求的应答，各个中间件只需要监听一个事件。</p>
+<p>而在 ServiceWorker 中，除了上面提及到的常用四个事件，他还有更多事件，如：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/SyncEvent"><code>SyncEvent</code></a>, <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/NotificationEvent"><code>NotificationEvent</code></a>。</p>
+<p>所以，我们还要多弄几个「洋葱」去满足更多的事件。</p>
+<p>同时由于 PWA 应用的代码一般会运行在两个线程：主线程、ServiceWorker 线程。</p>
+<p>最后，我们去封装原生的事件，去提供插件化支持，从而有了：<strong>「多维洋葱插件系统」</strong>：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204121006999.png" alt="GlacierJS 多维洋葱插件系统"></p>
+<p>对原生事件和生命周期进行封装之后，我们为每一个插件提供更优雅的生命周期钩子函数：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204121158786.png" alt="GlacierJS 生命周期图示"></p>
+<p>我们基于 <a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS">GlacierJS</a> 的话，可以很容易做到模块的插件化。</p>
+<p>在 ServiceWorker 线程的主文件中注册插件：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">GlacierSW</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/sw&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">RemoteController</span> <span class="keyword">from</span> <span class="string">&#x27;./remoete-controller.ts&#x27;</span>;  <span class="comment">// 远程控制模块</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">AssetsCache</span> <span class="keyword">from</span> <span class="string">&#x27;./assets-cache.ts&#x27;</span>;  <span class="comment">// 资源缓存模块</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Collector</span> <span class="keyword">from</span> <span class="string">&#x27;./collector.ts&#x27;</span>;  <span class="comment">// 数据收集模块</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Precache</span> <span class="keyword">from</span> <span class="string">&#x27;./pre-cache.ts&#x27;</span>;  <span class="comment">// 资源预缓存模块</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">MyPluginSW</span> <span class="keyword">from</span> <span class="string">&#x27;./my-plugin.ts&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> glacier = <span class="keyword">new</span> <span class="title class_">GlacierSW</span>();</span><br><span class="line"></span><br><span class="line">glacier.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">Log</span>(...));</span><br><span class="line">glacier.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">RemoteController</span>(...));</span><br><span class="line">glacier.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">AssetsCache</span>(...));</span><br><span class="line">glacier.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">Collector</span>(...));</span><br><span class="line">glacier.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">Precache</span>(...));</span><br><span class="line"></span><br><span class="line">glacier.<span class="title function_">listen</span>();</span><br></pre></td></tr></table></figure>
+
+<p>而在插件中，我们可以通过监听事件去收归一个独立模块的逻辑：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ServiceWorkerPlugin</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/sw&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; <span class="title class_">FetchContext</span>, <span class="title class_">UseContext</span>  &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/sw&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">MyPluginSW</span> <span class="keyword">implements</span> <span class="title class_">ServiceWorkerPlugin</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>) &#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">async</span> <span class="title function_">onUse</span>(<span class="params">context: UseContext</span>) &#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">async</span> <span class="title function_">onInstall</span>(<span class="params">event</span>) &#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">async</span> <span class="title function_">onActivate</span>(<span class="params"></span>) &#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">async</span> <span class="title function_">onFetch</span>(<span class="params">context: FetchContext</span>) &#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">async</span> <span class="title function_">onMessage</span>(<span class="params">event</span>) &#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">async</span> <span class="title function_">onUninstall</span>(<span class="params"></span>) &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="作用域冲突"><a href="#作用域冲突" class="headerlink" title="作用域冲突"></a>作用域冲突</h2><p>我们都知道关于 ServiceWorker 的作用域有两个关键特性：</p>
+<ol>
+<li><strong>默认的作用域是注册时候的 Path。</strong></li>
+<li><strong>同个路径下同时间只能有一个 ServiceWorker 得到控制权。</strong></li>
+</ol>
+<p><strong>作用域缩小与扩大</strong></p>
+<p>关于第一个特性，例如注册 Service Worker 文件为 <code>/a/b/sw.js</code>，则 scope 默认为 <code>/a/b/</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (navigator.<span class="property">serviceWorker</span>) &#123;</span><br><span class="line">    navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&#x27;/a/b/sw.js&#x27;</span>).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">reg</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(reg.<span class="property">scope</span>);</span><br><span class="line">        <span class="comment">// scope =&gt; https://yourhost/a/b/</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然我们可以在注册的的时候指定 <code>scope</code> 去向下缩小作用域，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (navigator.<span class="property">serviceWorker</span>) &#123;</span><br><span class="line">    navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&#x27;/a/b/sw.js&#x27;</span>, &#123;<span class="attr">scope</span>: <span class="string">&#x27;/a/b/c/&#x27;</span>&#125;)</span><br><span class="line">        .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">reg</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(reg.<span class="property">scope</span>);</span><br><span class="line">            <span class="comment">// scope =&gt; https://yourhost/a/b/c/</span></span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过服务器对 ServiceWorker 文件的响应设置 <code>Service-Worker-Allowed</code> 头部，去扩大作用域。</p>
+<p>例如 Google Docs 在作用域 <code>https://docs.google.com/document/u/0/</code> 注册了一个来自于 <code>https://docs.google.com/document/offline/serviceworker.js</code> 的 ServiceWorker</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204131004508.png" alt="img"></p>
+<p><strong>MPA下的 ServiceWorker 治理</strong></p>
+<p>现代 Web App 项目主要有两种架构形式存在： <strong>SPA(Single Page Application)</strong> 和 <strong>MPA(Multiple Page Application)</strong></p>
+<p>MPA 这种架构的模式在现如今的大型 Web App 非常常见，这种 Web App 相比较于 SPA 能够承受更重的业务体量，并且利于大型 Web App 的后期维护和扩展，它往往会有多个团队去维护。</p>
+<p>假设我们有一个 MPA 的站点：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">|-- app1</span><br><span class="line">|   |-- app1-service-worker.<span class="property">js</span></span><br><span class="line">|   <span class="string">`-- index.html</span></span><br><span class="line"><span class="string">|-- app2</span></span><br><span class="line"><span class="string">|   `</span>-- index.<span class="property">html</span></span><br><span class="line">|-- index.<span class="property">html</span></span><br><span class="line"><span class="string">`-- root-service-worker.js</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>app1</strong> 和 <strong>app2</strong> 分别由不同的团队维护。</p>
+<p>如果我们在根目录 <code>&#39;/&#39;</code> 注册了 <code>root-service-worker.js</code>，去完成一些通用的功能，例如：「日志收集」、「静态资源缓存」等。</p>
+<p>然后 <strong>app1</strong> 团队利用 ServiceWorker 的能力开发了一些特定的功能需要，例如 app1 的「离线化功能」。</p>
+<p>他们在 <code>app1/index.html </code>目录注册了 <code>app1-service-worker.js</code>。</p>
+<p>这时候，访问 <code>app1/*</code> 下的所有页面，ServiceWorker 控制权会交给 <code>app1-service-worker.js</code>，也就是只有app1的「离线化功能」在工作，而原来的「日志收集」、「静态缓存」等功能会失效。</p>
+<p>显然这种情况是我们不希望看到的，并且在实际的开发中发生的概率会很大。</p>
+<p>解决这个问题有两种方案：</p>
+<ol>
+<li>封装「日志收集」、「静态资源缓存」功能，<code>app1-service-worker.js</code>引入并使用这些功能。</li>
+<li>把「离线化功能」整合到 <code>root-service-worker.js</code>，只允许注册该 ServiceWorker。</li>
+</ol>
+<p>关于方案一，封装通用功能这是正确的，但是主域下的功能可能完全没办法一一拆解，并且后续主域的 ServiceWorker 更新了新功能，子域下的 ServiceWorker 还需要主动去更新和升级。</p>
+<p>关于方案二，显然可以解决方案一的问题，但是其他应用，例如 <strong>app2</strong> 可能不需要「离线化功能」。</p>
+<p><strong>基于此，我们引入方案三：功能整合到主域，支持功能的组合按照作用域隔离。</strong></p>
+<p>基于  <a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS">GlacierJS</a>  的话代码上可能会是这样的：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mainPlugins = [</span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Collector</span>(); <span class="comment">// 日志收集功能</span></span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">AssetsCache</span>(); <span class="comment">// 静态资源缓存功能</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">glacier.<span class="title function_">use</span>(<span class="string">&#x27;/&#x27;</span>, mainPlugins)；</span><br><span class="line">glacier.<span class="title function_">use</span>(<span class="string">&#x27;/app1&#x27;</span>, [</span><br><span class="line">  ...mainPlugins,</span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Offiline</span>(),  <span class="comment">// 离线化功能</span></span><br><span class="line">])；</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="资源缓存"><a href="#资源缓存" class="headerlink" title="资源缓存"></a>资源缓存</h2><p>ServiceWorker 一个很核心的能力就是能结合 CacheAPI  进行灵活的缓存资源，从而达到优化站点的加载速度、弱网访问、离线应用等。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220414092530.png" alt="image-20220414092525515"></p>
+<p>对于静态资源有五种常用的缓存策略：</p>
+<ol>
+<li><strong>stale-while-revalidate</strong><br>该模式允许您使用缓存（如果可用）尽快响应请求，如果没有缓存则回退到网络请求，然后使用网络请求来更新缓存，它是一种比较安全的缓存策略。</li>
+<li><strong>cache-first</strong><br>离线 Web 应用程序将严重依赖缓存，但对于非关键且可以逐渐缓存的资源，<strong>「缓存优先」</strong>是最佳选择。<br>如果缓存中有响应，则将使用缓存的响应来满足请求，并且根本不会使用网络。<br>如果没有缓存响应，则请求将由网络请求完成，然后响应会被缓存，以便下次直接从缓存中提供下一个请求。</li>
+<li><strong>network-first</strong><br>对于频繁更新的请求，<strong>「网络优先」</strong>策略是理想的解决方案。<br>默认情况下，它会尝试从网络获取最新响应。如果请求成功，它会将响应放入缓存中。如果网络未能返回响应，则将使用缓存的响应。</li>
+<li><strong>network-only</strong><br>如果您需要从网络满足特定请求，network-only 模式会将资源请求进行透传到网络。</li>
+<li><strong>cache-only</strong><br>该策略确保从缓存中获取响应。这种场景不太常见，它一般匹配着「预缓存」策略会比较有用。</li>
+</ol>
+<p>那这些策略中，我们应该使用哪种呢？答案是根据资源的种类具体选择。</p>
+<p>例如一些资源如果只是在 Web 应用发布的时候才会更新，我们就可以使用 cache-first 策略，例如一些 JS、样式、图片等。</p>
+<p>而 index.html 作为页面的加载的主入口，更加适宜使用 stale-while-revalidate 策略。</p>
+<p>我们以 GlacierJS 的缓存插件（<a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/#/contents/zh-cn/plugin-assets-cache">@glacierjs&#x2F;plugin-assets-cache</a>）为例：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// in service-worker.js</span></span><br><span class="line"><span class="title function_">importScripts</span>(<span class="string">&quot;//cdn.jsdelivr.net/npm/@glacierjs/core/dist/index.min.js&quot;</span>);</span><br><span class="line"><span class="title function_">importScripts</span>(<span class="string">&#x27;//cdn.jsdelivr.net/npm/@glacierjs/sw/dist/index.min.js&#x27;</span>);</span><br><span class="line"><span class="title function_">importScripts</span>(<span class="string">&#x27;//cdn.jsdelivr.net/npm/@glacierjs/plugin-assets-cache/dist/index.min.js&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">GlacierSW</span> &#125; = self[<span class="string">&#x27;@glacierjs/sw&#x27;</span>];</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">AssetsCacheSW</span>, <span class="title class_">Strategy</span> &#125; = self[<span class="string">&#x27;@glacierjs/plugin-assets-cache&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> glacierSW = <span class="keyword">new</span> <span class="title class_">GlacierSW</span>();</span><br><span class="line"></span><br><span class="line">glacierSW.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">AssetsCacheSW</span>(&#123;</span><br><span class="line">    <span class="attr">routes</span>: [&#123;</span><br><span class="line">        <span class="comment">// capture as string: store index.html with stale-while-revalidate strategy.</span></span><br><span class="line">        <span class="attr">capture</span>: <span class="string">&#x27;https://mysite.com/index.html&#x27;</span>,</span><br><span class="line">        <span class="attr">strategy</span>: <span class="title class_">Strategy</span>.<span class="property">STALE_WHILE_REVALIDATE</span>,</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        <span class="comment">// capture as RegExp: store all images with cache-first strategy</span></span><br><span class="line">        <span class="attr">capture</span>: <span class="regexp">/\.(png|jpg)$/</span>,</span><br><span class="line">        <span class="attr">strategy</span>: <span class="title class_">Strategy</span>.<span class="property">CACHE_FIRST</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        <span class="comment">// capture as function: store all stylesheet with cache-first strategy</span></span><br><span class="line">        <span class="attr">capture</span>: <span class="function">(<span class="params">&#123; request &#125;</span>) =&gt;</span> request.<span class="property">destination</span> === <span class="string">&#x27;style&#x27;</span>,</span><br><span class="line">        <span class="attr">strategy</span>: <span class="title class_">Strategy</span>.<span class="property">CACHE_FIRST</span></span><br><span class="line">    &#125;],</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="远程控制"><a href="#远程控制" class="headerlink" title="远程控制"></a>远程控制</h2><p>基于 ServiceWorker 的原理，一旦在浏览器安装上了，如果遇到紧急线上问题，唯有发布新的 ServiceWorker 才能解决问题。但是 ServiceWorker 的安装是有时延的，再加上有些团队从修改代码到发布的流程，这个反射弧就很长了。我们有什么办法能缩短对于线上问题的反射弧呢？</p>
+<p><strong>我们可以在远程存储一个配置，针对可预见的场景，进行「远程控制」</strong>：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220417015441.png" alt="remote-controller.drawio"></p>
+<p><strong>那么我们怎么去获取配置呢？</strong></p>
+<p><strong>方案一</strong>，如果我们在主线程中获取配置：</p>
+<ol>
+<li>需要用户主动刷新页面才会生效。</li>
+<li>做不到轻量的功能关闭，什么意思呢，我们会有开关的场景，主线程只能通过卸载或者清理缓存去实现「关闭」，这个太重了。</li>
+</ol>
+<p><strong>方案二</strong>，如果我们在 ServiceWorker 线程去获取配置：</p>
+<ol>
+<li>可以实现轻量功能关闭，透传请求就行了。</li>
+<li>但是如果遇到要干净的清理用户环境的需要，去卸载 ServiceWorker 的时候，就会导致主进程每次注册，到了 ServiceWorker  就卸载，造成频繁安装卸载。</li>
+</ol>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220417013001.png" alt="image-20220417012859191"></p>
+<p>所以我们的 <strong>最后方案</strong> 是 <strong>「基于双线程的实时配置获取」</strong>。</p>
+<p>主线程也要获取配置，然后配置前面要加上防抖保护，防止 <strong>onFetch</strong> 事件短时间并发的问题。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220417013006.png" alt="image-20220417012934418"></p>
+<p>代码上，我们使用 Glacier  的插件 <a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/#/contents/zh-cn/plugin-remote-controller">@glacierjs&#x2F;plugin-remote-controller</a> 可以轻松实现远程控制：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// in ./remote-controller-sw.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">RemoteControllerSW</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/plugin-remote-controller&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">GlacierSW</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/sw&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; options &#125; <span class="keyword">from</span> <span class="string">&#x27;./options&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> glacierSW = <span class="keyword">new</span> <span class="title class_">GlacierSW</span>();</span><br><span class="line">glacierSW.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">RemoteControllerSW</span>(&#123;</span><br><span class="line">  <span class="attr">fetchConfig</span>: <span class="function">() =&gt;</span> <span class="title function_">getMyRemoteConfig</span>();</span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 其中 getMyRemoteConfig 用于获取你存在远端的配置，返回的格式规定如下：</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getMyRemoteConfig</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="attr">config</span>: <span class="title class_">RemoteConfig</span> = &#123;</span><br><span class="line">        <span class="comment">// 全局关闭，卸载 ServiceWorker</span></span><br><span class="line">        <span class="attr">switch</span>: <span class="literal">true</span>,</span><br><span class="line">      </span><br><span class="line">      	<span class="comment">// 缓存功能开关</span></span><br><span class="line">      	<span class="attr">assetsEnable</span>: <span class="literal">true</span>,</span><br><span class="line"></span><br><span class="line">				<span class="comment">// 精细控制特定缓存</span></span><br><span class="line">        <span class="attr">assetsCacheRoutes</span>: [&#123;</span><br><span class="line">            <span class="attr">capture</span>: <span class="string">&#x27;https://mysite.com/index.html&#x27;</span>,</span><br><span class="line">            <span class="attr">strategy</span>: <span class="title class_">Strategy</span>.<span class="property">STALE_WHILE_REVALIDATE</span>,</span><br><span class="line">        &#125;],</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h2><p>ServiceWorker 发布之后，我们需要保持对线上情况的把控。 对于一些必要的统计指标，我们可能需要进行上统计和上报。</p>
+<p><a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/#/contents/zh-cn/plugin-collector">@glacierjs&#x2F;plugin-collector</a> 内置了五个常见的数据事件：</p>
+<ol>
+<li>ServiceWorker 注册：<a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_collector_src.CollectedDataType.html#SW_REGISTER">SW_REGISTER</a></li>
+<li>ServiceWorker 安装成功：<a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_collector_src.CollectedDataType.html#SW_INSTALLED">SW_INSTALLED</a></li>
+<li>ServiceWorker 控制中：<a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_collector_src.CollectedDataType.html#SW_CONTROLLED">SW_CONTROLLED</a></li>
+<li>命中 onFetch 事件：<a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_collector_src.CollectedDataType.html#SW_FETCH">SW_FETCH</a></li>
+<li>命中浏览器缓存：<a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_collector_src.CollectedDataType.html#CACHE_HIT">CACHE_HIT</a> of <a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_assets_cache_src.CacheFrom.html#WINDOW">CacheFrom.Window</a></li>
+<li>命中 CacheAPI 缓存：<a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_collector_src.CollectedDataType.html#CACHE_HIT">CACHE_HIT</a> of <a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/api/enums/plugin_assets_cache_src.CacheFrom.html#SW">CacheFrom.SW</a></li>
+</ol>
+<p>基于以上数据的收集，我们就可以得到一些常见的通用指标：</p>
+<ol>
+<li>ServiceWorker 安装率 &#x3D; SW_REGISTER &#x2F; SW_INSTALLED</li>
+<li>ServiceWorker 控制率 &#x3D; SW_REGISTER &#x2F; SW_CONTROLLED</li>
+<li>ServiceWorker 缓存命中率 &#x3D; SW_FETCH &#x2F; CACHE_HIT (of CacheFrom.SW)</li>
+</ol>
+<p>首先我们在 ServiceWorker 线程中注册 plugin-collector：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">AssetsCacheSW</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/plugin-assets-cache&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">CollectorSW</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/plugin-collector&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">GlacierSW</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/sw&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> glacierSW = <span class="keyword">new</span> <span class="title class_">GlacierSW</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// should use plugin-assets-cache first in order to make CollectedDataType.CACHE_HIT work.</span></span><br><span class="line">glacierSW.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">AssetsCacheSW</span>(&#123;...&#125;));</span><br><span class="line">glacierSW.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">CollectorSW</span>());</span><br></pre></td></tr></table></figure>
+
+<p>然后在主线程中注册 plugin-collector，并且监听数据事件，进行数据上报：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  <span class="title class_">CollectorWindow</span>,</span><br><span class="line">  <span class="title class_">CollectedData</span>,</span><br><span class="line">  <span class="title class_">CollectedDataType</span>,</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/plugin-collector&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">CacheFrom</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/plugin-assets-cache&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">GlacierWindow</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@glacierjs/window&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> glacierWindow = <span class="keyword">new</span> <span class="title class_">GlacierWindow</span>(<span class="string">&#x27;./service-worker.js&#x27;</span>);</span><br><span class="line"></span><br><span class="line">glacierWindow.<span class="title function_">use</span>(<span class="keyword">new</span> <span class="title class_">CollectorWindow</span>(&#123;</span><br><span class="line">    <span class="title function_">send</span>(<span class="params">data: CollectedData</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; <span class="keyword">type</span>, data &#125; = data;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">switch</span> (<span class="keyword">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="title class_">CollectedDataType</span>.<span class="property">SW_REGISTER</span>:</span><br><span class="line">          myReporter.<span class="title function_">event</span>(<span class="string">&#x27;sw-register-count&#x27;</span>);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="title class_">CollectedDataType</span>.<span class="property">SW_INSTALLED</span>:</span><br><span class="line">          myReporter.<span class="title function_">event</span>(<span class="string">&#x27;sw-installed-count&#x27;</span>);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="title class_">CollectedDataType</span>.<span class="property">SW_CONTROLLED</span>:</span><br><span class="line">          myReporter.<span class="title function_">event</span>(<span class="string">&#x27;sw-controlled-count&#x27;</span>);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="title class_">CollectedDataType</span>.<span class="property">SW_FETCH</span>:</span><br><span class="line">          myReporter.<span class="title function_">event</span>(<span class="string">&#x27;sw-fetch-count&#x27;</span>);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="title class_">CollectedDataType</span>.<span class="property">CACHE_HIT</span>:</span><br><span class="line">          <span class="comment">// hit service worker cache</span></span><br><span class="line">          <span class="keyword">if</span> (data?.<span class="property">from</span> === <span class="title class_">CacheFrom</span>.<span class="property">SW</span>) &#123;</span><br><span class="line">            myReporter.<span class="title function_">event</span>(<span class="string">`sw-assets-count:hit-sw-<span class="subst">$&#123;data?.url&#125;</span>`</span>);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="comment">// hit browser cache or network</span></span><br><span class="line">          <span class="keyword">if</span> (data?.<span class="property">from</span> === <span class="title class_">CacheFrom</span>.<span class="property">Window</span>) &#123;</span><br><span class="line">            myReporter.<span class="title function_">event</span>(<span class="string">`sw-assets-count:hit-window-<span class="subst">$&#123;data?.url&#125;</span>`</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>myReporter.event</code> 是你可能会实现的数据上报库。</p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>ServiceWorker 测试可以分解为常见的测试组。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220418092022.png" alt="img"></p>
+<p>在顶层的是 <strong>「集成测试」</strong>，在这一层，我们检查整体的行为，例如：测试页面可加载，ServiceWorker注册，离线功能等。集成测试是最慢的，但是也是最接近现实情况的。</p>
+<p>再往下一层的是 <strong>「浏览器单元测试」</strong>，由于 ServiceWorker 的生命周期，以及一些 API 只有在浏览器环境下才能有，所以我们使用浏览器去进行单元测试，会减少很多环境的问题。</p>
+<p>接着是 <strong>「ServiceWorker 单元测试」</strong>，这种测试也是在浏览器环境中注册了测试用的 ServiceWorker 为前提进行的单元测试。</p>
+<p>最后一种是 <strong>「模拟 ServiceWorker」</strong>，这种测试粒度会更加精细，精细到某个类某个方法，只检测入参和返回。这意味着没有了浏览器启动成本，并且最终是一种可预测的方式测试代码的方式。</p>
+<p>但是模拟 ServiceWorker 是一件困难的事情，如果 mock 的 API 表面不正确，则在集成测试或者浏览器单元测试之前问题不会被发现。我们可以使用 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/service-worker-mock">service-worker-mock</a> 或者 <a target="_blank" rel="noopener" href="https://github.com/mswjs/msw/issues/170">MSW</a> 在 NodeJS 环境中进行 ServiceWorker 的单元测试。</p>
+<p>由于篇幅有限，后续我另开专题来讲讲 ServiceWorker 单元测试的实践。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文开篇描述了关于 PWA 的基本概念，然后介绍了一些现在社区优秀的工具，以及要去构建一个「可控、可靠、可扩展的 PWA 应用」所面临的的实际的痛点。</p>
+<p>于是在三个「可」给出了一些实践性的建议：</p>
+<ol>
+<li>通过「数据收集」、「远程控制」保证我们对已发布的 PWA 应用的 <strong>「可控性」</strong></li>
+<li>通过「单元测试」、「集成测试」去保障我们 PWA 应用的 <strong>「可靠性」</strong></li>
+<li>通过「多维洋葱插件模型」支持插件化和 MPA 应用，以及整合多个插件，从而达到 PWA 应用的 <strong>「可扩展性」</strong>。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.com/PWA%E5%AE%9E%E6%88%98%EF%BC%9A%E9%9D%A2%E5%90%91%E4%B8%8B%E4%B8%80%E4%BB%A3%E7%9A%84Progressive-Web-Dean-Alan-Hume%EF%BC%88%E8%BF%AA%E6%81%A9%E8%89%BE%E4%BC%A6%E4%BC%91%E5%A7%86%EF%BC%89/dp/B07D4ZSQYP/ref=sr_1_2?keywords=PWA+%E5%AE%9E%E6%88%98&qid=1650419306&sr=8-2">《PWA实战：面向下一代的Progressive Web APP》</a></li>
+<li><a target="_blank" rel="noopener" href="https://lavas-project.github.io/pwa-book/chapter04/2-service-worker-register.html">Service Worker 注册</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/dev-channel/two-http-headers-related-to-service-workers-you-never-may-have-heard-of-c8862f76cc60">Two HTTP headers related to Service Workers you never may have heard of</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28161855">如何优雅的为 PWA 注册 Service Worker</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/workbox">Workbox</a></li>
+<li><a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/#/contents/zh-cn/plugin">GlacierJS - 多维洋葱插件系统</a></li>
+<li><a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/#/contents/zh-cn/plugin-assets-cache">GlacierJS - 资源缓存</a></li>
+<li><a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/#/contents/zh-cn/plugin-remote-controller">GlacierJS - 远程控制</a></li>
+<li><a target="_blank" rel="noopener" href="https://jerryc8080.github.io/GlacierJS/#/contents/zh-cn/plugin-collector">GlacierJS - 数据收集</a></li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2021/03/21/2021/wxapp-router-experience/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2022/04/20/2022/build-a-extensible-reliable-controllable-PWA-app/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>

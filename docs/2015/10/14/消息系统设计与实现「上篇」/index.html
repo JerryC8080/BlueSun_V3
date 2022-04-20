@@ -15,39 +15,25 @@
     <meta name="keywords" content="架构,消息系统," />
   
 
-  <meta name="description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。
-
-
-整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。
-
-
-我只是一个会思考的idea搬运工。">
+  <meta name="description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。   整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。   我只是一个会思考的idea搬运工。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息系统设计与实现「上篇」">
-<meta property="og:url" content="http://huang-jerryc.com/2015/10/14/消息系统设计与实现「上篇」/index.html">
+<meta property="og:url" content="http://huang-jerryc.com/2015/10/14/%E6%B6%88%E6%81%AF%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%E3%80%8C%E4%B8%8A%E7%AF%87%E3%80%8D/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。
-
-
-整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。
-
-
-我只是一个会思考的idea搬运工。">
+<meta property="og:description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。   整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。   我只是一个会思考的idea搬运工。">
+<meta property="og:locale">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/c3aad7dc-5914-4c5c-9f88-34e40077d0ff.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/b0ee917e-0776-4aa9-bf4a-0a2cd33ca853.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/a6b102ed-d337-41d2-a5d3-b3923650de16.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/5f90952e-2fe6-447f-affb-8a7c9a04d0ab.jpg">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/80cc4aaf-0568-478c-8513-b8821e57520f.jpg">
-<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:published_time" content="2015-10-14T09:22:33.000Z">
+<meta property="article:modified_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="架构">
+<meta property="article:tag" content="消息系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="消息系统设计与实现「上篇」">
-<meta name="twitter:description" content="由于文章篇幅较长，而作者精力有限，不希望这么早就精尽人亡，故分成上下篇来写消息系统的设计与实现。上篇主要讲的是一些概念，搞清楚我们要做的这个消息系统的主要内容。而下篇主要讲具体的实现，会包括架构设计，数据库设计，业务流程详细的实现等。
-
-
-整个系统的设计与实现，并非我一人之力就可以完成的。这其中是同事们大家一起讨论与商讨的结果，而我只是把它细化，呈现出来。
-
-
-我只是一个会思考的idea搬运工。">
+<meta name="twitter:image" content="http://xia-dev.b0.upaiyun.com/c3aad7dc-5914-4c5c-9f88-34e40077d0ff.jpg">
 
   
 
@@ -59,7 +45,9 @@
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -112,6 +100,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -195,7 +184,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u4EA7_u54C1_u5206_u6790"><span class="toc-text">产品分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u7B80_u4E66"><span class="toc-text">简书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u77E5_u4E4E"><span class="toc-text">知乎</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6D88_u606F_u7684_u4E09_u79CD_u5206_u7C7B"><span class="toc-text">消息的三种分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u63D0_u9192_u7684_u8BED_u8A00_u5206_u6790"><span class="toc-text">提醒的语言分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6D88_u606F_u7684_u4E24_u79CD_u83B7_u53D6_u65B9_u5F0F"><span class="toc-text">消息的两种获取方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u8BA2_u9605"><span class="toc-text">订阅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u805A_u5408"><span class="toc-text">聚合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u4E94_u4E2A_u5B9E_u4F53"><span class="toc-text">五个实体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u884C_u4E3A_u5206_u89E3"><span class="toc-text">行为分解</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A7%E5%93%81%E5%88%86%E6%9E%90"><span class="toc-text">产品分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%B9%A6"><span class="toc-text">简书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A5%E4%B9%8E"><span class="toc-text">知乎</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E4%B8%89%E7%A7%8D%E5%88%86%E7%B1%BB"><span class="toc-text">消息的三种分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%86%92%E7%9A%84%E8%AF%AD%E8%A8%80%E5%88%86%E6%9E%90"><span class="toc-text">提醒的语言分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E4%B8%A4%E7%A7%8D%E8%8E%B7%E5%8F%96%E6%96%B9%E5%BC%8F"><span class="toc-text">消息的两种获取方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A2%E9%98%85"><span class="toc-text">订阅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88"><span class="toc-text">聚合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E4%B8%AA%E5%AE%9E%E4%BD%93"><span class="toc-text">五个实体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E4%B8%BA%E5%88%86%E8%A7%A3"><span class="toc-text">行为分解</span></a></li></ol>
   </div>
 
 
@@ -221,7 +210,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -229,7 +218,7 @@ ga('send', 'pageview');
       
         <span>
           <i class="icon-comment"></i>
-          <a href="http://huang-jerryc.com//2015/10/14/消息系统设计与实现「上篇」/#disqus_thread"></a>
+          <a href="http://huang-jerryc.com//2015/10/14/%E6%B6%88%E6%81%AF%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%E3%80%8C%E4%B8%8A%E7%AF%87%E3%80%8D/#disqus_thread"></a>
         </span>
       
 
@@ -255,8 +244,8 @@ ga('send', 'pageview');
 <blockquote>
 <p>我只是一个会思考的idea搬运工。</p>
 </blockquote>
-<h2 id="u4EA7_u54C1_u5206_u6790"><a href="#u4EA7_u54C1_u5206_u6790" class="headerlink" title="产品分析"></a>产品分析</h2><p>首先我们来看一下市场上关于消息的实现是怎么样的。</p>
-<h3 id="u7B80_u4E66"><a href="#u7B80_u4E66" class="headerlink" title="简书"></a>简书</h3><p>简书的消息系统主要分了两种</p>
+<h2 id="产品分析"><a href="#产品分析" class="headerlink" title="产品分析"></a>产品分析</h2><p>首先我们来看一下市场上关于消息的实现是怎么样的。</p>
+<h3 id="简书"><a href="#简书" class="headerlink" title="简书"></a>简书</h3><p>简书的消息系统主要分了两种</p>
 <ul>
 <li>简信</li>
 <li>提醒</li>
@@ -264,20 +253,20 @@ ga('send', 'pageview');
 <p><strong>简信</strong><br>简信的性质其实跟私信是一样的，是用户发送给用户的一则消息，有具体的信息内容。</p>
 <p><img src="http://xia-dev.b0.upaiyun.com/c3aad7dc-5914-4c5c-9f88-34e40077d0ff.jpg" alt="简书简信"></p>
 <p><strong>提醒</strong><br>而提醒，则是系统发送的一则消息，其文案格式是固定的，并且对特殊对象一般拥有超链接。<br><img src="http://xia-dev.b0.upaiyun.com/b0ee917e-0776-4aa9-bf4a-0a2cd33ca853.jpg" alt="简书提醒"></p>
-<h3 id="u77E5_u4E4E"><a href="#u77E5_u4E4E" class="headerlink" title="知乎"></a>知乎</h3><p>知乎跟简书一样，主要分了两种：</p>
+<h3 id="知乎"><a href="#知乎" class="headerlink" title="知乎"></a>知乎</h3><p>知乎跟简书一样，主要分了两种：</p>
 <ul>
 <li>私信</li>
 <li>消息</li>
 </ul>
-<p><strong>私信</strong><br>跟简书一样，使用户发送给用户的一则消息，也可以是管理员发送给用户的消息。<br><img src="http://xia-dev.b0.upaiyun.com/a6b102ed-d337-41d2-a5d3-b3923650de16.jpg" width="250"></p>
-<p><strong>消息</strong><br>知乎的消息比简书的提醒有过之而无不及，知乎会对多条相似的消息进行聚会，以达到减轻用户阅读压力的体验。<br><img src="http://xia-dev.b0.upaiyun.com/5f90952e-2fe6-447f-affb-8a7c9a04d0ab.jpg" width="450"></p>
-<h2 id="u6D88_u606F_u7684_u4E09_u79CD_u5206_u7C7B"><a href="#u6D88_u606F_u7684_u4E09_u79CD_u5206_u7C7B" class="headerlink" title="消息的三种分类"></a>消息的三种分类</h2><p>通过两种产品的简单分析，得出他们的消息有两种分类，在这基础上，我们再加上一种：公告。<br>公告的主要性质是系统发送一则含有具体内容的消息，站内所有用户都能读取到这条消息。<br>所以，消息有三种分类：</p>
+<p><strong>私信</strong><br>跟简书一样，使用户发送给用户的一则消息，也可以是管理员发送给用户的消息。<br><img src="http://xia-dev.b0.upaiyun.com/a6b102ed-d337-41d2-a5d3-b3923650de16.jpg" width=250></img></p>
+<p><strong>消息</strong><br>知乎的消息比简书的提醒有过之而无不及，知乎会对多条相似的消息进行聚会，以达到减轻用户阅读压力的体验。<br><img src="http://xia-dev.b0.upaiyun.com/5f90952e-2fe6-447f-affb-8a7c9a04d0ab.jpg" width=450></img></p>
+<h2 id="消息的三种分类"><a href="#消息的三种分类" class="headerlink" title="消息的三种分类"></a>消息的三种分类</h2><p>通过两种产品的简单分析，得出他们的消息有两种分类，在这基础上，我们再加上一种：公告。<br>公告的主要性质是系统发送一则含有具体内容的消息，站内所有用户都能读取到这条消息。<br>所以，消息有三种分类：</p>
 <ol>
 <li>公告 Announce</li>
 <li>提醒 Remind</li>
 <li>私信 Message</li>
 </ol>
-<h2 id="u63D0_u9192_u7684_u8BED_u8A00_u5206_u6790"><a href="#u63D0_u9192_u7684_u8BED_u8A00_u5206_u6790" class="headerlink" title="提醒的语言分析"></a>提醒的语言分析</h2><p>我们从简书取一组提醒样本：</p>
+<h2 id="提醒的语言分析"><a href="#提醒的语言分析" class="headerlink" title="提醒的语言分析"></a>提醒的语言分析</h2><p>我们从简书取一组提醒样本：</p>
 <ul>
 <li>3dbe1bd90774 关注了你</li>
 <li>magicdawn 喜欢了你的文章 《单点登录的三种实现方式》</li>
@@ -290,9 +279,9 @@ ga('send', 'pageview');
 <blockquote>
 <p>「谁对一样属于谁的事物做了什么操作」<br>「someone do something in someone’s something」</p>
 </blockquote>
-<p>someone = 提醒的触发者，或者发送者，标记为sender<br>do something = 提醒的动作，评论、喜欢、关注都属于一个动作，标记为action<br>something = 提醒的动作作用对象，这就具体到是哪一篇文章，标记为target<br>someone’s = 提醒的动作作用对象的所有者，标记为targetOwner</p>
+<p>someone &#x3D; 提醒的触发者，或者发送者，标记为sender<br>do something &#x3D; 提醒的动作，评论、喜欢、关注都属于一个动作，标记为action<br>something &#x3D; 提醒的动作作用对象，这就具体到是哪一篇文章，标记为target<br>someone’s &#x3D; 提醒的动作作用对象的所有者，标记为targetOwner</p>
 <p>这就清楚了，sender和targetOwner就是网站的用户，而target是具体到哪一篇文章，如果提醒的对象不仅仅局限于文章，还有其他的话，就需要增加一项targetType，来标记目标是文章还是其他的什么。而action，则是固定的，整个网站会触发提醒的动作可能就只有那几样：评论、喜欢、关注…..（或者其他业务需要提醒的动作）</p>
-<h2 id="u6D88_u606F_u7684_u4E24_u79CD_u83B7_u53D6_u65B9_u5F0F"><a href="#u6D88_u606F_u7684_u4E24_u79CD_u83B7_u53D6_u65B9_u5F0F" class="headerlink" title="消息的两种获取方式"></a>消息的两种获取方式</h2><ul>
+<h2 id="消息的两种获取方式"><a href="#消息的两种获取方式" class="headerlink" title="消息的两种获取方式"></a>消息的两种获取方式</h2><ul>
 <li>推 Push</li>
 <li>拉 Pull</li>
 </ul>
@@ -300,7 +289,7 @@ ga('send', 'pageview');
 <p>拉的相对麻烦一点，就是推的反向，例如每个用户都有一张关注问题的列表，每当用户上线的时候，对每个问题进行轮询，当问题的事件列表出现了比我原本时间戳大的信息就进行拉取。</p>
 <p><strong>而我们则根据消息的不同分类采用不同的获取方式</strong>：<br>通告和提醒，适合使用拉取的方式，消息产生之后，会存在消息表中，用户在某一特定的时间根据自己关注问题的表进行消息的拉取，然后添加到自己的消息队列中，</p>
 <p>信息，适合使用推的方式，在发送者建立一条信息之后，同时指定接收者，把消息添加到接收者的消息队列中。</p>
-<h2 id="u8BA2_u9605"><a href="#u8BA2_u9605" class="headerlink" title="订阅"></a>订阅</h2><p>根据提醒使用拉取的方式，需要维护一个关注某一事物的列表。<br>这种行为，我们称之为：<strong>「订阅」Subscribe </strong></p>
+<h2 id="订阅"><a href="#订阅" class="headerlink" title="订阅"></a>订阅</h2><p>根据提醒使用拉取的方式，需要维护一个关注某一事物的列表。<br>这种行为，我们称之为：**「订阅」Subscribe **</p>
 <p><strong>一则订阅有以下三个核心属性</strong>：</p>
 <ul>
 <li>订阅的目标 target</li>
@@ -309,13 +298,13 @@ ga('send', 'pageview');
 </ul>
 <p>比如我发布了一篇文章，那么我会订阅文章《XXX》的评论动作，所以文章《XXX》每被人评论了，就需要发送一则提醒告知我。</p>
 <p><strong>订阅的规则还可以扩展</strong><br>我喜欢了一篇文章，和我发布了一篇文章，订阅的动作可能不一样。<br>喜欢了一篇文章，我希望我订阅这篇文章更新、评论的动作。<br>而发布了一篇文章，我希望我只是订阅这篇文章的评论动作。</p>
-<p>这时候就需要多一个参数：subscribReason<br>不同的subscribReason，对应着一个动作数组，<br>subscribReason = 喜欢，对应着 actions = [更新，评论]<br>subscribReason = 发布，对应着 actions = [评论]</p>
+<p>这时候就需要多一个参数：subscribReason<br>不同的subscribReason，对应着一个动作数组，<br>subscribReason &#x3D; 喜欢，对应着 actions &#x3D; [更新，评论]<br>subscribReason &#x3D; 发布，对应着 actions &#x3D; [评论]</p>
 <p><strong>订阅的规则还还可以扩展</strong><br>用户可能会有一个自己的订阅设置，比如对于所有的喜欢的动作，我都不希望接收。<br>比如Knewone的提醒设置<br><img src="http://xia-dev.b0.upaiyun.com/80cc4aaf-0568-478c-8513-b8821e57520f.jpg" alt="Knewone提醒设置" width="500"></p>
 <p>所以我们需要再维护一个表：<strong>SubscriptionConfig</strong>，来存放用户的提醒设置。<br>并且，当用户没有提醒设置的时候，可以使用系统提供的一套默认设置：<strong>defaultSubscriptionConfig</strong></p>
-<h2 id="u805A_u5408"><a href="#u805A_u5408" class="headerlink" title="聚合"></a>聚合</h2><p>如果我发布了一篇文章《XXX》，在我不在线的时候，被评论了10遍，当我一上线的时候，应该是收到十条信息类似于：「谁谁谁评论了你的文章《XXX》」?<br>还是应该收到一条信息：「甲、乙、丙、丁…评论了你的文章《XXX》」?</p>
-<p>知乎在聚合上做的很优秀，要知道他们要实现这个还是挺有技术的：<br><a href="http://www.zhihu.com/question/22394809" target="_blank" rel="external">知乎的消息机制，在技术上如何设计与规划？</a><br><a href="http://www.zhihu.com/question/20380990/answer/14960006" target="_blank" rel="external">网站的消息（通知）系统一般是如何实现的？</a></p>
+<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><p>如果我发布了一篇文章《XXX》，在我不在线的时候，被评论了10遍，当我一上线的时候，应该是收到十条信息类似于：「谁谁谁评论了你的文章《XXX》」?<br>还是应该收到一条信息：「甲、乙、丙、丁…评论了你的文章《XXX》」?</p>
+<p>知乎在聚合上做的很优秀，要知道他们要实现这个还是挺有技术的：<br><a target="_blank" rel="noopener" href="http://www.zhihu.com/question/22394809">知乎的消息机制，在技术上如何设计与规划？</a><br><a target="_blank" rel="noopener" href="http://www.zhihu.com/question/20380990/answer/14960006">网站的消息（通知）系统一般是如何实现的？</a></p>
 <p>关于这部分功能，我们还没有具体的实现方法，暂时也无法讲得更加详细。⊙﹏⊙</p>
-<h2 id="u4E94_u4E2A_u5B9E_u4F53"><a href="#u4E94_u4E2A_u5B9E_u4F53" class="headerlink" title="五个实体"></a>五个实体</h2><p>通过上面的分析，大概知道做这个消息系统，需要哪些实体类：</p>
+<h2 id="五个实体"><a href="#五个实体" class="headerlink" title="五个实体"></a>五个实体</h2><p>通过上面的分析，大概知道做这个消息系统，需要哪些实体类：</p>
 <ol>
 <li>用户消息队列 UserNotify</li>
 <li>用户 User</li>
@@ -328,7 +317,7 @@ ga('send', 'pageview');
 </ul>
 </li>
 </ol>
-<h2 id="u884C_u4E3A_u5206_u89E3"><a href="#u884C_u4E3A_u5206_u89E3" class="headerlink" title="行为分解"></a>行为分解</h2><p>说了这么多，整理一下整个消息流程的一些行为：</p>
+<h2 id="行为分解"><a href="#行为分解" class="headerlink" title="行为分解"></a>行为分解</h2><p>说了这么多，整理一下整个消息流程的一些行为：</p>
 <ul>
 <li>系统或者管理员，创建消息 <ul>
 <li>createNotify (make announce | remind | message)</li>
@@ -395,10 +384,10 @@ ga('send', 'pageview');
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2015/09/14/单点登录的三种实现方式/">
+    <a class="show pull-left" href="/2015/09/14/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%89%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2015/11/15/消息系统设计与实现「下篇」/">
+    <a class="show pull-right" href="/2015/11/15/%E6%B6%88%E6%81%AF%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%E3%80%8C%E4%B8%8B%E7%AF%87%E3%80%8D/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -494,14 +483,14 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 
   <script>
     var disqus_shortname = 'bluesun-jerryc';
     
-    var disqus_url = 'http://huang-jerryc.com/2015/10/14/消息系统设计与实现「上篇」/';
+    var disqus_url = 'http://huang-jerryc.com/2015/10/14/%E6%B6%88%E6%81%AF%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%E3%80%8C%E4%B8%8A%E7%AF%87%E3%80%8D/';
     
     (function(){
       var dsq = document.createElement('script');

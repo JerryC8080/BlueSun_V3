@@ -15,25 +15,18 @@
     <meta name="keywords" content="tcp," />
   
 
-  <meta name="description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。    
-我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程通">
+  <meta name="description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook      端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。     我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解TCP（一）：端口">
 <meta property="og:url" content="http://huang-jerryc.com/2017/03/02/understand-tcp-1/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。    
-我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程通">
-<meta property="og:updated_time" content="2018-05-01T16:16:02.000Z">
+<meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook      端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。     我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-03-02T07:56:25.000Z">
+<meta property="article:modified_time" content="2018-05-01T16:16:02.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="tcp">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解TCP（一）：端口">
-<meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-端口与进程TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。就是说，端口这一东西，是属于 TCP 知识范畴的。    
-我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程通">
 
   
 
@@ -45,7 +38,9 @@
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -98,6 +93,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -181,7 +177,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u7AEF_u53E3_u4E0E_u8FDB_u7A0B"><span class="toc-text">端口与进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u8BA4_u8BC6_u7AEF_u53E3"><span class="toc-text">认识端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u7AEF_u53E3_u53F7_u7684_u5206_u7C7B"><span class="toc-text">端口号的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#u670D_u52A1_u5668_u7AEF_u4F7F_u7528_u7684_u7AEF_u53E3_u53F7"><span class="toc-text">服务器端使用的端口号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u5BA2_u6237_u7AEF_u4F7F_u7528_u7684_u7AEF_u53E3_u53F7"><span class="toc-text">客户端使用的端口号</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u53C2_u8003"><span class="toc-text">参考</span></a>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E4%B8%8E%E8%BF%9B%E7%A8%8B"><span class="toc-text">端口与进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E7%AB%AF%E5%8F%A3"><span class="toc-text">认识端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E5%8F%B7%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">端口号的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E4%BD%BF%E7%94%A8%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="toc-text">服务器端使用的端口号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="toc-text">客户端使用的端口号</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a>
   </div>
 
 
@@ -207,7 +203,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -233,57 +229,32 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <blockquote>
-<p>更好阅读体验：<a href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/" target="_blank" rel="external">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
+<p>更好阅读体验：<a target="_blank" rel="noopener" href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
 </blockquote>
-<h2 id="u7AEF_u53E3_u4E0E_u8FDB_u7A0B"><a href="#u7AEF_u53E3_u4E0E_u8FDB_u7A0B" class="headerlink" title="端口与进程"></a>端口与进程</h2><p>TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。<br>就是说，端口这一东西，是属于 TCP 知识范畴的。    </p>
+<h2 id="端口与进程"><a href="#端口与进程" class="headerlink" title="端口与进程"></a>端口与进程</h2><p>TCP 的包是不包含 IP 地址信息的，那是 IP 层上的事，但是有源端口和目的端口。<br>就是说，端口这一东西，是属于 TCP 知识范畴的。    </p>
 <p>我们知道两个进程，在计算机内部进行通信，可以有管道、内存共享、信号量、消息队列等方法。<br>而两个进程如果需要进行通讯最基本的一个前提是能够唯一的标识一个进程，在本地进程通讯中我们可以使用 <strong>「PID(进程标识符)」</strong> 来唯一标识一个进程。<br>但 PID 只在本地唯一，如果把两个进程放到了不同的两台计算机，然后他们要通信的话，PID 就不够用了，这样就需要另外一种手段了。    </p>
 <p>解决这个问题的方法就是在运输层使用 <strong>「协议端口号 (protocol port number)」</strong>，简称 <strong>「端口 (port)」</strong>.<br>我们知道 IP 层的 ip 地址可以唯一标识主机，而 TCP 层协议和端口号可以唯一标识主机的一个进程，这样我们可以利用：<strong>「ip地址＋协议＋端口号」</strong>唯一标示网络中的一个进程。<br>在一些场合，也把这种唯一标识的模式称为<strong>「套接字 (Socket)」</strong>。    </p>
 <p>这就是说，虽然通信的重点是应用进程，但我们只要把要传送的报文交到目的主机的某一个合适的端口，剩下的工作就由 TCP 来完成了。    </p>
-<h2 id="u8BA4_u8BC6_u7AEF_u53E3"><a href="#u8BA4_u8BC6_u7AEF_u53E3" class="headerlink" title="认识端口"></a>认识端口</h2><p>TCP 用一个 16 位端口号来标识一个端口，可允许有 65536 ( 2的16次方) 个不同的端口号，范围在 0 ~ 65535 之间。    </p>
+<h2 id="认识端口"><a href="#认识端口" class="headerlink" title="认识端口"></a>认识端口</h2><p>TCP 用一个 16 位端口号来标识一个端口，可允许有 65536 ( 2的16次方) 个不同的端口号，范围在 0 ~ 65535 之间。    </p>
 <p>端口号根据服务器使用还是客户端使用，以及常见不常见的维度来区分，主要有以下类别：</p>
 <ol>
-<li>服务器端使用的端口号<ul>
+<li>服务器端使用的端口号</li>
+</ol>
+<ul>
 <li>熟知端口号</li>
 <li>登记端口号</li>
 </ul>
-</li>
+<ol start="2">
 <li>客户端使用的端口号</li>
 </ol>
 <p>下面展开来说说。    </p>
-<h3 id="u7AEF_u53E3_u53F7_u7684_u5206_u7C7B"><a href="#u7AEF_u53E3_u53F7_u7684_u5206_u7C7B" class="headerlink" title="端口号的分类"></a>端口号的分类</h3><h4 id="u670D_u52A1_u5668_u7AEF_u4F7F_u7528_u7684_u7AEF_u53E3_u53F7"><a href="#u670D_u52A1_u5668_u7AEF_u4F7F_u7528_u7684_u7AEF_u53E3_u53F7" class="headerlink" title="服务器端使用的端口号"></a>服务器端使用的端口号</h4><p><strong>熟知端口号</strong>：<br>取值范围：0 ~ 1023。<br>可以在 <a href="http://www.iana.org" target="_blank" rel="external">www.iana.org</a> 查到，服务器机器一接通电源，服务器程序就运行起来，为了让因特网上所有的客户程序都能找到服务器程序，服务器程序所使用的端口就必须是固定的，并且总所众所周知的。    </p>
+<h3 id="端口号的分类"><a href="#端口号的分类" class="headerlink" title="端口号的分类"></a>端口号的分类</h3><h4 id="服务器端使用的端口号"><a href="#服务器端使用的端口号" class="headerlink" title="服务器端使用的端口号"></a>服务器端使用的端口号</h4><p><strong>熟知端口号</strong>：<br>取值范围：0 ~ 1023。<br>可以在 <a target="_blank" rel="noopener" href="http://www.iana.org/">www.iana.org</a> 查到，服务器机器一接通电源，服务器程序就运行起来，为了让因特网上所有的客户程序都能找到服务器程序，服务器程序所使用的端口就必须是固定的，并且总所众所周知的。    </p>
 <p>一些常见的端口号：    </p>
-<table>
-<thead>
-<tr>
-<th>应用程序</th>
-<th>FTP</th>
-<th>TELNET</th>
-<th>SMTP</th>
-<th>DNS</th>
-<th>TFTP</th>
-<th>HTTP</th>
-<th>HTTPS</th>
-<th>SNMP</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>熟知端口号</td>
-<td><strong>21</strong></td>
-<td>23</td>
-<td>25</td>
-<td>53</td>
-<td>69</td>
-<td><strong>80</strong></td>
-<td><strong>443</strong></td>
-<td>161</td>
-</tr>
-</tbody>
-</table>
+<p>|应用程序 | FTP | TELNET | SMTP | DNS | TFTP | HTTP | HTTPS | SNMP |<br>| —| — | — |— |— |— |— |— |— |— |— |— |<br>|熟知端口号| <strong>21</strong> | 23 | 25 | 53 | 69 | <strong>80</strong> | <strong>443</strong> | 161 |</p>
 <p><strong>登记端口号</strong>：<br>取值范围：1024 ~ 49151。<br>这类端口没有熟知的应用程序使用，但是需要登记，以防重复</p>
-<h4 id="u5BA2_u6237_u7AEF_u4F7F_u7528_u7684_u7AEF_u53E3_u53F7"><a href="#u5BA2_u6237_u7AEF_u4F7F_u7528_u7684_u7AEF_u53E3_u53F7" class="headerlink" title="客户端使用的端口号"></a>客户端使用的端口号</h4><p>取值范围：49152 ~ 65535。<br>这类端口仅在客户端进程运行时才动态选择。<br>又叫 短暂端口号，表示这种端口的存在时间是短暂的，客户进程并不在意操作系统给它分配的是哪一个端口号，因为客户进程之所以必须有一个端口号，是为了让传输层的实体能够找到自己。    </p>
+<h4 id="客户端使用的端口号"><a href="#客户端使用的端口号" class="headerlink" title="客户端使用的端口号"></a>客户端使用的端口号</h4><p>取值范围：49152 ~ 65535。<br>这类端口仅在客户端进程运行时才动态选择。<br>又叫 短暂端口号，表示这种端口的存在时间是短暂的，客户进程并不在意操作系统给它分配的是哪一个端口号，因为客户进程之所以必须有一个端口号，是为了让传输层的实体能够找到自己。    </p>
 <p><em>PS：在<code>/etc/services</code>文件中可以查看所有知名服务使用的端口。</em></p>
-<h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><p><a href="https://book.douban.com/subject/26850616/" target="_blank" rel="external">《后台开发 核心技术与应用实践》</a><br><a href="https://book.douban.com/subject/2970300/" target="_blank" rel="external">《计算机网络》</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26850616/">《后台开发 核心技术与应用实践》</a><br><a target="_blank" rel="noopener" href="https://book.douban.com/subject/2970300/">《计算机网络》</a></p>
 
     
   </div>
@@ -420,7 +391,7 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 

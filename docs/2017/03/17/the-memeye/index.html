@@ -15,21 +15,23 @@
     <meta name="keywords" content="Javascript,Nodejs,SOAP," />
   
 
-  <meta name="description" content="MemeyeGithub 链接：https://github.com/JerryC8080/Memeye
-Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。前端部分，借助 Vue2 和 ChartJS 提供了一个不错的动态展示面板。Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，">
+  <meta name="description" content="MemeyeGithub 链接：https:&#x2F;&#x2F;github.com&#x2F;JerryC8080&#x2F;Memeye Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。前端部分，借助 Vue2 和 ChartJS 提供了一个不错的动态展示面板。Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一款 NodeJS 轻量级内存监控工具">
 <meta property="og:url" content="http://huang-jerryc.com/2017/03/17/the-memeye/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="MemeyeGithub 链接：https://github.com/JerryC8080/Memeye
-Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。前端部分，借助 Vue2 和 ChartJS 提供了一个不错的动态展示面板。Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，">
-<meta property="og:image" content="http://huang-jerryc.com/(https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214117.jpg">
+<meta property="og:description" content="MemeyeGithub 链接：https:&#x2F;&#x2F;github.com&#x2F;JerryC8080&#x2F;Memeye Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。前端部分，借助 Vue2 和 ChartJS 提供了一个不错的动态展示面板。Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，">
+<meta property="og:locale">
+<meta property="og:image" content="http://huang-jerryc.com/(https:/raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214117.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214216.jpeg">
-<meta property="og:updated_time" content="2019-07-17T13:52:49.000Z">
+<meta property="article:published_time" content="2017-03-17T07:17:38.000Z">
+<meta property="article:modified_time" content="2019-07-17T13:52:49.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="Javascript">
+<meta property="article:tag" content="Nodejs">
+<meta property="article:tag" content="SOAP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一款 NodeJS 轻量级内存监控工具">
-<meta name="twitter:description" content="MemeyeGithub 链接：https://github.com/JerryC8080/Memeye
-Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。前端部分，借助 Vue2 和 ChartJS 提供了一个不错的动态展示面板。Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，">
+<meta name="twitter:image" content="http://huang-jerryc.com/(https:/raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214117.jpg">
 
   
 
@@ -41,7 +43,9 @@ Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存�
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -94,6 +98,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -177,7 +182,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Memeye"><span class="toc-text">Memeye</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u7279_u70B9"><span class="toc-text">特点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u52A8_u673A"><span class="toc-text">动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Demo"><span class="toc-text">Demo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u517C_u5BB9_u6027"><span class="toc-text">兼容性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u5B89_u88C5__26amp_3B__u4F7F_u7528"><span class="toc-text">安装 & 使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Memeye__u662F_u5982_u4F55_u5DE5_u4F5C_u7684"><span class="toc-text">Memeye 是如何工作的</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Collector"><span class="toc-text">Collector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Indicator"><span class="toc-text">Indicator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dashboard"><span class="toc-text">Dashboard</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u9884_u89C8"><span class="toc-text">预览</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Memeye"><span class="toc-text">Memeye</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-text">动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Demo"><span class="toc-text">Demo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="toc-text">兼容性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-amp-%E4%BD%BF%E7%94%A8"><span class="toc-text">安装 &amp; 使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Memeye-%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="toc-text">Memeye 是如何工作的</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Collector"><span class="toc-text">Collector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Indicator"><span class="toc-text">Indicator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dashboard"><span class="toc-text">Dashboard</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%84%E8%A7%88"><span class="toc-text">预览</span></a></li></ol>
   </div>
 
 
@@ -203,7 +208,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -228,35 +233,39 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h1 id="Memeye"><a href="#Memeye" class="headerlink" title="Memeye"></a><a href="https://github.com/JerryC8080/Memeye" target="_blank" rel="external">Memeye</a></h1><p>Github 链接：<a href="https://github.com/JerryC8080/Memeye" target="_blank" rel="external">https://github.com/JerryC8080/Memeye</a></p>
-<p>Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。<br>前端部分，借助 <a href="https://github.com/vuejs/vue" target="_blank" rel="external">Vue2</a> 和 <a href="https://github.com/chartjs/Chart.js" target="_blank" rel="external">ChartJS</a> 提供了一个不错的动态展示面板。<br>Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，交由子进程来进行。<br>这样做能把 Memeye 的代码对宿主进程的影响降到最低，以确保数据的真实性。    </p>
-<h3 id="u7279_u70B9"><a href="#u7279_u70B9" class="headerlink" title="特点"></a>特点</h3><ul>
+      <h1 id="Memeye"><a href="#Memeye" class="headerlink" title="Memeye"></a><a target="_blank" rel="noopener" href="https://github.com/JerryC8080/Memeye">Memeye</a></h1><p>Github 链接：<a target="_blank" rel="noopener" href="https://github.com/JerryC8080/Memeye">https://github.com/JerryC8080/Memeye</a></p>
+<p>Memeye 是一个轻量级的 NodeJS 进程监控工具，它提供 进程内存、V8 堆空间内存、操作系统内存 三大维度的数据可视化展示。<br>前端部分，借助 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue">Vue2</a> 和 <a target="_blank" rel="noopener" href="https://github.com/chartjs/Chart.js">ChartJS</a> 提供了一个不错的动态展示面板。<br>Memeye 在宿主进程中，只植入了一个简单的数据收集器，其他工作则启动一个子进程，交由子进程来进行。<br>这样做能把 Memeye 的代码对宿主进程的影响降到最低，以确保数据的真实性。    </p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
 <li>轻量级</li>
 <li>简单</li>
 <li>面向开发环境</li>
 <li>可视化</li>
 </ul>
 <p><em>Note: Memeye 暂时只支持单进程，NodeJS 分布式进程还不适用，所以不建议在产品环境使用。</em></p>
-<h1 id="u52A8_u673A"><a href="#u52A8_u673A" class="headerlink" title="动机"></a>动机</h1><p>总所周知，NodeJS 对内存是很敏感的。在去年 4 月我用 NodeJS 做的一个营销性的项目，在上线当天 PV 突破了 100W。<br>其中内存就呈现出持续上涨趋势，在排查问题的过程中，想寻找一个轻量级的，只要可视化的呈现内存使用情况的工具，无果。<br>然后就有了这个项目的想法，但当时由于繁忙只做出了一个 Demo 级别的，简单能用就发布了。<br>最近有时间，再次翻出来，重构改版，增加更多维度的数据展示。    </p>
-<h1 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h1><p><a href="http://jerryc8080.github.io/Memeye/" target="_blank" rel="external">See preview demo</a> (也许需要翻墙)</p>
-<h1 id="u517C_u5BB9_u6027"><a href="#u517C_u5BB9_u6027" class="headerlink" title="兼容性"></a>兼容性</h1><ul>
+<h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><p>总所周知，NodeJS 对内存是很敏感的。在去年 4 月我用 NodeJS 做的一个营销性的项目，在上线当天 PV 突破了 100W。<br>其中内存就呈现出持续上涨趋势，在排查问题的过程中，想寻找一个轻量级的，只要可视化的呈现内存使用情况的工具，无果。<br>然后就有了这个项目的想法，但当时由于繁忙只做出了一个 Demo 级别的，简单能用就发布了。<br>最近有时间，再次翻出来，重构改版，增加更多维度的数据展示。    </p>
+<h1 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h1><p><a target="_blank" rel="noopener" href="http://jerryc8080.github.io/Memeye/">See preview demo</a> (也许需要翻墙)</p>
+<h1 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h1><ul>
 <li>Node v7.x</li>
 <li>Node v6.x</li>
 </ul>
-<h1 id="u5B89_u88C5__26amp_3B__u4F7F_u7528"><a href="#u5B89_u88C5__26amp_3B__u4F7F_u7528" class="headerlink" title="安装 &amp; 使用"></a>安装 &amp; 使用</h1><p>运行下面命令安装 : </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install memeye --save-dev</span><br></pre></td></tr></table></figure>
+<h1 id="安装-amp-使用"><a href="#安装-amp-使用" class="headerlink" title="安装 &amp; 使用"></a>安装 &amp; 使用</h1><p>运行下面命令安装 : </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install memeye --save-dev</span><br></pre></td></tr></table></figure>
+
+
 <p>然后在你的代码中引入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const memeye = require(&#39;memeye&#39;);&#10;memeye();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const memeye = require(&#x27;memeye&#x27;);</span><br><span class="line">memeye();</span><br></pre></td></tr></table></figure>
+
 <p>最后打开你的浏览器，输入下面地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:23333  //23333 port by defaul.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:23333  //23333 port by defaul.</span><br></pre></td></tr></table></figure>
+
 <p>就这么简单！</p>
-<h1 id="Memeye__u662F_u5982_u4F55_u5DE5_u4F5C_u7684"><a href="#Memeye__u662F_u5982_u4F55_u5DE5_u4F5C_u7684" class="headerlink" title="Memeye 是如何工作的"></a>Memeye 是如何工作的</h1><p>Memeye 有三个核心概念：Collector, Indicators, Dashboard。<br>Collector 运行在宿主进程中（你的NodeJS进程），Indicator 和 Dashboard 运行在子进程中，这样可以尽量减少 Memeye 代码对你的宿主进程的影响。    </p>
+<h1 id="Memeye-是如何工作的"><a href="#Memeye-是如何工作的" class="headerlink" title="Memeye 是如何工作的"></a>Memeye 是如何工作的</h1><p>Memeye 有三个核心概念：Collector, Indicators, Dashboard。<br>Collector 运行在宿主进程中（你的NodeJS进程），Indicator 和 Dashboard 运行在子进程中，这样可以尽量减少 Memeye 代码对你的宿主进程的影响。    </p>
 <h2 id="Collector"><a href="#Collector" class="headerlink" title="Collector"></a>Collector</h2><p>Collector 会监听宿主进程，并且收集数据，然后通过 IPC 通信管道发送数据给子进程，交由子进程处理。    </p>
 <h2 id="Indicator"><a href="#Indicator" class="headerlink" title="Indicator"></a>Indicator</h2><p>Indicator 像一个状态机。当它的属性变化的时候，会触发相应事件。所以我们可以用它来处理收集回来的数据。    </p>
 <h2 id="Dashboard"><a href="#Dashboard" class="headerlink" title="Dashboard"></a>Dashboard</h2><p>Dashboard 会以子进程的形式唤起。他会创建一个 Indicator 实例，以及启动一个集成 socket.io 的 Http 服务器。<br>然后绑定 Indicator 和进程通信管道，以接收父进程发过来的数据。<br>最后再绑定 Indicator 和 socket.io，这样可以在 Indicator 属性变化的时候发送数据给前端。    </p>
 <p>##Collector, Indicator, Dashboard 之间的通信</p>
-<p><img src="(https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214117.jpg" alt="commication.jpeg"></p>
-<h1 id="u9884_u89C8"><a href="#u9884_u89C8" class="headerlink" title="预览"></a>预览</h1><p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214216.jpeg" alt="预览"></p>
+<p><img src="/(https:/raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214117.jpg" alt="commication.jpeg"></p>
+<h1 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h1><p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190717214216.jpeg" alt="预览"></p>
 
     
   </div>
@@ -393,7 +402,7 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 

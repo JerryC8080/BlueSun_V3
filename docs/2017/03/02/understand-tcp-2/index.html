@@ -15,27 +15,21 @@
     <meta name="keywords" content="tcp," />
   
 
-  <meta name="description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-TCP 是面向字节流的，但传送的数据单元却是报文段。
-什么是报文？例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。一共四个 TCP 报文，发送到另外一个端。">
+  <meta name="description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook      TCP 是面向字节流的，但传送的数据单元却是报文段。 什么是报文？例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。一共四个 TCP 报文，发送到另外一个端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解TCP（二）：报文结构">
 <meta property="og:url" content="http://huang-jerryc.com/2017/03/02/understand-tcp-2/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-TCP 是面向字节流的，但传送的数据单元却是报文段。
-什么是报文？例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。一共四个 TCP 报文，发送到另外一个端。">
+<meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook      TCP 是面向字节流的，但传送的数据单元却是报文段。 什么是报文？例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。一共四个 TCP 报文，发送到另外一个端">
+<meta property="og:locale">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/CFC6314E4B2FD039C450821D946E93E2.png">
-<meta property="og:updated_time" content="2020-07-21T08:12:37.393Z">
+<meta property="article:published_time" content="2017-03-02T07:57:25.000Z">
+<meta property="article:modified_time" content="2020-07-21T08:12:37.393Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="tcp">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解TCP（二）：报文结构">
-<meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-TCP 是面向字节流的，但传送的数据单元却是报文段。
-什么是报文？例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。一共四个 TCP 报文，发送到另外一个端。">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/3A60080FBC8767DB575C2D2919097613.png">
 
   
 
@@ -47,7 +41,9 @@ TCP 是面向字节流的，但传送的数据单元却是报文段。
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -100,6 +96,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -183,7 +180,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP__u9996_u90E8_u5404_u5B57_u6BB5_u7684_u610F_u4E49_u548C_u4F5C_u7528"><span class="toc-text">TCP 首部各字段的意义和作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u6E90_u7AEF_u53E3_u548C_u76EE_u7684_u7AEF_u53E3_Port"><span class="toc-text">源端口和目的端口 Port</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u5E8F_u53F7_Sequence_Number"><span class="toc-text">序号 Sequence Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u786E_u8BA4_u53F7_Acknowledgemt_Number"><span class="toc-text">确认号 Acknowledgemt Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u6570_u636E_u504F_u79FB_Offset"><span class="toc-text">数据偏移 Offset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u4FDD_u7559_Reserved"><span class="toc-text">保留 Reserved</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u6807_u5FD7_u4F4D_TCP_Flags"><span class="toc-text">标志位 TCP Flags</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#u7D27_u6025_URG__28Urgent_29"><span class="toc-text">紧急 URG (Urgent)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u786E_u8BA4_ACK__28Acknowlegemt_29"><span class="toc-text">确认 ACK (Acknowlegemt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u63A8_u9001_PSH__28Push_29"><span class="toc-text">推送 PSH (Push)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u590D_u4F4D_RST__28Reset_29"><span class="toc-text">复位 RST (Reset)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u540C_u6B65_SYN__28SYNchronization_29"><span class="toc-text">同步 SYN (SYNchronization)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u7EC8_u6B62_FIN__28Finis_29"><span class="toc-text">终止 FIN (Finis)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u7A97_u53E3_u5927_u5C0F_Window_Size"><span class="toc-text">窗口大小 Window Size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u6821_u9A8C_u548C_TCP_Checksum"><span class="toc-text">校验和 TCP Checksum</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u7D27_u6025_u6307_u9488_Urgent_Pointer"><span class="toc-text">紧急指针 Urgent Pointer</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u53C2_u8003"><span class="toc-text">参考</span></a>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E9%A6%96%E9%83%A8%E5%90%84%E5%AD%97%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89%E5%92%8C%E4%BD%9C%E7%94%A8"><span class="toc-text">TCP 首部各字段的意义和作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E7%AB%AF%E5%8F%A3%E5%92%8C%E7%9B%AE%E7%9A%84%E7%AB%AF%E5%8F%A3-Port"><span class="toc-text">源端口和目的端口 Port</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%8F%E5%8F%B7-Sequence-Number"><span class="toc-text">序号 Sequence Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E8%AE%A4%E5%8F%B7-Acknowledgemt-Number"><span class="toc-text">确认号 Acknowledgemt Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%81%8F%E7%A7%BB-Offset"><span class="toc-text">数据偏移 Offset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E7%95%99-Reserved"><span class="toc-text">保留 Reserved</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%BF%97%E4%BD%8D-TCP-Flags"><span class="toc-text">标志位 TCP Flags</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B4%A7%E6%80%A5-URG-Urgent"><span class="toc-text">紧急 URG (Urgent)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AE%E8%AE%A4-ACK-Acknowlegemt"><span class="toc-text">确认 ACK (Acknowlegemt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A8%E9%80%81-PSH-Push"><span class="toc-text">推送 PSH (Push)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E4%BD%8D-RST-Reset"><span class="toc-text">复位 RST (Reset)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5-SYN-SYNchronization"><span class="toc-text">同步 SYN (SYNchronization)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%88%E6%AD%A2-FIN-Finis"><span class="toc-text">终止 FIN (Finis)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E5%A4%A7%E5%B0%8F-Window-Size"><span class="toc-text">窗口大小 Window Size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C%E5%92%8C-TCP-Checksum"><span class="toc-text">校验和 TCP Checksum</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A7%E6%80%A5%E6%8C%87%E9%92%88-Urgent-Pointer"><span class="toc-text">紧急指针 Urgent Pointer</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a>
   </div>
 
 
@@ -209,7 +206,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -235,7 +232,7 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <blockquote>
-<p>更好阅读体验：<a href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/" target="_blank" rel="external">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
+<p>更好阅读体验：<a target="_blank" rel="noopener" href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
 </blockquote>
 <p>TCP 是面向字节流的，但传送的数据单元却是报文段。</p>
 <p><strong>什么是报文？</strong><br>例如一个 100kb 的 HTML 文档需要传送到另外一台计算机，并不会整个文档直接传送过去，可能会切割成几个部分，比如四个分别为 25kb 的数据段。<br>而每个数据段再加上一个 TCP 首部，就组成了 TCP 报文。<br>一共四个 TCP 报文，发送到另外一个端。<br>另外一端收到数据包，然后再剔除 TCP 首部，组装起来。<br>等到四个数据包都收到了，就能还原出来一个完整的 HTML 文档了。    </p>
@@ -256,28 +253,28 @@ ga('send', 'pageview');
 <li>窗口大小 window size    </li>
 <li>检验和 checksum    </li>
 <li>紧急指针 urgent pointer    </li>
-<li>选项 tcp options    </li>
+<li>选项 tcp options</li>
 </ol>
 <p>下面展开来描述个字段的意义和作用。    </p>
-<h2 id="TCP__u9996_u90E8_u5404_u5B57_u6BB5_u7684_u610F_u4E49_u548C_u4F5C_u7528"><a href="#TCP__u9996_u90E8_u5404_u5B57_u6BB5_u7684_u610F_u4E49_u548C_u4F5C_u7528" class="headerlink" title="TCP 首部各字段的意义和作用"></a>TCP 首部各字段的意义和作用</h2><h3 id="u6E90_u7AEF_u53E3_u548C_u76EE_u7684_u7AEF_u53E3_Port"><a href="#u6E90_u7AEF_u53E3_u548C_u76EE_u7684_u7AEF_u53E3_Port" class="headerlink" title="源端口和目的端口 Port"></a>源端口和目的端口 Port</h3><p>各占 2 个 字节，共 4 个字节。<br>用来告知主机该报文段是来自哪里以及传送给哪个应用程序（应用程序绑定了端口）的。<br>进行 TCP 通讯时，客户端通常使用系统自动选择的临时端口号，而服务器则使用知名服务端口号。    </p>
-<h3 id="u5E8F_u53F7_Sequence_Number"><a href="#u5E8F_u53F7_Sequence_Number" class="headerlink" title="序号 Sequence Number"></a>序号 Sequence Number</h3><p>占 4 个字节。<br>TCP 是面向字节流的，在一个 TCP 连接中传输的字节流中的每个字节都按照顺序编号。<br>例如 100 kb 的 HTML 文档数据，一共 102400 (100 * 1024) 个字节，那么每一个字节就都有了编号，整个文档的编号的范围是 0 ~ 102399。    </p>
+<h2 id="TCP-首部各字段的意义和作用"><a href="#TCP-首部各字段的意义和作用" class="headerlink" title="TCP 首部各字段的意义和作用"></a>TCP 首部各字段的意义和作用</h2><h3 id="源端口和目的端口-Port"><a href="#源端口和目的端口-Port" class="headerlink" title="源端口和目的端口 Port"></a>源端口和目的端口 Port</h3><p>各占 2 个 字节，共 4 个字节。<br>用来告知主机该报文段是来自哪里以及传送给哪个应用程序（应用程序绑定了端口）的。<br>进行 TCP 通讯时，客户端通常使用系统自动选择的临时端口号，而服务器则使用知名服务端口号。    </p>
+<h3 id="序号-Sequence-Number"><a href="#序号-Sequence-Number" class="headerlink" title="序号 Sequence Number"></a>序号 Sequence Number</h3><p>占 4 个字节。<br>TCP 是面向字节流的，在一个 TCP 连接中传输的字节流中的每个字节都按照顺序编号。<br>例如 100 kb 的 HTML 文档数据，一共 102400 (100 * 1024) 个字节，那么每一个字节就都有了编号，整个文档的编号的范围是 0 ~ 102399。    </p>
 <p>序号字段值指的是<strong>本报文段</strong>所发送的数据的第一个字节的序号。<br>那么 100 的 HTML 文档分割成四个等分之后，<br>第一个 TCP 报文段包含的是第一个 25kb 的数据，0 ~ 25599 字节， 该报文的序号的值就是：0<br>第二个 TCP 报文段包含的是第二个 25kb 的数据，25600 ~ 51199 字节，该报文的序号的值就是：25600<br>……    </p>
-<p>根据 8 位 = 1 字节，那么 4 个字节可以表示的数值范围：[0, 2^32]，一共 2^32 (4294967296) 个序号。<br>序号增加到最大值的时候，下一个序号又回到了 0.<br>也就是说 TCP 协议可对 4GB  的数据进行编号，在一般情况下可保证当序号重复使用时，旧序号的数据早已经通过网络到达终点或者丢失了。    </p>
-<h3 id="u786E_u8BA4_u53F7_Acknowledgemt_Number"><a href="#u786E_u8BA4_u53F7_Acknowledgemt_Number" class="headerlink" title="确认号 Acknowledgemt Number"></a>确认号 Acknowledgemt Number</h3><p>占 4 个字节。<br>表示<strong>期望收到对方下一个报文段的序号值</strong>。<br>TCP 的可靠性，是建立在「每一个数据报文都需要确认收到」的基础之上的。<br>就是说，通讯的任何一方在收到对方的一个报文之后，都要发送一个相对应的「确认报文」，来表达确认收到。<br><strong>那么，确认报文，就会包含确认号</strong>。<br>例如，通讯的一方收到了第一个 25kb 的报文，该报文的 序号值=0，那么就需要回复一个<strong>确认报文</strong>，其中的确认号 = 25600.    </p>
-<h3 id="u6570_u636E_u504F_u79FB_Offset"><a href="#u6570_u636E_u504F_u79FB_Offset" class="headerlink" title="数据偏移 Offset"></a>数据偏移 Offset</h3><p>占 0.5 个字节 (4 位)。<br>这个字段实际上是指出了 <strong>TCP 报文段的首部长度</strong> ，它指出了 TCP报文段的数据起始处 距离 TCP报文的起始处 有多远。（注意 数据起始处 和 报文起始处 的意思）    </p>
-<p>一个数据偏移量 = 4 byte，由于 4 位二进制数能表示的最大十进制数字是 15，因此数据偏移的最大值是 60 byte，这也侧面限制了 TCP 首部的最大长度。    </p>
-<h3 id="u4FDD_u7559_Reserved"><a href="#u4FDD_u7559_Reserved" class="headerlink" title="保留 Reserved"></a>保留 Reserved</h3><p>占 0.75 个字节 (6 位)。<br>保留为今后使用，但目前应置为 0。    </p>
-<h3 id="u6807_u5FD7_u4F4D_TCP_Flags"><a href="#u6807_u5FD7_u4F4D_TCP_Flags" class="headerlink" title="标志位 TCP Flags"></a>标志位 TCP Flags</h3><p>标志位，一共有 6 个，分别占 1 位，共 6 位 。<br>每一位的值只有 0 和 1，分别表达不同意思。    </p>
-<h4 id="u7D27_u6025_URG__28Urgent_29"><a href="#u7D27_u6025_URG__28Urgent_29" class="headerlink" title="紧急 URG (Urgent)"></a>紧急 URG (Urgent)</h4><p>当 URG = 1 的时候，表示紧急指针（Urgent Pointer）有效。<br>它告诉系统此报文段中有紧急数据，应尽快传送，而不要按原来的排队顺序来传送。<br>URG 要与首部中的 紧急指针 字段配合使用。    </p>
-<h4 id="u786E_u8BA4_ACK__28Acknowlegemt_29"><a href="#u786E_u8BA4_ACK__28Acknowlegemt_29" class="headerlink" title="确认 ACK (Acknowlegemt)"></a>确认 ACK (Acknowlegemt)</h4><p>当 ACK = 1 的时候，确认号（Acknowledgemt Number）有效。<br>一般称携带 ACK 标志的 TCP 报文段为「确认报文段」。<br>TCP 规定，在连接建立后所有传送的报文段都必须把 ACK 设置为 1。    </p>
-<h4 id="u63A8_u9001_PSH__28Push_29"><a href="#u63A8_u9001_PSH__28Push_29" class="headerlink" title="推送 PSH (Push)"></a>推送 PSH (Push)</h4><p>当 PSH = 1 的时候，表示该报文段高优先级，接收方 TCP 应该尽快推送给接收应用程序，而不用等到整个 TCP 缓存都填满了后再交付。    </p>
-<h4 id="u590D_u4F4D_RST__28Reset_29"><a href="#u590D_u4F4D_RST__28Reset_29" class="headerlink" title="复位 RST (Reset)"></a>复位 RST (Reset)</h4><p>当 RST = 1 的时候，表示 TCP 连接中出现严重错误，需要释放并重新建立连接。<br>一般称携带 RST 标志的 TCP 报文段为「复位报文段」。    </p>
-<h4 id="u540C_u6B65_SYN__28SYNchronization_29"><a href="#u540C_u6B65_SYN__28SYNchronization_29" class="headerlink" title="同步 SYN (SYNchronization)"></a>同步 SYN (SYNchronization)</h4><p>当 SYN = 1 的时候，表明这是一个请求连接报文段。<br>一般称携带 SYN 标志的 TCP 报文段为「同步报文段」。<br>在 TCP 三次握手中的第一个报文就是同步报文段，在连接建立时用来同步序号。<br>对方若同意建立连接，则应在响应的报文段中使 SYN = 1 和 ACK = 1。    </p>
-<h4 id="u7EC8_u6B62_FIN__28Finis_29"><a href="#u7EC8_u6B62_FIN__28Finis_29" class="headerlink" title="终止 FIN (Finis)"></a>终止 FIN (Finis)</h4><p>当 FIN = 1 时，表示此报文段的发送方的数据已经发送完毕，并要求释放 TCP 连接。<br>一般称携带 FIN 的报文段为「结束报文段」。<br>在 TCP 四次挥手释放连接的时候，就会用到该标志。    </p>
-<h3 id="u7A97_u53E3_u5927_u5C0F_Window_Size"><a href="#u7A97_u53E3_u5927_u5C0F_Window_Size" class="headerlink" title="窗口大小 Window Size"></a>窗口大小 Window Size</h3><p>占 2 字节。<br>该字段明确指出了现在允许对方发送的数据量，它告诉对方本端的 TCP 接收缓冲区还能容纳多少字节的数据，这样对方就可以控制发送数据的速度。<br>窗口大小的值是指，从本报文段首部中的确认号算起，接收方目前允许对方发送的数据量。<br>例如，假如确认号是 701 ，窗口字段是 1000。这就表明，从 701 号算起，发送此报文段的一方还有接收 1000 （字节序号是 701 ~ 1700） 个字节的数据的接收缓存空间。    </p>
-<h3 id="u6821_u9A8C_u548C_TCP_Checksum"><a href="#u6821_u9A8C_u548C_TCP_Checksum" class="headerlink" title="校验和 TCP Checksum"></a>校验和 TCP Checksum</h3><p>占 2 个字节。<br>由发送端填充，接收端对 TCP 报文段执行 CRC 算法，以检验 TCP 报文段在传输过程中是否损坏，如果损坏这丢弃。<br>检验范围包括首部和数据两部分，这也是 TCP 可靠传输的一个重要保障。    </p>
-<h3 id="u7D27_u6025_u6307_u9488_Urgent_Pointer"><a href="#u7D27_u6025_u6307_u9488_Urgent_Pointer" class="headerlink" title="紧急指针 Urgent Pointer"></a>紧急指针 Urgent Pointer</h3><p>占 2 个字节。<br>仅在 URG = 1 时才有意义，它指出本报文段中的紧急数据的字节数。<br>当 URG = 1 时，发送方 TCP 就把紧急数据插入到本报文段数据的<strong>最前面</strong>，而在紧急数据后面的数据仍是普通数据。<br>因此，紧急指针指出了紧急数据的末尾在报文段中的位置。    </p>
-<h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><p><a href="https://book.douban.com/subject/26850616/" target="_blank" rel="external">《后台开发 核心技术与应用实践》</a><br><a href="https://book.douban.com/subject/2970300/" target="_blank" rel="external">《计算机网络》</a>ect/2970300/)</p>
+<p>根据 8 位 &#x3D; 1 字节，那么 4 个字节可以表示的数值范围：[0, 2^32]，一共 2^32 (4294967296) 个序号。<br>序号增加到最大值的时候，下一个序号又回到了 0.<br>也就是说 TCP 协议可对 4GB  的数据进行编号，在一般情况下可保证当序号重复使用时，旧序号的数据早已经通过网络到达终点或者丢失了。    </p>
+<h3 id="确认号-Acknowledgemt-Number"><a href="#确认号-Acknowledgemt-Number" class="headerlink" title="确认号 Acknowledgemt Number"></a>确认号 Acknowledgemt Number</h3><p>占 4 个字节。<br>表示<strong>期望收到对方下一个报文段的序号值</strong>。<br>TCP 的可靠性，是建立在「每一个数据报文都需要确认收到」的基础之上的。<br>就是说，通讯的任何一方在收到对方的一个报文之后，都要发送一个相对应的「确认报文」，来表达确认收到。<br><strong>那么，确认报文，就会包含确认号</strong>。<br>例如，通讯的一方收到了第一个 25kb 的报文，该报文的 序号值&#x3D;0，那么就需要回复一个<strong>确认报文</strong>，其中的确认号 &#x3D; 25600.    </p>
+<h3 id="数据偏移-Offset"><a href="#数据偏移-Offset" class="headerlink" title="数据偏移 Offset"></a>数据偏移 Offset</h3><p>占 0.5 个字节 (4 位)。<br>这个字段实际上是指出了 <strong>TCP 报文段的首部长度</strong> ，它指出了 TCP报文段的数据起始处 距离 TCP报文的起始处 有多远。（注意 数据起始处 和 报文起始处 的意思）    </p>
+<p>一个数据偏移量 &#x3D; 4 byte，由于 4 位二进制数能表示的最大十进制数字是 15，因此数据偏移的最大值是 60 byte，这也侧面限制了 TCP 首部的最大长度。    </p>
+<h3 id="保留-Reserved"><a href="#保留-Reserved" class="headerlink" title="保留 Reserved"></a>保留 Reserved</h3><p>占 0.75 个字节 (6 位)。<br>保留为今后使用，但目前应置为 0。    </p>
+<h3 id="标志位-TCP-Flags"><a href="#标志位-TCP-Flags" class="headerlink" title="标志位 TCP Flags"></a>标志位 TCP Flags</h3><p>标志位，一共有 6 个，分别占 1 位，共 6 位 。<br>每一位的值只有 0 和 1，分别表达不同意思。    </p>
+<h4 id="紧急-URG-Urgent"><a href="#紧急-URG-Urgent" class="headerlink" title="紧急 URG (Urgent)"></a>紧急 URG (Urgent)</h4><p>当 URG &#x3D; 1 的时候，表示紧急指针（Urgent Pointer）有效。<br>它告诉系统此报文段中有紧急数据，应尽快传送，而不要按原来的排队顺序来传送。<br>URG 要与首部中的 紧急指针 字段配合使用。    </p>
+<h4 id="确认-ACK-Acknowlegemt"><a href="#确认-ACK-Acknowlegemt" class="headerlink" title="确认 ACK (Acknowlegemt)"></a>确认 ACK (Acknowlegemt)</h4><p>当 ACK &#x3D; 1 的时候，确认号（Acknowledgemt Number）有效。<br>一般称携带 ACK 标志的 TCP 报文段为「确认报文段」。<br>TCP 规定，在连接建立后所有传送的报文段都必须把 ACK 设置为 1。    </p>
+<h4 id="推送-PSH-Push"><a href="#推送-PSH-Push" class="headerlink" title="推送 PSH (Push)"></a>推送 PSH (Push)</h4><p>当 PSH &#x3D; 1 的时候，表示该报文段高优先级，接收方 TCP 应该尽快推送给接收应用程序，而不用等到整个 TCP 缓存都填满了后再交付。    </p>
+<h4 id="复位-RST-Reset"><a href="#复位-RST-Reset" class="headerlink" title="复位 RST (Reset)"></a>复位 RST (Reset)</h4><p>当 RST &#x3D; 1 的时候，表示 TCP 连接中出现严重错误，需要释放并重新建立连接。<br>一般称携带 RST 标志的 TCP 报文段为「复位报文段」。    </p>
+<h4 id="同步-SYN-SYNchronization"><a href="#同步-SYN-SYNchronization" class="headerlink" title="同步 SYN (SYNchronization)"></a>同步 SYN (SYNchronization)</h4><p>当 SYN &#x3D; 1 的时候，表明这是一个请求连接报文段。<br>一般称携带 SYN 标志的 TCP 报文段为「同步报文段」。<br>在 TCP 三次握手中的第一个报文就是同步报文段，在连接建立时用来同步序号。<br>对方若同意建立连接，则应在响应的报文段中使 SYN &#x3D; 1 和 ACK &#x3D; 1。    </p>
+<h4 id="终止-FIN-Finis"><a href="#终止-FIN-Finis" class="headerlink" title="终止 FIN (Finis)"></a>终止 FIN (Finis)</h4><p>当 FIN &#x3D; 1 时，表示此报文段的发送方的数据已经发送完毕，并要求释放 TCP 连接。<br>一般称携带 FIN 的报文段为「结束报文段」。<br>在 TCP 四次挥手释放连接的时候，就会用到该标志。    </p>
+<h3 id="窗口大小-Window-Size"><a href="#窗口大小-Window-Size" class="headerlink" title="窗口大小 Window Size"></a>窗口大小 Window Size</h3><p>占 2 字节。<br>该字段明确指出了现在允许对方发送的数据量，它告诉对方本端的 TCP 接收缓冲区还能容纳多少字节的数据，这样对方就可以控制发送数据的速度。<br>窗口大小的值是指，从本报文段首部中的确认号算起，接收方目前允许对方发送的数据量。<br>例如，假如确认号是 701 ，窗口字段是 1000。这就表明，从 701 号算起，发送此报文段的一方还有接收 1000 （字节序号是 701 ~ 1700） 个字节的数据的接收缓存空间。    </p>
+<h3 id="校验和-TCP-Checksum"><a href="#校验和-TCP-Checksum" class="headerlink" title="校验和 TCP Checksum"></a>校验和 TCP Checksum</h3><p>占 2 个字节。<br>由发送端填充，接收端对 TCP 报文段执行 CRC 算法，以检验 TCP 报文段在传输过程中是否损坏，如果损坏这丢弃。<br>检验范围包括首部和数据两部分，这也是 TCP 可靠传输的一个重要保障。    </p>
+<h3 id="紧急指针-Urgent-Pointer"><a href="#紧急指针-Urgent-Pointer" class="headerlink" title="紧急指针 Urgent Pointer"></a>紧急指针 Urgent Pointer</h3><p>占 2 个字节。<br>仅在 URG &#x3D; 1 时才有意义，它指出本报文段中的紧急数据的字节数。<br>当 URG &#x3D; 1 时，发送方 TCP 就把紧急数据插入到本报文段数据的<strong>最前面</strong>，而在紧急数据后面的数据仍是普通数据。<br>因此，紧急指针指出了紧急数据的末尾在报文段中的位置。    </p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26850616/">《后台开发 核心技术与应用实践》</a><br><a target="_blank" rel="noopener" href="https://book.douban.com/subject/2970300/">《计算机网络》</a>ect&#x2F;2970300&#x2F;)</p>
 
     
   </div>
@@ -414,7 +411,7 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 

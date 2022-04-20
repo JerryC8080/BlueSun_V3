@@ -165,10 +165,7 @@ self.addEventListener('message', event => {
 
 我们知道 Koa.js 著名的洋葱模型：
 
-<p align="center">
-  <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20200827101330.png" />
-</p>
-
+![koa洋葱模型](https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20200827101330.png)
 
 
 洋葱模型是「插件化」的很好的思想，但是它是 **「一维」** 的，Koa 完成一次网络请求的应答，各个中间件只需要监听一个事件。

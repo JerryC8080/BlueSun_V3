@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Module Seed: 一套优雅的 Github 工作流 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="huang-jerrryc,JerryC8080,jerryc,JC_Huang,前端,设计,前端开发,用户体验,设计,frontend,design,nodejs,JavaScript" />
+  
+
+  <meta name="description" content="Motivation平时喜欢写一些 NPM 模块，写得多了，整理出一套工作流，解放一些重复的搭建工作。如果你喜欢，请直接拿去用，也可以参照该项目的一些 Feature ，给你一些提示与帮助。 Feature 支持 Typescript 支持单元测试，与测试覆盖率 快速生成文档站点 接入 Circle CLI，构建、发包、文档站点一条龙服务 规范 ESLint + Prettier 快速生成 Cha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Module Seed: 一套优雅的 Github 工作流">
+<meta property="og:url" content="http://huang-jerryc.com/2021/01/28/2021/github-workflow/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="Motivation平时喜欢写一些 NPM 模块，写得多了，整理出一套工作流，解放一些重复的搭建工作。如果你喜欢，请直接拿去用，也可以参照该项目的一些 Feature ，给你一些提示与帮助。 Feature 支持 Typescript 支持单元测试，与测试覆盖率 快速生成文档站点 接入 Circle CLI，构建、发包、文档站点一条龙服务 规范 ESLint + Prettier 快速生成 Cha">
+<meta property="og:locale">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212173414.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212173820.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212174309.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212174310.png">
+<meta property="og:image" content="https://coveralls.io/repos/github/JerryC8080/module-seed/badge.svg?branch=master">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175434.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175435.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175703.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175850.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212180750.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212182501.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212182500.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212182819.png">
+<meta property="article:published_time" content="2021-01-28T09:51:00.000Z">
+<meta property="article:modified_time" content="2021-01-28T09:52:36.379Z">
+<meta property="article:author" content="JerryC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212173414.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Motivation"><span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feature"><span class="toc-text">Feature</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Download"><span class="toc-text">Download</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Usage"><span class="toc-text">Usage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Architecture"><span class="toc-text">1. Architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Npm-Script"><span class="toc-text">2. Npm Script</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Coverage"><span class="toc-text">3. Coverage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Docs"><span class="toc-text">4. Docs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-CircleCI-Config"><span class="toc-text">5. CircleCI Config</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Add-Repo-to-CircleCI"><span class="toc-text">1. Add Repo to CircleCI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Test-Coverage-to-Coveralls"><span class="toc-text">2. Test Coverage to Coveralls</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Doc-Site-to-Github-Pages"><span class="toc-text">3. Doc Site to Github Pages</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Coverage-site"><span class="toc-text">4. Coverage site</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-NPM-Deploy"><span class="toc-text">5. NPM Deploy</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-2021/github-workflow" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Module Seed: 一套优雅的 Github 工作流</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2021.01.28</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2021/01/28/2021/github-workflow/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>平时喜欢写一些 NPM 模块，写得多了，整理出一套工作流，解放一些重复的搭建工作。<br>如果你喜欢，请直接拿去用，也可以参照该项目的一些 Feature ，给你一些提示与帮助。</p>
+<h2 id="Feature"><a href="#Feature" class="headerlink" title="Feature"></a>Feature</h2><ol>
+<li>支持 Typescript</li>
+<li>支持单元测试，与测试覆盖率</li>
+<li>快速生成文档站点</li>
+<li>接入 Circle CLI，构建、发包、文档站点一条龙服务</li>
+<li>规范 ESLint + Prettier</li>
+<li>快速生成 Change Log</li>
+<li>生成同时支持 CommonJS 和 ES Module 的 NPM 包</li>
+</ol>
+<h2 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:JerryC8080/module-seed.git</span><br></pre></td></tr></table></figure>
+
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><h3 id="1-Architecture"><a href="#1-Architecture" class="headerlink" title="1. Architecture"></a>1. Architecture</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .circleci // CircleCI 脚本</span><br><span class="line">│   ├── config.yml</span><br><span class="line">├── coverage // 自动生成的测试覆盖率报告</span><br><span class="line">├── docs  // 自动生成的文档</span><br><span class="line">├── build  // 构建代码</span><br><span class="line">│   ├── main  // 兼容 CommonJS</span><br><span class="line">│   │   ├── index.d.ts</span><br><span class="line">│   │   ├── index.js</span><br><span class="line">│   │   └── lib</span><br><span class="line">│   └── module  // 兼容 ES Module</span><br><span class="line">│       ├── index.d.ts</span><br><span class="line">│       ├── index.js</span><br><span class="line">│       └── lib</span><br><span class="line">├── src  // 源码</span><br><span class="line">│   ├── index.ts</span><br><span class="line">│   └── lib</span><br><span class="line">│       ├── hello-world.spec.ts // 单元测试</span><br><span class="line">│       └── hello-world.ts</span><br><span class="line">├── CHANGELOG.md</span><br><span class="line">├── LICENSE</span><br><span class="line">├── README.md</span><br><span class="line">├── package.json</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── tsconfig.module.json</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Npm-Script"><a href="#2-Npm-Script" class="headerlink" title="2. Npm Script"></a>2. Npm Script</h3><table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>build</td>
+<td>构建代码，生成 .&#x2F;build 文件夹</td>
+</tr>
+<tr>
+<td>fix</td>
+<td>快速格式化代码</td>
+</tr>
+<tr>
+<td>test</td>
+<td>构建单元测试</td>
+</tr>
+<tr>
+<td>watch:build</td>
+<td>动态构建代码，用于开发模式</td>
+</tr>
+<tr>
+<td>watch:test</td>
+<td>动态构建单元测试，用于开发模式</td>
+</tr>
+<tr>
+<td>cov</td>
+<td>构建单元测试覆盖率，生成 .&#x2F;coverage 文件夹</td>
+</tr>
+<tr>
+<td>doc</td>
+<td>构建文档站点，生成 .&#x2F;docs 文件夹</td>
+</tr>
+<tr>
+<td>doc:publish</td>
+<td>发布文档站点到 github pages</td>
+</tr>
+<tr>
+<td>version</td>
+<td>强制以 patch 模式更新 version，如：v0.0.1 → v0.0.2</td>
+</tr>
+</tbody></table>
+<h3 id="3-Coverage"><a href="#3-Coverage" class="headerlink" title="3. Coverage"></a>3. Coverage</h3><p>通过运行 <code>npm run cov</code>，命令会构建单元测试，并且输出网页版本的测试报告：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open coverage/index.html</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212173414.png" alt="coverage"></p>
+<h3 id="4-Docs"><a href="#4-Docs" class="headerlink" title="4. Docs"></a>4. Docs</h3><p>通过运行 <code>npm run doc</code>，会构建 TS API 文档，并且输出网页版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open docs/index.html</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212173820.png" alt="docs"></p>
+<h3 id="5-CircleCI-Config"><a href="#5-CircleCI-Config" class="headerlink" title="5. CircleCI Config"></a>5. CircleCI Config</h3><p>本项目选择 <a target="_blank" rel="noopener" href="https://circleci.com/">CircleCI</a> 来完成项目构建、发布 NPM、发布文档站点等自动化构建工作。</p>
+<h4 id="1-Add-Repo-to-CircleCI"><a href="#1-Add-Repo-to-CircleCI" class="headerlink" title="1. Add Repo to CircleCI"></a>1. Add Repo to CircleCI</h4><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212174309.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212174310.png"></p>
+<h4 id="2-Test-Coverage-to-Coveralls"><a href="#2-Test-Coverage-to-Coveralls" class="headerlink" title="2. Test Coverage to Coveralls"></a>2. Test Coverage to Coveralls</h4><p>如果想拥有一个这样的 Status: <img src="https://coveralls.io/repos/github/JerryC8080/module-seed/badge.svg?branch=master" alt="Coverage Status"></p>
+<p>需要把你的 repo 添加到 <a target="_blank" rel="noopener" href="https://coveralls.io/">coveralls.io</a></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175434.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175435.png"></p>
+<p>然后，在 CircleCI 添加环境变量 <code>COVERALLS_REPO_TOKEN</code></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175703.png"></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212175850.png"></p>
+<p>那么，每次 CircleCI 发生构建的时候，就会上报单元测试覆盖率到 coveralls 去。</p>
+<p>参考 <code>.circleci/config.yml</code> 相关脚本:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">upload-coveralls:</span></span><br><span class="line">  <span class="string">&lt;&lt;:</span> <span class="meta">*defaults</span></span><br><span class="line">  <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">attach_workspace:</span></span><br><span class="line">        <span class="attr">at:</span> <span class="string">~/repo</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">Test</span> <span class="string">Coverage</span></span><br><span class="line">        <span class="attr">command:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">cov</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">Report</span> <span class="string">for</span> <span class="string">coveralls</span></span><br><span class="line">        <span class="attr">command:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          npm install coveralls --save-dev</span></span><br><span class="line"><span class="string">          ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">store_artifacts:</span></span><br><span class="line">        <span class="attr">path:</span> <span class="string">coverage</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Doc-Site-to-Github-Pages"><a href="#3-Doc-Site-to-Github-Pages" class="headerlink" title="3. Doc Site to Github Pages"></a>3. Doc Site to Github Pages</h4><p>本地可以通过命令来构建和发布文档站点到 Github Pages</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm run doc</span><br><span class="line">npm run doc:publish</span><br></pre></td></tr></table></figure>
+
+<p>如果这个动作交给 CircleCI 来完成，则需要为 Repo 添加一个 <code>Read/Write</code> 权限的 <code>User Key</code></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212180750.png"></p>
+<p>那么，每次 CircleCI 发生构建的时候，就会构建文档，并发布到 Github Pages 中去。</p>
+<p>例如本项目，就可以通过以下地址访问：</p>
+<p><a target="_blank" rel="noopener" href="https://jerryc8080.github.io/module-seed">https://jerryc8080.github.io/module-seed</a></p>
+<p>参考 <code>.circleci/config.yml</code> 相关脚本:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"> <span class="attr">deploy-docs:</span></span><br><span class="line">    <span class="string">&lt;&lt;:</span> <span class="meta">*defaults</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">attach_workspace:</span></span><br><span class="line">          <span class="attr">at:</span> <span class="string">~/repo</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Avoid</span> <span class="string">hosts</span> <span class="string">unknown</span> <span class="string">for</span> <span class="string">github</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">mkdir</span> <span class="string">~/.ssh/</span> <span class="string">&amp;&amp;</span> <span class="string">echo</span> <span class="string">-e</span> <span class="string">&quot;Host github.com\n\tStrictHostKeyChecking no\n&quot;</span> <span class="string">&gt;</span> <span class="string">~/.ssh/config</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Set</span> <span class="string">github</span> <span class="string">email</span> <span class="string">and</span> <span class="string">user</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            git config --global user.email &quot;huangjerryc@gmail.com&quot;</span></span><br><span class="line"><span class="string">            git config --global user.name &quot;CircleCI-Robot&quot;</span></span><br><span class="line"><span class="string"></span>      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Show</span> <span class="string">coverage</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">ls</span> <span class="string">coverage</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Show</span> <span class="string">docs</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">ls</span> <span class="string">docs</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">to</span> <span class="string">docs</span> <span class="string">folder</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            mkdir docs/coverage</span></span><br><span class="line"><span class="string">            cp -rf coverage/* docs/coverage</span></span><br><span class="line"><span class="string"></span>      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Show</span> <span class="string">docs</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">ls</span> <span class="string">docs</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Publish</span> <span class="string">to</span> <span class="string">gh-pages</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">doc:publish</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-Coverage-site"><a href="#4-Coverage-site" class="headerlink" title="4. Coverage site"></a>4. Coverage site</h4><p>在 CircleCI 的 <code>deploy-docs</code> 任务中，会构建 Coverage Site ，然后一起发布到 Github Pages 的 <code>/coverage</code> 目录中。</p>
+<p>例如本项目，就可以通过以下地址访问：</p>
+<p><a target="_blank" rel="noopener" href="https://jerryc8080.github.io/module-seed/coverage/index.html">https://jerryc8080.github.io/module-seed/coverage/index.html</a></p>
+<h4 id="5-NPM-Deploy"><a href="#5-NPM-Deploy" class="headerlink" title="5. NPM Deploy"></a>5. NPM Deploy</h4><p>自动化脚本会以 <code>patch</code> 的形式升级版本号，例如：<code>v0.0.1</code> → <code>v0.0.2</code>。<br>然后发布到 <a target="_blank" rel="noopener" href="http://npmjs.com/">npmjs.com</a> 去。</p>
+<p>如果需要启用这一功能，需要为 CircleCI Repo 添加 <code>npm token</code>。</p>
+<p>首先，获取 <code>npm token</code></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212182501.png"><br><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212182500.png"></p>
+<p>然后，为 CircleCI Repo 添加环境变量：<code>npm_TOKEN</code></p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/20201212182819.png"></p>
+<p>那么，每次 CircleCI 发生构建的时候，就会构建和发布 NPM 包。</p>
+<p>参考 <code>.circleci/config.yml</code> 相关脚本:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="string">&lt;&lt;:</span> <span class="meta">*defaults</span></span><br><span class="line">  <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">attach_workspace:</span></span><br><span class="line">        <span class="attr">at:</span> <span class="string">~/repo</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">Set</span> <span class="string">github</span> <span class="string">email</span> <span class="string">and</span> <span class="string">user</span></span><br><span class="line">        <span class="attr">command:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          # You should change email to yours.</span></span><br><span class="line"><span class="string">          git config --global user.email &quot;huangjerryc@gmail.com&quot;</span></span><br><span class="line"><span class="string">          git config --global user.name &quot;CircleCI-Robot&quot;</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">Authenticate</span> <span class="string">with</span> <span class="string">registry</span></span><br><span class="line">        <span class="attr">command:</span> <span class="string">echo</span> <span class="string">&quot;//registry.npmjs.org/:_authToken=$npm_TOKEN&quot;</span> <span class="string">&gt;</span> <span class="string">~/repo/.npmrc</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">Update</span> <span class="string">version</span> <span class="string">as</span> <span class="string">patch</span></span><br><span class="line">        <span class="attr">command:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">version</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">Publish</span> <span class="string">package</span></span><br><span class="line">        <span class="attr">command:</span> <span class="string">npm</span> <span class="string">publish</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2021/01/28/2021/method-fuse/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2021/03/21/2021/wxapp-router-experience/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2021/01/28/2021/github-workflow/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>

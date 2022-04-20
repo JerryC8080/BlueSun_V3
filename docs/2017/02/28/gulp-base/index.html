@@ -15,25 +15,18 @@
     <meta name="keywords" content="前端构建," />
   
 
-  <meta name="description" content="Gulp 概述Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。
-它的核心原理其实很简单，最主要是通过各种 Transform Stream 来实现文件的处理，然后再进行输出。Transform Streams 是 NodeJS Stream 的一种，是可读又可写的，它会对传给它的对象做一些转换的操作。
-
-文件输入 →  Gulp 插件处理 → 文件输">
+  <meta name="description" content="Gulp 概述Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。 它的核心原理其实很简单，最主要是通过各种 Transform Stream 来实现文件的处理，然后再进行输出。Transform Streams 是 NodeJS Stream 的一种，是可读又可写的，它会对传给它的对象做一些转换的操作。  文件输入 →  Gulp 插件处理 → 文件输">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gulp 基础与原理">
 <meta property="og:url" content="http://huang-jerryc.com/2017/02/28/gulp-base/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="Gulp 概述Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。
-它的核心原理其实很简单，最主要是通过各种 Transform Stream 来实现文件的处理，然后再进行输出。Transform Streams 是 NodeJS Stream 的一种，是可读又可写的，它会对传给它的对象做一些转换的操作。
-
-文件输入 →  Gulp 插件处理 → 文件输">
-<meta property="og:updated_time" content="2017-02-28T05:49:57.000Z">
+<meta property="og:description" content="Gulp 概述Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。 它的核心原理其实很简单，最主要是通过各种 Transform Stream 来实现文件的处理，然后再进行输出。Transform Streams 是 NodeJS Stream 的一种，是可读又可写的，它会对传给它的对象做一些转换的操作。  文件输入 →  Gulp 插件处理 → 文件输">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-02-28T05:49:00.000Z">
+<meta property="article:modified_time" content="2017-02-28T05:49:57.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="前端构建">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Gulp 基础与原理">
-<meta name="twitter:description" content="Gulp 概述Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。
-它的核心原理其实很简单，最主要是通过各种 Transform Stream 来实现文件的处理，然后再进行输出。Transform Streams 是 NodeJS Stream 的一种，是可读又可写的，它会对传给它的对象做一些转换的操作。
-
-文件输入 →  Gulp 插件处理 → 文件输">
 
   
 
@@ -45,7 +38,9 @@
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -98,6 +93,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -181,7 +177,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gulp__u6982_u8FF0"><span class="toc-text">Gulp 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u4F7F_u7528_Gulp"><span class="toc-text">使用 Gulp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#u5B89_u88C5"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gulpfile-js"><span class="toc-text">Gulpfile.js</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u57FA_u672C_u6982_u5FF5_u4E0E_u539F_u7406"><span class="toc-text">基本概念与原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#u8BA4_u8BC6_Glob"><span class="toc-text">认识 Glob</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u8BA4_u8BC6_Vinyl"><span class="toc-text">认识 Vinyl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u8BA4_u8BC6_Orchestrator"><span class="toc-text">认识 Orchestrator</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gulp__u6838_u5FC3_API"><span class="toc-text">Gulp 核心 API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-src"><span class="toc-text">gulp.src</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-dest"><span class="toc-text">gulp.dest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-task"><span class="toc-text">gulp.task</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-watch"><span class="toc-text">gulp.watch</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#u5E38_u7528_u63D2_u4EF6"><span class="toc-text">常用插件</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gulp-%E6%A6%82%E8%BF%B0"><span class="toc-text">Gulp 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Gulp"><span class="toc-text">使用 Gulp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gulpfile-js"><span class="toc-text">Gulpfile.js</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%8E%9F%E7%90%86"><span class="toc-text">基本概念与原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86-Glob"><span class="toc-text">认识 Glob</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86-Vinyl"><span class="toc-text">认识 Vinyl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86-Orchestrator"><span class="toc-text">认识 Orchestrator</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gulp-%E6%A0%B8%E5%BF%83-API"><span class="toc-text">Gulp 核心 API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-src"><span class="toc-text">gulp.src</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-dest"><span class="toc-text">gulp.dest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-task"><span class="toc-text">gulp.task</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gulp-watch"><span class="toc-text">gulp.watch</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="toc-text">常用插件</span></a></li></ol>
   </div>
 
 
@@ -207,7 +203,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -232,7 +228,7 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h1 id="Gulp__u6982_u8FF0"><a href="#Gulp__u6982_u8FF0" class="headerlink" title="Gulp 概述"></a>Gulp 概述</h1><p>Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。</p>
+      <h1 id="Gulp-概述"><a href="#Gulp-概述" class="headerlink" title="Gulp 概述"></a>Gulp 概述</h1><p>Gulp 是基于 NodeJS 的项目，一个用作自动化构建的工具，业界一般用来建造前端的工作流。</p>
 <p>它的核心原理其实很简单，最主要是通过各种 Transform Stream 来实现文件的处理，然后再进行输出。Transform Streams 是 NodeJS Stream 的一种，是可读又可写的，它会对传给它的对象做一些转换的操作。</p>
 <blockquote>
 <p>文件输入 →  Gulp 插件处理 → 文件输出</p>
@@ -245,15 +241,20 @@ ga('send', 'pageview');
 <li><strong>强大生态系统</strong> - 你可以使用 npm 上 2000+ 的插件来构造你的工作流。</li>
 <li><strong>简单</strong> - Gulp 只提供几个 API，这可以很快地学习和上手。</li>
 </ul>
-<h1 id="u4F7F_u7528_Gulp"><a href="#u4F7F_u7528_Gulp" class="headerlink" title="使用 Gulp"></a>使用 Gulp</h1><h2 id="u5B89_u88C5"><a href="#u5B89_u88C5" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install gulp-cli -g // &#20840;&#23616;&#23433;&#35013; Gulp &#21629;&#20196;&#34892;&#24037;&#20855;&#10;$ npm install gulp -D // &#22312;&#39033;&#30446;&#20013;&#65292;&#20316;&#20026; devDependencies &#20381;&#36182;&#23433;&#35013; gulp</span><br></pre></td></tr></table></figure>
+<h1 id="使用-Gulp"><a href="#使用-Gulp" class="headerlink" title="使用 Gulp"></a>使用 Gulp</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm install gulp-cli -g // 全局安装 Gulp 命令行工具</span><br><span class="line">$ npm install gulp -D // 在项目中，作为 devDependencies 依赖安装 gulp</span><br></pre></td></tr></table></figure>
+
 <h2 id="Gulpfile-js"><a href="#Gulpfile-js" class="headerlink" title="Gulpfile.js"></a>Gulpfile.js</h2><p>在使用 CLI 工具的时候，会执行该文件，它是一个可执行的 NodeJS 文件。原理上，你可以在里面运行任何 NodeJS 代码，然后通过调用 gulp 提供的 API，来执行 gulp 任务。<br><code>gulpfile.js</code>  文件一般都会放在项目的根目录中。</p>
-<p>一个使用 <strong><a href="https://www.npmjs.com/package/gulp-babel2/" target="_blank" rel="external">gulp-babel</a></strong> 插件来支持 es2015 语法的案例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const gulp = require(&#39;gulp&#39;);&#10;const babel = require(&#39;gulp-babel&#39;);&#10;&#10;gulp.task(&#39;default&#39;, () =&#62; &#123;&#10;    gulp.src(&#39;src/app.js&#39;)&#10;        .pipe(babel(&#123;&#10;            presets: [&#39;es2015&#39;]&#10;        &#125;))&#10;        .pipe(gulp.dest(&#39;dist&#39;));&#10;&#125;);</span><br></pre></td></tr></table></figure></p>
-<h1 id="u57FA_u672C_u6982_u5FF5_u4E0E_u539F_u7406"><a href="#u57FA_u672C_u6982_u5FF5_u4E0E_u539F_u7406" class="headerlink" title="基本概念与原理"></a>基本概念与原理</h1><p>了解这些概念，对于了解 Gulp 的工作原理，和 API 的使用是很有帮助的。</p>
-<h2 id="u8BA4_u8BC6_Glob"><a href="#u8BA4_u8BC6_Glob" class="headerlink" title="认识 Glob"></a>认识 Glob</h2><p>Glob 是一种用来匹配路径与文件的模式。有点类似于正则表达式，但是语法又有点差异。<br>这种模式，被广泛用于命令行、Shell 等场景，大家熟悉的 <code>.gitignore</code> 文件也是使用这种模式。</p>
-<p>各大语言都有对于 Glob 的实现，例如 Go 和 PHP 的 <code>Glob</code> 函数，Python 中的 <code>glob</code> 模块。<br>而 NodeJS 的实现是 <strong><a href="https://github.com/isaacs/minimatch" target="_blank" rel="external">minimatch</a></strong>, 而在 Gulp 源码中，就用了对 minimatch 进行封装的 <strong><a href="https://github.com/isaacs/node-glob" target="_blank" rel="external">node-glob</a></strong> 模块。<br>Gulp 的 API <code>gulp.watch</code> 和 <code>gulp.src</code> 都有用到 Glob 来匹配对应的路径和文件。<br>下面是部分语法：</p>
+<p>一个使用 <strong><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-babel2/">gulp-babel</a></strong> 插件来支持 es2015 语法的案例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const gulp = require(&#x27;gulp&#x27;);</span><br><span class="line">const babel = require(&#x27;gulp-babel&#x27;);</span><br><span class="line"></span><br><span class="line">gulp.task(&#x27;default&#x27;, () =&gt; &#123;</span><br><span class="line">    gulp.src(&#x27;src/app.js&#x27;)</span><br><span class="line">        .pipe(babel(&#123;</span><br><span class="line">            presets: [&#x27;es2015&#x27;]</span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(gulp.dest(&#x27;dist&#x27;));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="基本概念与原理"><a href="#基本概念与原理" class="headerlink" title="基本概念与原理"></a>基本概念与原理</h1><p>了解这些概念，对于了解 Gulp 的工作原理，和 API 的使用是很有帮助的。</p>
+<h2 id="认识-Glob"><a href="#认识-Glob" class="headerlink" title="认识 Glob"></a>认识 Glob</h2><p>Glob 是一种用来匹配路径与文件的模式。有点类似于正则表达式，但是语法又有点差异。<br>这种模式，被广泛用于命令行、Shell 等场景，大家熟悉的 <code>.gitignore</code> 文件也是使用这种模式。</p>
+<p>各大语言都有对于 Glob 的实现，例如 Go 和 PHP 的 <code>Glob</code> 函数，Python 中的 <code>glob</code> 模块。<br>而 NodeJS 的实现是 <strong><a target="_blank" rel="noopener" href="https://github.com/isaacs/minimatch">minimatch</a></strong>, 而在 Gulp 源码中，就用了对 minimatch 进行封装的 <strong><a target="_blank" rel="noopener" href="https://github.com/isaacs/node-glob">node-glob</a></strong> 模块。<br>Gulp 的 API <code>gulp.watch</code> 和 <code>gulp.src</code> 都有用到 Glob 来匹配对应的路径和文件。<br>下面是部分语法：</p>
 <ul>
-<li><code>*</code><br>匹配该路径段中 0 个或多个任意字符，<br>如：<code>js/*.js</code>， 匹配 js 目录下的所有 js 文件</li>
-<li><code>?</code><br>匹配该路径段中 1 个任意字符，<br>如：<code>js/?.js</code>，匹配 js 目录下所有名字只有 1 个字的 js</li>
+<li><p><code>*</code><br>匹配该路径段中 0 个或多个任意字符，<br>如：<code>js/*.js</code>， 匹配 js 目录下的所有 js 文件</p>
+</li>
+<li><p><code>?</code><br>匹配该路径段中 1 个任意字符，<br>如：<code>js/?.js</code>，匹配 js 目录下所有名字只有 1 个字的 js</p>
+</li>
 <li><p><code>[...]</code><br>匹配该路径段中在指定范围内字符，<br>如：<code>js/a[0-3].js</code>，匹配 js 目录下 a 开头,第二个字符为 0-3 之间（ 包括0和3 ）的 js（ a03.js不能被匹配到 ）</p>
 </li>
 <li><p><code>!(pattern|pattern|pattern)</code><br>匹配除所给出的模型以外的情况，<br>如：<code>js/!(a|b).js</code>，匹配 js 目录下名字中不包含 a ,也不包含 b 的所有文件.</p>
@@ -269,15 +270,17 @@ ga('send', 'pageview');
 <li><p><code>**</code><br>与 <code>*</code> 一样可以匹配任何内容，但 <code>**</code>不仅匹配路径中的某一段,而且可以匹配 <code>a/b/c</code> 这样带有 <code>/</code> 的内容，所以，它还可以匹配子文件夹下的文件.<br>如：<code>js/**/*.js</code>，匹配 js 目录下及子文件夹中所有的 js 文件。</p>
 </li>
 </ul>
-<p>更多 Glob 的知识和语法，可以参考：<br><a href="https://www.wikiwand.com/en/Glob_(programming" target="_blank" rel="external">Glob - Wiki</a><br><a href="https://github.com/isaacs/node-glob#glob-primer" target="_blank" rel="external">Glob Primer</a></p>
-<h2 id="u8BA4_u8BC6_Vinyl"><a href="#u8BA4_u8BC6_Vinyl" class="headerlink" title="认识 Vinyl"></a>认识 Vinyl</h2><p><a href="https://github.com/gulpjs/vinyl" target="_blank" rel="external">Vinyl</a> 是 Gulp 自创的一种用来描述一个虚拟文件的类，其中主要包括文件的内容和文件的路径两大信息。vinyl 模块，只是提供了一个类，而实现却交由 <code>vinyl-fs</code></p>
-<p><a href="https://github.com/gulpjs/vinyl-fs" target="_blank" rel="external">Vinyl-fs</a>，它主要的工作是接受 glob 模式的参数，然后读取匹配的文件。然后利用 Vinyl 制作一个 Transform Stream，称为 Vinyl Stream 对象，并返回。</p>
+<p>更多 Glob 的知识和语法，可以参考：<br><a target="_blank" rel="noopener" href="https://www.wikiwand.com/en/Glob_(programming">Glob - Wiki</a><br><a target="_blank" rel="noopener" href="https://github.com/isaacs/node-glob#glob-primer">Glob Primer</a></p>
+<h2 id="认识-Vinyl"><a href="#认识-Vinyl" class="headerlink" title="认识 Vinyl"></a>认识 Vinyl</h2><p><a target="_blank" rel="noopener" href="https://github.com/gulpjs/vinyl">Vinyl</a> 是 Gulp 自创的一种用来描述一个虚拟文件的类，其中主要包括文件的内容和文件的路径两大信息。vinyl 模块，只是提供了一个类，而实现却交由 <code>vinyl-fs</code></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/gulpjs/vinyl-fs">Vinyl-fs</a>，它主要的工作是接受 glob 模式的参数，然后读取匹配的文件。然后利用 Vinyl 制作一个 Transform Stream，称为 Vinyl Stream 对象，并返回。</p>
 <p>在 Gulp 中的 API <code>gulp.src</code>、<code>gulp.watch</code>、<code>gulp.dest</code> 都返回一个 Vinyl Stream 实例对象。Vinyl Stream 实例之间可以通过管道（ <code>vinyl1.pipe(vinyl2)</code> ）的形式来互相传输数据。 </p>
-<p>从 Gulp 的 <a href="https://github.com/gulpjs/gulp/blob/master/index.js#L25-L41" target="_blank" rel="external">源码</a> 中也能看出，这三个 API 都是由 vinyl-fs 提供全部的实现。</p>
+<p>从 Gulp 的 <a target="_blank" rel="noopener" href="https://github.com/gulpjs/gulp/blob/master/index.js#L25-L41">源码</a> 中也能看出，这三个 API 都是由 vinyl-fs 提供全部的实现。</p>
 <p>再一点是，从这两个模块的实现来看，Gulp 是把文件内容以 Buffer 的形式读到内存中，然后再进行处理的。</p>
-<h2 id="u8BA4_u8BC6_Orchestrator"><a href="#u8BA4_u8BC6_Orchestrator" class="headerlink" title="认识 Orchestrator"></a>认识 Orchestrator</h2><p><a href="https://github.com/robrich/orchestrator" target="_blank" rel="external">Orchestartor</a>，为 <code>gulp.task</code> 提供了全部实现，这可以从 <a href="https://github.com/gulpjs/gulp/blob/master/index.js#L14" target="_blank" rel="external">源码</a> 中看出。<br>它为 Gulp 提供了任务相关的功能，包括任务注册、任务执行以及相对应的任务进度、错误监控等功能。</p>
-<p>Orchestartor 模块，只提供了一个 Orchestartor 类，该类的实例维护着一个 tasks 数组，该数组的内容就是一个我们使用 <code>gulp.task</code> 时注册的函数列表，以及函数的依赖和名字。<br>通过 <a href="https://github.com/robrich/orchestrator/blob/master/index.js#L54-L57" target="_blank" rel="external">源码</a> 中，可以看到 tasks 的数据结构：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">this</span>.tasks[name] = &#123;</span><br><span class="line">  fn: fn,   <span class="comment">// 任务的函数体</span></span><br><span class="line">  dep: dep,   <span class="comment">// 任务所依赖的其他任务名称</span></span><br><span class="line">  name: name  <span class="comment">// 该任务的名称</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
-<h1 id="Gulp__u6838_u5FC3_API"><a href="#Gulp__u6838_u5FC3_API" class="headerlink" title="Gulp 核心 API"></a>Gulp 核心 API</h1><ul>
+<h2 id="认识-Orchestrator"><a href="#认识-Orchestrator" class="headerlink" title="认识 Orchestrator"></a>认识 Orchestrator</h2><p><a target="_blank" rel="noopener" href="https://github.com/robrich/orchestrator">Orchestartor</a>，为 <code>gulp.task</code> 提供了全部实现，这可以从 <a target="_blank" rel="noopener" href="https://github.com/gulpjs/gulp/blob/master/index.js#L14">源码</a> 中看出。<br>它为 Gulp 提供了任务相关的功能，包括任务注册、任务执行以及相对应的任务进度、错误监控等功能。</p>
+<p>Orchestartor 模块，只提供了一个 Orchestartor 类，该类的实例维护着一个 tasks 数组，该数组的内容就是一个我们使用 <code>gulp.task</code> 时注册的函数列表，以及函数的依赖和名字。<br>通过 <a target="_blank" rel="noopener" href="https://github.com/robrich/orchestrator/blob/master/index.js#L54-L57">源码</a> 中，可以看到 tasks 的数据结构：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">tasks</span>[name] = &#123;</span><br><span class="line">  <span class="attr">fn</span>: fn,   <span class="comment">// 任务的函数体</span></span><br><span class="line">  <span class="attr">dep</span>: dep,   <span class="comment">// 任务所依赖的其他任务名称</span></span><br><span class="line">  <span class="attr">name</span>: name  <span class="comment">// 该任务的名称</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h1 id="Gulp-核心-API"><a href="#Gulp-核心-API" class="headerlink" title="Gulp 核心 API"></a>Gulp 核心 API</h1><ul>
 <li>gulp.src：获取文件</li>
 <li>gulp.dest：写入文件</li>
 <li>gulp.tasks：注册任务</li>
@@ -310,21 +313,21 @@ ga('send', 'pageview');
 <li>opts - 为一个可选的配置对象。</li>
 <li>tasks - 为文件变化后要执行的任务，为一个数组</li>
 </ul>
-<h1 id="u5E38_u7528_u63D2_u4EF6"><a href="#u5E38_u7528_u63D2_u4EF6" class="headerlink" title="常用插件"></a>常用插件</h1><ul>
-<li><a href="https://www.npmjs.com/package/gulp-load-plugins" target="_blank" rel="external">gulp-load-plugins</a>：自动加载 <code>package.json</code> 中的 gulp 插件</li>
-<li><a href="https://www.npmjs.com/package/gulp-rename" target="_blank" rel="external">gulp-rename</a>： 重命名</li>
-<li><a href="https://www.npmjs.com/package/gulp-uglify" target="_blank" rel="external">gulp-uglify</a>：文件压缩</li>
-<li><a href="https://www.npmjs.com/package/gulp-concat" target="_blank" rel="external">gulp-concat</a>：文件合并</li>
-<li><a href="https://www.npmjs.com/package/gulp-less" target="_blank" rel="external">gulp-less</a>：编译 less</li>
-<li><a href="https://www.npmjs.com/package/gulp-sass" target="_blank" rel="external">gulp-sass</a>：编译 sass</li>
-<li><a href="https://github.com/scniro/gulp-clean-css" target="_blank" rel="external">gulp-clean-css</a>：压缩 CSS 文件</li>
-<li><a href="https://github.com/jonschlinkert/gulp-htmlmin" target="_blank" rel="external">gulp-htmlmin</a>：压缩 HTML 文件</li>
-<li><a href="https://github.com/babel/gulp-babel" target="_blank" rel="external">gulp-babel</a>: 使用 babel 编译 JS 文件</li>
-<li><a href="https://www.npmjs.com/package/gulp-jshint" target="_blank" rel="external">gulp-jshint</a>：jshint 检查</li>
-<li><a href="https://github.com/sindresorhus/gulp-imagemin" target="_blank" rel="external">gulp-imagemin</a>：压缩jpg、png、gif等图片</li>
-<li><a href="https://github.com/vohof/gulp-livereload" target="_blank" rel="external">gulp-livereload</a>：当代码变化时，它可以帮我们自动刷新页面</li>
+<h1 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-load-plugins">gulp-load-plugins</a>：自动加载 <code>package.json</code> 中的 gulp 插件</li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-rename">gulp-rename</a>： 重命名</li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-uglify">gulp-uglify</a>：文件压缩</li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-concat">gulp-concat</a>：文件合并</li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-less">gulp-less</a>：编译 less</li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-sass">gulp-sass</a>：编译 sass</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/scniro/gulp-clean-css">gulp-clean-css</a>：压缩 CSS 文件</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jonschlinkert/gulp-htmlmin">gulp-htmlmin</a>：压缩 HTML 文件</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/babel/gulp-babel">gulp-babel</a>: 使用 babel 编译 JS 文件</li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-jshint">gulp-jshint</a>：jshint 检查</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/sindresorhus/gulp-imagemin">gulp-imagemin</a>：压缩jpg、png、gif等图片</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/vohof/gulp-livereload">gulp-livereload</a>：当代码变化时，它可以帮我们自动刷新页面</li>
 </ul>
-<p>更多插件，可以搜索<a href="http://gulpjs.com/plugins/" target="_blank" rel="external">官方插件库</a>。</p>
+<p>更多插件，可以搜索<a target="_blank" rel="noopener" href="http://gulpjs.com/plugins/">官方插件库</a>。</p>
 
     
   </div>
@@ -461,7 +464,7 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 

@@ -12,25 +12,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="RESTful,权限系统,架构," />
+    <meta name="keywords" content="架构,RESTful,权限系统," />
   
 
   <meta name="description" content="前言有人说，每个人都是平等的；也有人说，人生来就是不平等的；在人类社会中，并没有绝对的公平，一件事，并不是所有人都能去做；一样物，并不是所有人都能够拥有。每个人都有自己的角色，每种角色都有对某种资源的一定权利，或许是拥有，或许只能是远观而不可亵玩。把这种人类社会中如此抽象的事实，提取出来，然后写成程序，还原本质的工作，就是我们程序员该做的事了。有了一个这么有范儿的开头，下面便来谈谈基于RESTfu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于RESTful-API-怎么设计用户权限控制">
-<meta property="og:url" content="http://huang-jerryc.com/2015/03/29/基于RESTful-API-怎么设计用户权限控制/index.html">
+<meta property="og:url" content="http://huang-jerryc.com/2015/03/29/%E5%9F%BA%E4%BA%8ERESTful-API-%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/index.html">
 <meta property="og:site_name" content="BlueSun">
 <meta property="og:description" content="前言有人说，每个人都是平等的；也有人说，人生来就是不平等的；在人类社会中，并没有绝对的公平，一件事，并不是所有人都能去做；一样物，并不是所有人都能够拥有。每个人都有自己的角色，每种角色都有对某种资源的一定权利，或许是拥有，或许只能是远观而不可亵玩。把这种人类社会中如此抽象的事实，提取出来，然后写成程序，还原本质的工作，就是我们程序员该做的事了。有了一个这么有范儿的开头，下面便来谈谈基于RESTfu">
+<meta property="og:locale">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/7860df36-189a-4f33-a884-156b4e0cb32d.png">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/966064e4-b954-4aab-8cec-f0a9513835b2.png">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/3f78aa79-82ae-40d1-9691-976e007dcfd3.png">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/0c724f72-aa01-44b8-9540-f463e50924d0.png">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/b3c4a7ba-6ec8-4530-b576-ecbae2d9b239.png">
 <meta property="og:image" content="http://xia-dev.b0.upaiyun.com/73b94749-99ba-4e35-a9a3-42604ecb7af9.png">
-<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:published_time" content="2015-03-29T13:38:59.000Z">
+<meta property="article:modified_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="架构">
+<meta property="article:tag" content="RESTful">
+<meta property="article:tag" content="权限系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基于RESTful-API-怎么设计用户权限控制">
-<meta name="twitter:description" content="前言有人说，每个人都是平等的；也有人说，人生来就是不平等的；在人类社会中，并没有绝对的公平，一件事，并不是所有人都能去做；一样物，并不是所有人都能够拥有。每个人都有自己的角色，每种角色都有对某种资源的一定权利，或许是拥有，或许只能是远观而不可亵玩。把这种人类社会中如此抽象的事实，提取出来，然后写成程序，还原本质的工作，就是我们程序员该做的事了。有了一个这么有范儿的开头，下面便来谈谈基于RESTfu">
+<meta name="twitter:image" content="http://xia-dev.b0.upaiyun.com/7860df36-189a-4f33-a884-156b4e0cb32d.png">
 
   
 
@@ -42,7 +47,9 @@
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -95,6 +102,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -178,7 +186,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u524D_u8A00"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTful_u7B80_u8FF0"><span class="toc-text">RESTful简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u8D44_u6E90_u7684_u5206_u7C7B_u53CA_u64CD_u4F5C"><span class="toc-text">资源的分类及操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u89D2_u8272_u3001_u7528_u6237_u3001_u6743_u9650_u4E4B_u95F4_u7684_u5173_u7CFB"><span class="toc-text">角色、用户、权限之间的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6570_u636E_u5E93_u8868_u7684_u8BBE_u8BA1"><span class="toc-text">数据库表的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Source"><span class="toc-text">Source</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Permission"><span class="toc-text">Permission</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Role"><span class="toc-text">Role</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#User"><span class="toc-text">User</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7B56_u7565/_u8FC7_u6EE4_u5668"><span class="toc-text">策略/过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sails_u4E0B_u7684_u6743_u9650_u63A7_u5236_u5B9E_u73B0"><span class="toc-text">Sails下的权限控制实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7ED3_u8BED"><span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5199_u4F5C_u53C2_u8003"><span class="toc-text">写作参考</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTful%E7%AE%80%E8%BF%B0"><span class="toc-text">RESTful简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%9A%84%E5%88%86%E7%B1%BB%E5%8F%8A%E6%93%8D%E4%BD%9C"><span class="toc-text">资源的分类及操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%92%E8%89%B2%E3%80%81%E7%94%A8%E6%88%B7%E3%80%81%E6%9D%83%E9%99%90%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">角色、用户、权限之间的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">数据库表的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Source"><span class="toc-text">Source</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Permission"><span class="toc-text">Permission</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Role"><span class="toc-text">Role</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#User"><span class="toc-text">User</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%96%E7%95%A5-x2F-%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">策略&#x2F;过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sails%E4%B8%8B%E7%9A%84%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E5%AE%9E%E7%8E%B0"><span class="toc-text">Sails下的权限控制实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E4%BD%9C%E5%8F%82%E8%80%83"><span class="toc-text">写作参考</span></a></li></ol>
   </div>
 
 
@@ -204,7 +212,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -212,7 +220,7 @@ ga('send', 'pageview');
       
         <span>
           <i class="icon-comment"></i>
-          <a href="http://huang-jerryc.com//2015/03/29/基于RESTful-API-怎么设计用户权限控制/#disqus_thread"></a>
+          <a href="http://huang-jerryc.com//2015/03/29/%E5%9F%BA%E4%BA%8ERESTful-API-%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/#disqus_thread"></a>
         </span>
       
 
@@ -229,31 +237,31 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>有人说，每个人都是平等的；<br>也有人说，人生来就是不平等的；<br>在人类社会中，并没有绝对的公平，<br>一件事，并不是所有人都能去做；<br>一样物，并不是所有人都能够拥有。<br>每个人都有自己的角色，每种角色都有对某种资源的一定权利，或许是拥有，或许只能是远观而不可亵玩。<br>把这种人类社会中如此抽象的事实，提取出来，然后写成程序，还原本质的工作，就是我们程序员该做的事了。<br>有了一个这么有范儿的开头，下面便来谈谈基于RESTful，如何实现不同的人不同的角色对于不同的资源不同的操作的权限控制。</p>
-<h2 id="RESTful_u7B80_u8FF0"><a href="#RESTful_u7B80_u8FF0" class="headerlink" title="RESTful简述"></a>RESTful简述</h2><p>本文是基于RESTful描述的，需要你对这个有初步的了解。<br>RESTful是什么？<br><strong>Representational State Transfer</strong>，简称<strong>REST</strong>，是Roy Fielding博士在2000年他的博士论文中提出来的一种软件架构风格。<br>REST比较重要的点是<strong>资源</strong>和<strong>状态转换</strong>，<br>所谓”<strong>资源</strong>“，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的实在。<br>而 “<strong>状态转换</strong>“，则是把对应的HTTP协议里面，四个表示操作方式的动词分别对应四种基本操作：</p>
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有人说，每个人都是平等的；<br>也有人说，人生来就是不平等的；<br>在人类社会中，并没有绝对的公平，<br>一件事，并不是所有人都能去做；<br>一样物，并不是所有人都能够拥有。<br>每个人都有自己的角色，每种角色都有对某种资源的一定权利，或许是拥有，或许只能是远观而不可亵玩。<br>把这种人类社会中如此抽象的事实，提取出来，然后写成程序，还原本质的工作，就是我们程序员该做的事了。<br>有了一个这么有范儿的开头，下面便来谈谈基于RESTful，如何实现不同的人不同的角色对于不同的资源不同的操作的权限控制。</p>
+<h2 id="RESTful简述"><a href="#RESTful简述" class="headerlink" title="RESTful简述"></a>RESTful简述</h2><p>本文是基于RESTful描述的，需要你对这个有初步的了解。<br>RESTful是什么？<br><strong>Representational State Transfer</strong>，简称<strong>REST</strong>，是Roy Fielding博士在2000年他的博士论文中提出来的一种软件架构风格。<br>REST比较重要的点是<strong>资源</strong>和<strong>状态转换</strong>，<br>所谓”<strong>资源</strong>“，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的实在。<br>而 “<strong>状态转换</strong>“，则是把对应的HTTP协议里面，四个表示操作方式的动词分别对应四种基本操作：</p>
 <ol>
 <li>GET，用来浏览(browse)资源    </li>
 <li>POST，用来新建(create)资源    </li>
 <li>PUT，用来更新(update)资源    </li>
-<li>DELETE，用来删除(delete)资源        </li>
+<li>DELETE，用来删除(delete)资源</li>
 </ol>
 <p><img src="http://xia-dev.b0.upaiyun.com/7860df36-189a-4f33-a884-156b4e0cb32d.png" alt="RESTful CURD"></p>
-<h2 id="u8D44_u6E90_u7684_u5206_u7C7B_u53CA_u64CD_u4F5C"><a href="#u8D44_u6E90_u7684_u5206_u7C7B_u53CA_u64CD_u4F5C" class="headerlink" title="资源的分类及操作"></a>资源的分类及操作</h2><p>清楚了资源的概念，然后再来对资源进行一下分类，我把资源分为下面三类：</p>
+<h2 id="资源的分类及操作"><a href="#资源的分类及操作" class="headerlink" title="资源的分类及操作"></a>资源的分类及操作</h2><p>清楚了资源的概念，然后再来对资源进行一下分类，我把资源分为下面三类：</p>
 <ol>
 <li>私人资源 (Personal Source)</li>
 <li>角色资源 (Roles Source)</li>
 <li>公共资源 (Public Source)</li>
 </ol>
 <p><img src="http://xia-dev.b0.upaiyun.com/966064e4-b954-4aab-8cec-f0a9513835b2.png" alt="Sources"></p>
-<p><strong>“私人资源”</strong>：是属于某一个用户所有的资源，只有用户本人才能操作，其他用户不能操作。例如用户的个人信息、订单、收货地址等等。<br><strong>“角色资源”</strong>：与私人资源不同，角色资源范畴更大，一个角色可以对应多个人，也就是一群人。如果给某角色分配了权限，那么只有身为该角色的用户才能拥有这些权限。例如系统资源只能够管理员操作，一般用户不能操作。<br><strong>“公共资源”</strong>：所有人无论角色都能够访问并操作的资源。 </p>
+<p>**”私人资源”**：是属于某一个用户所有的资源，只有用户本人才能操作，其他用户不能操作。例如用户的个人信息、订单、收货地址等等。<br>**”角色资源”**：与私人资源不同，角色资源范畴更大，一个角色可以对应多个人，也就是一群人。如果给某角色分配了权限，那么只有身为该角色的用户才能拥有这些权限。例如系统资源只能够管理员操作，一般用户不能操作。<br>**”公共资源”**：所有人无论角色都能够访问并操作的资源。 </p>
 <p>而对资源的操作，无非就是分为四种：</p>
 <ol>
 <li>浏览 (browse)    </li>
 <li>新增 (create)    </li>
 <li>更新 (update)    </li>
-<li>删除 (delete)    </li>
+<li>删除 (delete)</li>
 </ol>
-<h2 id="u89D2_u8272_u3001_u7528_u6237_u3001_u6743_u9650_u4E4B_u95F4_u7684_u5173_u7CFB"><a href="#u89D2_u8272_u3001_u7528_u6237_u3001_u6743_u9650_u4E4B_u95F4_u7684_u5173_u7CFB" class="headerlink" title="角色、用户、权限之间的关系"></a>角色、用户、权限之间的关系</h2><p>角色和用户的概念，自不用多说，大家都懂，但是权限的概念需要提一提。<br><strong>“权限”</strong>，就是资源与操作的一套组合，例如”增加用户”是一种权限，”删除用户”是一种权限，所以对于一种资源所对应的权限有且只有四种。</p>
+<h2 id="角色、用户、权限之间的关系"><a href="#角色、用户、权限之间的关系" class="headerlink" title="角色、用户、权限之间的关系"></a>角色、用户、权限之间的关系</h2><p>角色和用户的概念，自不用多说，大家都懂，但是权限的概念需要提一提。<br>**”权限”**，就是资源与操作的一套组合，例如”增加用户”是一种权限，”删除用户”是一种权限，所以对于一种资源所对应的权限有且只有四种。</p>
 <p><img src="http://xia-dev.b0.upaiyun.com/3f78aa79-82ae-40d1-9691-976e007dcfd3.png" alt="Permissions"></p>
 <p><strong>角色</strong>与<strong>用户</strong>的关系：一个角色对应一群用户，一个用户也可以扮演多个角色，所以它们是多对多的关系。<br><strong>角色</strong>与<strong>权限</strong>的关系：一个角色拥有一堆权限，一个权限却只能属于一个角色，所以它们是一(角色)对多(权限)的关系<br><strong>权限</strong>与<strong>用户</strong>的关系：由于一个用户可以扮演多个角色，一个角色拥有多个权限，所以用户与权限是间接的多对多关系。</p>
 <p><img src="http://xia-dev.b0.upaiyun.com/0c724f72-aa01-44b8-9540-f463e50924d0.png" alt="Relations"></p>
@@ -262,7 +270,7 @@ ga('send', 'pageview');
 <li>私人资源与用户的关系，一种私人资源对应的四种权限只能属于一个用户，所以这种情况下，用户和权限是一(用户)对多(权限)的关系。</li>
 <li>超级管理员的角色，这个角色是神一般的存在，能无视一切阻碍，对所有资源拥有绝对权限，甭管你是私人资源还是角色资源。</li>
 </ol>
-<h2 id="u6570_u636E_u5E93_u8868_u7684_u8BBE_u8BA1"><a href="#u6570_u636E_u5E93_u8868_u7684_u8BBE_u8BA1" class="headerlink" title="数据库表的设计"></a>数据库表的设计</h2><p>角色、用户、权限的模型应该怎么样设计，才能满足它们之间的关系？</p>
+<h2 id="数据库表的设计"><a href="#数据库表的设计" class="headerlink" title="数据库表的设计"></a>数据库表的设计</h2><p>角色、用户、权限的模型应该怎么样设计，才能满足它们之间的关系？</p>
 <p><img src="http://xia-dev.b0.upaiyun.com/b3c4a7ba-6ec8-4530-b576-ecbae2d9b239.png" alt="Models"></p>
 <p>对上图的一些关键字段进行说明：</p>
 <h6 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h6><ul>
@@ -284,8 +292,8 @@ ga('send', 'pageview');
 <li>createBy : 该记录的拥有者，在user标里，一般等于该记录的唯一标识，这一属性用于OwnerPolicy的检测，其他私有资源的模型设计，也需要加上这一字段来标识资源的拥有者。</li>
 <li>roles : 用户所拥有的角色</li>
 </ul>
-<h2 id="u7B56_u7565/_u8FC7_u6EE4_u5668"><a href="#u7B56_u7565/_u8FC7_u6EE4_u5668" class="headerlink" title="策略/过滤器"></a>策略/过滤器</h2><p>在sails下称为策略(Policy)，在java SSH下称为过滤器(Filter)，无论名称如何，他们工作原理是大同小异的，主要是在一条HTTP请求访问一个Controller下的action之前进行检测。所以在这一层，我们可以自定义一些策略/过滤器来实现权限控制。<br>为行文方便，下面姑且允许我使用策略这一词。</p>
-<p><strong> 策略 (Policy) </strong></p>
+<h2 id="策略-x2F-过滤器"><a href="#策略-x2F-过滤器" class="headerlink" title="策略&#x2F;过滤器"></a>策略&#x2F;过滤器</h2><p>在sails下称为策略(Policy)，在java SSH下称为过滤器(Filter)，无论名称如何，他们工作原理是大同小异的，主要是在一条HTTP请求访问一个Controller下的action之前进行检测。所以在这一层，我们可以自定义一些策略&#x2F;过滤器来实现权限控制。<br>为行文方便，下面姑且允许我使用策略这一词。</p>
+<p>** 策略 (Policy) **</p>
 <blockquote>
 <p>下面排版顺序对应Policy的运行顺序</p>
 </blockquote>
@@ -297,12 +305,12 @@ ga('send', 'pageview');
 </ol>
 <p>如果通过所有policy的检测，则把请求转发到目标action。</p>
 <p><img src="http://xia-dev.b0.upaiyun.com/73b94749-99ba-4e35-a9a3-42604ecb7af9.png" alt="Policies"></p>
-<h2 id="Sails_u4E0B_u7684_u6743_u9650_u63A7_u5236_u5B9E_u73B0"><a href="#Sails_u4E0B_u7684_u6743_u9650_u63A7_u5236_u5B9E_u73B0" class="headerlink" title="Sails下的权限控制实现"></a>Sails下的权限控制实现</h2><p>在Sails下，有一个很方便的套件<a href="https://github.com/tjwebb/sails-permissions" target="_blank" rel="external">sails-permissions</a>，集成了一套权限管理的方案，本文也是基于该套件的源码所引出来的权限管理解决方案。</p>
-<h2 id="u7ED3_u8BED"><a href="#u7ED3_u8BED" class="headerlink" title="结语"></a>结语</h2><p>对程序员最大的挑战，并不是能否掌握了哪些编程语言，哪些软件框架，而是对业务和需求的理解，然后在此基础上，把要点抽象出来，写成计算机能理解的语言。<br>最后，希望这篇文章，能够帮助你对权限管理这一课题增加多一点点理解。</p>
-<h2 id="u5199_u4F5C_u53C2_u8003"><a href="#u5199_u4F5C_u53C2_u8003" class="headerlink" title="写作参考"></a>写作参考</h2><ul>
-<li><a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="external">理解RESTful架构</a></li>
-<li><a href="http://zh.wikipedia.org/wiki/REST" target="_blank" rel="external">REST wiki</a></li>
-<li><a href="https://github.com/tjwebb/sails-permissions" target="_blank" rel="external">sails-permissions 源码</a></li>
+<h2 id="Sails下的权限控制实现"><a href="#Sails下的权限控制实现" class="headerlink" title="Sails下的权限控制实现"></a>Sails下的权限控制实现</h2><p>在Sails下，有一个很方便的套件<a target="_blank" rel="noopener" href="https://github.com/tjwebb/sails-permissions">sails-permissions</a>，集成了一套权限管理的方案，本文也是基于该套件的源码所引出来的权限管理解决方案。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>对程序员最大的挑战，并不是能否掌握了哪些编程语言，哪些软件框架，而是对业务和需求的理解，然后在此基础上，把要点抽象出来，写成计算机能理解的语言。<br>最后，希望这篇文章，能够帮助你对权限管理这一课题增加多一点点理解。</p>
+<h2 id="写作参考"><a href="#写作参考" class="headerlink" title="写作参考"></a>写作参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2011/09/restful.html">理解RESTful架构</a></li>
+<li><a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/REST">REST wiki</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tjwebb/sails-permissions">sails-permissions 源码</a></li>
 </ul>
 
     
@@ -341,10 +349,10 @@ ga('send', 'pageview');
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2015/03/03/盘点国内的那些ROM/">
+    <a class="show pull-left" href="/2015/03/03/%E7%9B%98%E7%82%B9%E5%9B%BD%E5%86%85%E7%9A%84%E9%82%A3%E4%BA%9BROM/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2015/04/25/为什么使用Sails/">
+    <a class="show pull-right" href="/2015/04/25/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8Sails/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -440,14 +448,14 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 
   <script>
     var disqus_shortname = 'bluesun-jerryc';
     
-    var disqus_url = 'http://huang-jerryc.com/2015/03/29/基于RESTful-API-怎么设计用户权限控制/';
+    var disqus_url = 'http://huang-jerryc.com/2015/03/29/%E5%9F%BA%E4%BA%8ERESTful-API-%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/';
     
     (function(){
       var dsq = document.createElement('script');

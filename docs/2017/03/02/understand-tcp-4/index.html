@@ -15,35 +15,20 @@
     <meta name="keywords" content="tcp," />
   
 
-  <meta name="description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-无论客户端还是服务器，在双方 TCP 通讯的过程中，都会有着一个「状态」的概念，状态会随着 TCP 通讯的不同阶段而变化。
-TCP 状态流转图
-各种状态表示的意思CLOSED：表示初始状态
-LISTEN：表示服务器端的某个 socket 处于监听状态，可以接受连接
-SYN_SENT：在服务端监听后，客户端 socket">
+  <meta name="description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook      无论客户端还是服务器，在双方 TCP 通讯的过程中，都会有着一个「状态」的概念，状态会随着 TCP 通讯的不同阶段而变化。 TCP 状态流转图 各种状态表示的意思CLOSED：表示初始状态 LISTEN：表示服务器端的某个 socket 处于监听状态，可以接受连接 SYN_SENT：在服务端监听后，客户端 socket">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解TCP（四）：状态流转">
 <meta property="og:url" content="http://huang-jerryc.com/2017/03/02/understand-tcp-4/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-无论客户端还是服务器，在双方 TCP 通讯的过程中，都会有着一个「状态」的概念，状态会随着 TCP 通讯的不同阶段而变化。
-TCP 状态流转图
-各种状态表示的意思CLOSED：表示初始状态
-LISTEN：表示服务器端的某个 socket 处于监听状态，可以接受连接
-SYN_SENT：在服务端监听后，客户端 socket">
+<meta property="og:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook      无论客户端还是服务器，在双方 TCP 通讯的过程中，都会有着一个「状态」的概念，状态会随着 TCP 通讯的不同阶段而变化。 TCP 状态流转图 各种状态表示的意思CLOSED：表示初始状态 LISTEN：表示服务器端的某个 socket 处于监听状态，可以接受连接 SYN_SENT：在服务端监听后，客户端 socket">
+<meta property="og:locale">
 <meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/DB900F916ECD267746706FEA8DF682CD.png">
-<meta property="og:updated_time" content="2020-07-21T08:12:37.394Z">
+<meta property="article:published_time" content="2017-03-02T07:59:25.000Z">
+<meta property="article:modified_time" content="2020-07-21T08:12:37.394Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="tcp">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解TCP（四）：状态流转">
-<meta name="twitter:description" content="更好阅读体验：《理解 TCP 和 UDP》— By Gitbook    
-
-无论客户端还是服务器，在双方 TCP 通讯的过程中，都会有着一个「状态」的概念，状态会随着 TCP 通讯的不同阶段而变化。
-TCP 状态流转图
-各种状态表示的意思CLOSED：表示初始状态
-LISTEN：表示服务器端的某个 socket 处于监听状态，可以接受连接
-SYN_SENT：在服务端监听后，客户端 socket">
+<meta name="twitter:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/DB900F916ECD267746706FEA8DF682CD.png">
 
   
 
@@ -55,7 +40,9 @@ SYN_SENT：在服务端监听后，客户端 socket">
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -108,6 +95,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -191,7 +179,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP__u72B6_u6001_u6D41_u8F6C_u56FE"><span class="toc-text">TCP 状态流转图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5404_u79CD_u72B6_u6001_u8868_u793A_u7684_u610F_u601D"><span class="toc-text">各种状态表示的意思</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003"><span class="toc-text">参考</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E7%8A%B6%E6%80%81%E6%B5%81%E8%BD%AC%E5%9B%BE"><span class="toc-text">TCP 状态流转图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E7%8A%B6%E6%80%81%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%84%8F%E6%80%9D"><span class="toc-text">各种状态表示的意思</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
   </div>
 
 
@@ -217,7 +205,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -243,11 +231,11 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <blockquote>
-<p>更好阅读体验：<a href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/" target="_blank" rel="external">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
+<p>更好阅读体验：<a target="_blank" rel="noopener" href="https://jerryc8080.gitbooks.io/understand-tcp-and-udp/">《理解 TCP 和 UDP》— By Gitbook</a>    </p>
 </blockquote>
 <p>无论客户端还是服务器，在双方 TCP 通讯的过程中，都会有着一个「状态」的概念，状态会随着 TCP 通讯的不同阶段而变化。</p>
-<h2 id="TCP__u72B6_u6001_u6D41_u8F6C_u56FE"><a href="#TCP__u72B6_u6001_u6D41_u8F6C_u56FE" class="headerlink" title="TCP 状态流转图"></a>TCP 状态流转图</h2><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/DB900F916ECD267746706FEA8DF682CD.png" alt="TCP 状态流转图.png"></p>
-<h2 id="u5404_u79CD_u72B6_u6001_u8868_u793A_u7684_u610F_u601D"><a href="#u5404_u79CD_u72B6_u6001_u8868_u793A_u7684_u610F_u601D" class="headerlink" title="各种状态表示的意思"></a>各种状态表示的意思</h2><p><strong>CLOSED</strong>：表示初始状态</p>
+<h2 id="TCP-状态流转图"><a href="#TCP-状态流转图" class="headerlink" title="TCP 状态流转图"></a>TCP 状态流转图</h2><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/post/understand-tcp-udp/DB900F916ECD267746706FEA8DF682CD.png" alt="TCP 状态流转图.png"></p>
+<h2 id="各种状态表示的意思"><a href="#各种状态表示的意思" class="headerlink" title="各种状态表示的意思"></a>各种状态表示的意思</h2><p><strong>CLOSED</strong>：表示初始状态</p>
 <p><strong>LISTEN</strong>：表示服务器端的某个 socket 处于监听状态，可以接受连接</p>
 <p><strong>SYN_SENT</strong>：在服务端监听后，客户端 socket 执行 CONNECT 连接时，客户端发送 SYN 报文，此时客户端就进入 SYN_SENT 状态，等待服务端确认。</p>
 <p><strong>SYN_RCVD</strong>：表示服务端接收到了 SYN 报文。</p>
@@ -259,7 +247,7 @@ ga('send', 'pageview');
 <p><strong>CLOSE_WAIT</strong>：表示等待关闭，在 ESTABLISHED 过渡到 LAST_ACK 的一个过渡阶段，该阶段需要考虑是否还有数据发送给对方，如果没有，就可以关闭连接，发送 FIN 报文，然后进入 LAST_ACK 状态。</p>
 <p><strong>LAST_ACK</strong>：被动关闭一方发送 FIN 报文之后，最后等待对方的 ACK 报文所处的状态。</p>
 <p><strong>CLOSED</strong>：当收到 ACK 保温后，就可以进入 CLOSED 状态了。</p>
-<h2 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h2><p><a href="https://book.douban.com/subject/26850616/" target="_blank" rel="external">《后台开发 核心技术与应用实践》</a><br><a href="https://book.douban.com/subject/2970300/" target="_blank" rel="external">《计算机网络》</a>k.douban.com/subject/2970300/)</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26850616/">《后台开发 核心技术与应用实践》</a><br><a target="_blank" rel="noopener" href="https://book.douban.com/subject/2970300/">《计算机网络》</a>k.douban.com&#x2F;subject&#x2F;2970300&#x2F;)</p>
 
     
   </div>
@@ -396,7 +384,7 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 

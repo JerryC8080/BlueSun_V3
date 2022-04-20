@@ -15,22 +15,18 @@
     <meta name="keywords" content="前端," />
   
 
-  <meta name="description" content="需要用到的JS
-1234&amp;lt;script src=&quot;kissy.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;base.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;loader.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;waterfall.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-需要设置的CS">
+  <meta name="description" content="需要用到的JS 1234&lt;script src&#x3D;&quot;kissy.js&quot;&gt;&lt;&#x2F;script&gt;&lt;script src&#x3D;&quot;base.js&quot;&gt;&lt;&#x2F;script&gt;&lt;script src&#x3D;&quot;loader.js&quot;&gt;&lt;&#x2F;script&gt;&lt;script src&#x3D;&quot;water">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kissy WaterFall 静态调用">
-<meta property="og:url" content="http://huang-jerryc.com/2013/03/07/Kissy-WaterFall-静态调用/index.html">
+<meta property="og:url" content="http://huang-jerryc.com/2013/03/07/Kissy-WaterFall-%E9%9D%99%E6%80%81%E8%B0%83%E7%94%A8/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="需要用到的JS
-1234&amp;lt;script src=&quot;kissy.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;base.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;loader.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;waterfall.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-需要设置的CS">
-<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta property="og:description" content="需要用到的JS 1234&lt;script src&#x3D;&quot;kissy.js&quot;&gt;&lt;&#x2F;script&gt;&lt;script src&#x3D;&quot;base.js&quot;&gt;&lt;&#x2F;script&gt;&lt;script src&#x3D;&quot;loader.js&quot;&gt;&lt;&#x2F;script&gt;&lt;script src&#x3D;&quot;water">
+<meta property="og:locale">
+<meta property="article:published_time" content="2013-03-07T04:04:24.000Z">
+<meta property="article:modified_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kissy WaterFall 静态调用">
-<meta name="twitter:description" content="需要用到的JS
-1234&amp;lt;script src=&quot;kissy.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;base.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;loader.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;script src=&quot;waterfall.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-需要设置的CS">
 
   
 
@@ -42,7 +38,9 @@
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -95,6 +93,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -199,7 +198,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -207,7 +206,7 @@ ga('send', 'pageview');
       
         <span>
           <i class="icon-comment"></i>
-          <a href="http://huang-jerryc.com//2013/03/07/Kissy-WaterFall-静态调用/#disqus_thread"></a>
+          <a href="http://huang-jerryc.com//2013/03/07/Kissy-WaterFall-%E9%9D%99%E6%80%81%E8%B0%83%E7%94%A8/#disqus_thread"></a>
         </span>
       
 
@@ -225,13 +224,16 @@ ga('send', 'pageview');
   <div class="article-content">
     
       <p>需要用到的JS</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"kissy.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"base.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"loader.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"waterfall.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;kissy.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;base.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;loader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;waterfall.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>需要设置的CSS样式</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line">    <span class="class">.ks-waterfall</span> <span class="rules">&#123;</span><br><span class="line">        <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">192px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">overflow</span>:<span class="value"> hidden</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">15px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">2px</span> solid <span class="hexcolor">#ddd</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">margin-bottom</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">left</span>:<span class="value">-<span class="number">9999px</span></span></span>;</span><br><span class="line">        <span class="rule"><span class="attribute">top</span>:<span class="value">-<span class="number">9999px</span></span></span>;</span><br><span class="line">    &#125;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.ks-waterfall</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">192px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">overflow</span>: hidden;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">15px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border</span>: <span class="number">2px</span> solid <span class="number">#ddd</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">left</span>:-<span class="number">9999px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">top</span>:-<span class="number">9999px</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>HTML关键代码</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">'container'</span> <span class="attribute">style</span>=<span class="value">"position: relative;"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 重复的数据块 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"ks-waterfall"</span>&gt;</span><span class="tag">&lt;<span class="title">img</span> <span class="attribute">src</span>=<span class="value">"http://farm7.static.flickr.com/6072/6128820646_75d4f4f26d_m.jpg"</span> <span class="attribute">width</span>=<span class="value">"192"</span> <span class="attribute">height</span>=<span class="value">"113"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"title"</span>&gt;</span>untitled<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&#x27;container&#x27;</span> <span class="attr">style</span>=<span class="string">&quot;position: relative;&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 重复的数据块 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;ks-waterfall&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://farm7.static.flickr.com/6072/6128820646_75d4f4f26d_m.jpg&quot;</span> <span class="attr">width</span>=<span class="string">&quot;192&quot;</span> <span class="attr">height</span>=<span class="string">&quot;113&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;title&quot;</span>&gt;</span>untitled<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>最后调用WaterFall的内嵌脚本</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">KISSY.use(<span class="string">"waterfall"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">S, Waterfall</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Waterfall(&#123;</span><br><span class="line">        container: <span class="string">"#container"</span>,    <span class="comment">//节点容器</span></span><br><span class="line">        minColCount: <span class="number">2</span>,             <span class="comment">//最小列数</span></span><br><span class="line">        colWidth: <span class="number">235</span>               <span class="comment">//每列的宽度</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">KISSY</span>.<span class="title function_">use</span>(<span class="string">&quot;waterfall&quot;</span>, <span class="keyword">function</span> (<span class="params">S, Waterfall</span>) &#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Waterfall</span>(&#123;</span><br><span class="line">        <span class="attr">container</span>: <span class="string">&quot;#container&quot;</span>,    <span class="comment">//节点容器</span></span><br><span class="line">        <span class="attr">minColCount</span>: <span class="number">2</span>,             <span class="comment">//最小列数</span></span><br><span class="line">        <span class="attr">colWidth</span>: <span class="number">235</span>               <span class="comment">//每列的宽度</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
     
   </div>
@@ -272,7 +274,7 @@ ga('send', 'pageview');
     <a class="hide pull-left" href="/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2013/07/21/Kissy-WaterFall-实现手动加载数据/">
+    <a class="show pull-right" href="/2013/07/21/Kissy-WaterFall-%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%8A%A8%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -368,14 +370,14 @@ ga('send', 'pageview');
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 
   <script>
     var disqus_shortname = 'bluesun-jerryc';
     
-    var disqus_url = 'http://huang-jerryc.com/2013/03/07/Kissy-WaterFall-静态调用/';
+    var disqus_url = 'http://huang-jerryc.com/2013/03/07/Kissy-WaterFall-%E9%9D%99%E6%80%81%E8%B0%83%E7%94%A8/';
     
     (function(){
       var dsq = document.createElement('script');

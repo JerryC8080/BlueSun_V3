@@ -15,34 +15,24 @@
     <meta name="keywords" content="Javascript,Nodejs,SOAP," />
   
 
-  <meta name="description" content="前言前两天，室友给我发了一套代码……
-
-一段对话下来，我心中多个疑问：SOAP是什么？node调用java接口？
-一向懒散的我，不知为何却对些问题有点兴趣，平常我们处理不同应用程序之间的通讯，都是以RESTful API的方式的，基于HTTP协议，互相传输JSON格式的数据以达到程序间的交流。现在却有一个称SOAP的东东，可以直接调用程序的接口？
-SOAP，何方妖孽？
-SOAP（Simple Ob">
+  <meta name="description" content="前言前两天，室友给我发了一套代码……  一段对话下来，我心中多个疑问：SOAP是什么？node调用java接口？ 一向懒散的我，不知为何却对些问题有点兴趣，平常我们处理不同应用程序之间的通讯，都是以RESTful API的方式的，基于HTTP协议，互相传输JSON格式的数据以达到程序间的交流。现在却有一个称SOAP的东东，可以直接调用程序的接口？ SOAP，何方妖孽？ SOAP（Simple Ob">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SOAP，WebService的枢纽">
-<meta property="og:url" content="http://huang-jerryc.com/2015/01/12/SOAP-Web-Service的枢纽/index.html">
+<meta property="og:url" content="http://huang-jerryc.com/2015/01/12/SOAP-Web-Service%E7%9A%84%E6%9E%A2%E7%BA%BD/index.html">
 <meta property="og:site_name" content="BlueSun">
-<meta property="og:description" content="前言前两天，室友给我发了一套代码……
-
-一段对话下来，我心中多个疑问：SOAP是什么？node调用java接口？
-一向懒散的我，不知为何却对些问题有点兴趣，平常我们处理不同应用程序之间的通讯，都是以RESTful API的方式的，基于HTTP协议，互相传输JSON格式的数据以达到程序间的交流。现在却有一个称SOAP的东东，可以直接调用程序的接口？
-SOAP，何方妖孽？
-SOAP（Simple Ob">
+<meta property="og:description" content="前言前两天，室友给我发了一套代码……  一段对话下来，我心中多个疑问：SOAP是什么？node调用java接口？ 一向懒散的我，不知为何却对些问题有点兴趣，平常我们处理不同应用程序之间的通讯，都是以RESTful API的方式的，基于HTTP协议，互相传输JSON格式的数据以达到程序间的交流。现在却有一个称SOAP的东东，可以直接调用程序的接口？ SOAP，何方妖孽？ SOAP（Simple Ob">
+<meta property="og:locale">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/79702-e7cf075365536286.jpeg">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/79702-e7cf075365536286.jpeg">
 <meta property="og:image" content="http://huang-jerryc.com/image/blog/79702-5d2b1c9e8970c3ea.jpeg">
-<meta property="og:updated_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:published_time" content="2015-01-11T16:02:38.000Z">
+<meta property="article:modified_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="Javascript">
+<meta property="article:tag" content="Nodejs">
+<meta property="article:tag" content="SOAP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SOAP，WebService的枢纽">
-<meta name="twitter:description" content="前言前两天，室友给我发了一套代码……
-
-一段对话下来，我心中多个疑问：SOAP是什么？node调用java接口？
-一向懒散的我，不知为何却对些问题有点兴趣，平常我们处理不同应用程序之间的通讯，都是以RESTful API的方式的，基于HTTP协议，互相传输JSON格式的数据以达到程序间的交流。现在却有一个称SOAP的东东，可以直接调用程序的接口？
-SOAP，何方妖孽？
-SOAP（Simple Ob">
+<meta name="twitter:image" content="http://huang-jerryc.com/image/blog/79702-e7cf075365536286.jpeg">
 
   
 
@@ -54,7 +44,9 @@ SOAP（Simple Ob">
 
 
   
-    <link rel="stylesheet" href="/css/personal-style.css" type="text/css">
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
   
 
   
@@ -107,6 +99,7 @@ ga('send', 'pageview');
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
 </head>
 
 <body>
@@ -190,7 +183,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u524D_u8A00"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP_uFF0C_u4F55_u65B9_u5996_u5B7D_uFF1F"><span class="toc-text">SOAP，何方妖孽？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP__u600E_u4E48_u6765_u7684_uFF1F"><span class="toc-text">SOAP 怎么来的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP__u7684__u597D_u642D_u6863_uFF1AWSDL_u3001Web_Service"><span class="toc-text">SOAP 的 好搭档：WSDL、Web Service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP_u662F_u600E_u4E48_u5DE5_u4F5C_u7684_uFF1F"><span class="toc-text">SOAP是怎么工作的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#node_u5F00_u53D1_u4E2D_u7684soap"><span class="toc-text">node开发中的soap</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#u672C_u6587_u5199_u4F5C_u53C2_u8003_uFF1A"><span class="toc-text">本文写作参考：</span></a></li></ol></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP%EF%BC%8C%E4%BD%95%E6%96%B9%E5%A6%96%E5%AD%BD%EF%BC%9F"><span class="toc-text">SOAP，何方妖孽？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP-%E6%80%8E%E4%B9%88%E6%9D%A5%E7%9A%84%EF%BC%9F"><span class="toc-text">SOAP 怎么来的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP-%E7%9A%84-%E5%A5%BD%E6%90%AD%E6%A1%A3%EF%BC%9AWSDL%E3%80%81Web-Service"><span class="toc-text">SOAP 的 好搭档：WSDL、Web Service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SOAP%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84%EF%BC%9F"><span class="toc-text">SOAP是怎么工作的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#node%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84soap"><span class="toc-text">node开发中的soap</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E5%86%99%E4%BD%9C%E5%8F%82%E8%80%83%EF%BC%9A"><span class="toc-text">本文写作参考：</span></a></li></ol></li></ol></li></ol></li></ol>
   </div>
 
 
@@ -216,7 +209,7 @@ ga('send', 'pageview');
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/搬砖码农/">搬砖码农</a>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
   </span>
 
 
@@ -224,7 +217,7 @@ ga('send', 'pageview');
       
         <span>
           <i class="icon-comment"></i>
-          <a href="http://huang-jerryc.com//2015/01/12/SOAP-Web-Service的枢纽/#disqus_thread"></a>
+          <a href="http://huang-jerryc.com//2015/01/12/SOAP-Web-Service%E7%9A%84%E6%9E%A2%E7%BA%BD/#disqus_thread"></a>
         </span>
       
 
@@ -241,24 +234,24 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>前两天，室友给我发了一套代码……</p>
-<p><img src="/image/blog/79702-e7cf075365536286.jpeg" alt><br><img src="/image/blog/79702-e7cf075365536286.jpeg" alt></p>
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前两天，室友给我发了一套代码……</p>
+<p><img src="/image/blog/79702-e7cf075365536286.jpeg"><br><img src="/image/blog/79702-e7cf075365536286.jpeg"></p>
 <p>一段对话下来，我心中多个疑问：SOAP是什么？node调用java接口？</p>
 <p>一向懒散的我，不知为何却对些问题有点兴趣，平常我们处理不同应用程序之间的通讯，都是以RESTful API的方式的，基于HTTP协议，互相传输JSON格式的数据以达到程序间的交流。现在却有一个称SOAP的东东，可以直接调用程序的接口？</p>
-<h2 id="SOAP_uFF0C_u4F55_u65B9_u5996_u5B7D_uFF1F"><a href="#SOAP_uFF0C_u4F55_u65B9_u5996_u5B7D_uFF1F" class="headerlink" title="SOAP，何方妖孽？"></a>SOAP，何方妖孽？</h2><ul>
+<h2 id="SOAP，何方妖孽？"><a href="#SOAP，何方妖孽？" class="headerlink" title="SOAP，何方妖孽？"></a>SOAP，何方妖孽？</h2><ul>
 <li>SOAP（Simple Object Access Protocol 简单对象访问协议）</li>
 <li>SOAP 是基于 XML 的简易协议，可使应用程序在 HTTP 之上进行信息交换。</li>
 <li>SOAP 独立于平台、语言，且简单和可扩展</li>
 </ul>
-<h2 id="SOAP__u600E_u4E48_u6765_u7684_uFF1F"><a href="#SOAP__u600E_u4E48_u6765_u7684_uFF1F" class="headerlink" title="SOAP 怎么来的？"></a>SOAP 怎么来的？</h2><p>此标准由IBM、Microsoft、UserLand和DevelopMentor在1998年共同提出，并得到IBM，莲花（Lotus），康柏（Compaq）等公司的支持，于2000年提交给万维网联盟（World Wide Web Consortium；W3C），目前SOAP 1.1版是业界共同的标准，属于第二代的XML协定（第一代具主要代表性的技术为XML-RPC以及WDDX）。</p>
-<h2 id="SOAP__u7684__u597D_u642D_u6863_uFF1AWSDL_u3001Web_Service"><a href="#SOAP__u7684__u597D_u642D_u6863_uFF1AWSDL_u3001Web_Service" class="headerlink" title="SOAP 的 好搭档：WSDL、Web Service"></a>SOAP 的 好搭档：WSDL、Web Service</h2><p>为了能了解SOAP的做的事，你首先需要了解和SOAP一同工作的两个同事。</p>
+<h2 id="SOAP-怎么来的？"><a href="#SOAP-怎么来的？" class="headerlink" title="SOAP 怎么来的？"></a>SOAP 怎么来的？</h2><p>此标准由IBM、Microsoft、UserLand和DevelopMentor在1998年共同提出，并得到IBM，莲花（Lotus），康柏（Compaq）等公司的支持，于2000年提交给万维网联盟（World Wide Web Consortium；W3C），目前SOAP 1.1版是业界共同的标准，属于第二代的XML协定（第一代具主要代表性的技术为XML-RPC以及WDDX）。</p>
+<h2 id="SOAP-的-好搭档：WSDL、Web-Service"><a href="#SOAP-的-好搭档：WSDL、Web-Service" class="headerlink" title="SOAP 的 好搭档：WSDL、Web Service"></a>SOAP 的 好搭档：WSDL、Web Service</h2><p>为了能了解SOAP的做的事，你首先需要了解和SOAP一同工作的两个同事。</p>
 <p><strong>Web Service</strong> 是一套应用程序的组件，也可以说是对外接口，它使用SOAP这一套标准，提供公共服务给别的程序调用。</p>
 <p><strong>WSDL</strong> 是基于XML语言的，用来描述web service的消息格式和协议细节，以及如何访问它们。它的全称是：Web Service Description Language web服务描述语言。</p>
-<h2 id="SOAP_u662F_u600E_u4E48_u5DE5_u4F5C_u7684_uFF1F"><a href="#SOAP_u662F_u600E_u4E48_u5DE5_u4F5C_u7684_uFF1F" class="headerlink" title="SOAP是怎么工作的？"></a>SOAP是怎么工作的？</h2><p>在了解了SOAP、WSDL、Web Service的定义之后，我们就来窥探一下它们三个是怎么P的？</p>
+<h2 id="SOAP是怎么工作的？"><a href="#SOAP是怎么工作的？" class="headerlink" title="SOAP是怎么工作的？"></a>SOAP是怎么工作的？</h2><p>在了解了SOAP、WSDL、Web Service的定义之后，我们就来窥探一下它们三个是怎么P的？</p>
 <p><strong>假设</strong>现在有两个应用程序，分别用两种语言进行开发的，一个是用nodejs开发的程序，一个是用java开发的程序。而java程序其中有一个方法(getUser)可以查询数据库中的某用户的信息。那么在nodejs程序请求java程序的(getUser)方法获取某用户信息的流程是怎么走的？</p>
 <p>我在应用程序的层面上解释一下这个流程，</p>
 <p>请看下图，然后我再对每一个步骤说明：</p>
-<p><img src="/image/blog/79702-5d2b1c9e8970c3ea.jpeg" alt></p>
+<p><img src="/image/blog/79702-5d2b1c9e8970c3ea.jpeg"></p>
 <p>首先java程序会把<code>getUser()</code>做成Web Service，然后要提供对这个service的描述文档，那便是WSDL文件。nodejs程序要调用的方法以及参数的信息都存放在遵循了SOAP标准的WSDL文件中，所以要访问远端的web service，必须先获得对方提供的WSDL。</p>
 <p>步骤一：nodejs程序通过http请求，获取到java程序提供的WSDL文件。nodejs程序得到这个WSDL文件之后，就会对它进行解析，得知java程序提供了<code>getUser()</code>，而且也知道这个方法需要的参数是<code>string</code>类型的且变量名<code>userUUID</code>。</p>
 <p>步骤二：在nodejs程序知道java程序有<code>getUser()</code>这个方法之后，它通过http请求，发送SOAP信息到java程序，java程序得到这个SOAP信息之后，进行解析，知道了nodejs程序需要请求<code>getUser()</code>方法，且提供了所需要的参数。</p>
@@ -301,16 +294,17 @@ soap:encodingStyle=&quot;http://www.w3.org/2001/12/soap-encoding&quot;&gt;
   &lt;/soap:Body&gt;
 
 &lt;/soap:Envelope&gt;
-</code></pre><p>综上，程序之间的调用，无论进行请求还是返回结果，每一次都需要构造一则SOAP信息，固然SOAP便是程序之间沟通的语言。</p>
-<h2 id="node_u5F00_u53D1_u4E2D_u7684soap"><a href="#node_u5F00_u53D1_u4E2D_u7684soap" class="headerlink" title="node开发中的soap"></a>node开发中的soap</h2><p>我是一名nodejs开发者，知道有这么一种程序之间交流信息的协议之后，很自然就想知道用nodejs怎么使用这个协议。</p>
+</code></pre>
+<p>综上，程序之间的调用，无论进行请求还是返回结果，每一次都需要构造一则SOAP信息，固然SOAP便是程序之间沟通的语言。</p>
+<h2 id="node开发中的soap"><a href="#node开发中的soap" class="headerlink" title="node开发中的soap"></a>node开发中的soap</h2><p>我是一名nodejs开发者，知道有这么一种程序之间交流信息的协议之后，很自然就想知道用nodejs怎么使用这个协议。</p>
 <p>nodejs针对SOAP也有不少的第三方模块：</p>
 <ul>
-<li><a href="https://github.com/milewise/node-soap" target="_blank" rel="external">node-soap</a></li>
-<li><a href="https://github.com/kr1sp1n/douche" target="_blank" rel="external">douche</a></li>
-<li><a href="https://github.com/jmoyers/soapjs" target="_blank" rel="external">soapjs</a><br>….<br><a href="https://nodejsmodules.org/tags/soap" target="_blank" rel="external">更多nodejs的SOAP第三方模块</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/milewise/node-soap">node-soap</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kr1sp1n/douche">douche</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jmoyers/soapjs">soapjs</a><br>….<br><a target="_blank" rel="noopener" href="https://nodejsmodules.org/tags/soap">更多nodejs的SOAP第三方模块</a></li>
 </ul>
 <p>其中，node-soap是最受欢迎的(根据github上star数量)，也是我最喜欢的。</p>
-<h5 id="u672C_u6587_u5199_u4F5C_u53C2_u8003_uFF1A"><a href="#u672C_u6587_u5199_u4F5C_u53C2_u8003_uFF1A" class="headerlink" title="本文写作参考："></a>本文写作参考：</h5><p><a href="http://www.w3school.com.cn/soap/index.asp" target="_blank" rel="external">http://www.w3school.com.cn/soap/index.asp</a><br><a href="http://zh.wikipedia.org/wiki/SOAP" target="_blank" rel="external">http://zh.wikipedia.org/wiki/SOAP</a></p>
+<h5 id="本文写作参考："><a href="#本文写作参考：" class="headerlink" title="本文写作参考："></a>本文写作参考：</h5><p><a target="_blank" rel="noopener" href="http://www.w3school.com.cn/soap/index.asp">http://www.w3school.com.cn/soap/index.asp</a><br><a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/SOAP">http://zh.wikipedia.org/wiki/SOAP</a></p>
 
     
   </div>
@@ -348,7 +342,7 @@ soap:encodingStyle=&quot;http://www.w3.org/2001/12/soap-encoding&quot;&gt;
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2014/07/19/HTML-CSS-JS打造Windows桌面版《2048》/">
+    <a class="show pull-left" href="/2014/07/19/HTML-CSS-JS%E6%89%93%E9%80%A0Windows%E6%A1%8C%E9%9D%A2%E7%89%88%E3%80%8A2048%E3%80%8B/">
         <i class="icon icon-angle-left"></i>
     </a>
     <a class="show pull-right" href="/2015/01/29/My-Nodejs-Tool-Kit/">
@@ -447,14 +441,14 @@ soap:encodingStyle=&quot;http://www.w3.org/2001/12/soap-encoding&quot;&gt;
     
   <section class="disqus-comments">
     <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </section>
 
   <script>
     var disqus_shortname = 'bluesun-jerryc';
     
-    var disqus_url = 'http://huang-jerryc.com/2015/01/12/SOAP-Web-Service的枢纽/';
+    var disqus_url = 'http://huang-jerryc.com/2015/01/12/SOAP-Web-Service%E7%9A%84%E6%9E%A2%E7%BA%BD/';
     
     (function(){
       var dsq = document.createElement('script');
