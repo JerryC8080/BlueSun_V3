@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>BeautyWe.js 一套专注于微信小程序的开发范式 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="小程序," />
+  
+
+  <meta name="description" content="官网：beautywejs.comRepo: beautywe  一个简单的介绍BeautyWe.js 是什么？ 它是一套专注于微信小程序的企业级开发范式，它的愿景是：  让企业级的微信小程序项目中的代码，更加简单、漂亮。  为什么要这样命名呢？  Write beautiful code for wechat mini program by the beautiful we!  「We」 既">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BeautyWe.js 一套专注于微信小程序的开发范式">
+<meta property="og:url" content="http://huang-jerryc.com/2019/06/11/beautywe-intro/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="官网：beautywejs.comRepo: beautywe  一个简单的介绍BeautyWe.js 是什么？ 它是一套专注于微信小程序的企业级开发范式，它的愿景是：  让企业级的微信小程序项目中的代码，更加简单、漂亮。  为什么要这样命名呢？  Write beautiful code for wechat mini program by the beautiful we!  「We」 既">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/beautywe/docs/master/docs/assets/images/logo-V4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181427">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181445">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181337">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181648">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181755">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181847">
+<meta property="og:image" content="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936">
+<meta property="article:published_time" content="2019-06-11T06:22:25.000Z">
+<meta property="article:modified_time" content="2019-07-17T13:51:15.075Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="小程序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/beautywe/docs/master/docs/assets/images/logo-V4.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-text">一个简单的介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E6%94%BE%E5%8E%9F%E7%94%9FApp-Page%EF%BC%8C%E6%94%AF%E6%8C%81%E6%8F%92%E4%BB%B6%E5%8C%96"><span class="toc-text">开放原生App&#x2F;Page，支持插件化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0%E7%9A%84%E6%8F%92%E4%BB%B6%E5%8C%96"><span class="toc-text">钩子函数的插件化</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%98%E6%96%B9%E6%8F%92%E4%BB%B6"><span class="toc-text">一些官方插件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E5%BC%BA%E5%AD%98%E5%82%A8-Storage"><span class="toc-text">增强存储 Storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%97%E8%A1%A8-List-Page"><span class="toc-text">数据列表 List Page</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5-Cache"><span class="toc-text">缓存策略 Cache</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-text">特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-it-work"><span class="toc-text">How it work</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97-Logger"><span class="toc-text">日志 Logger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="toc-text">使用</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BeautyWe-Framework"><span class="toc-text">BeautyWe Framework</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%88%9B%E5%BB%BA"><span class="toc-text">快速创建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8"><span class="toc-text">创建应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B5%E9%9D%A2%E3%80%81%E7%BB%84%E4%BB%B6%E3%80%81%E6%8F%92%E4%BB%B6"><span class="toc-text">创建页面、组件、插件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF"><span class="toc-text">自定义模板</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E7%AA%97%E5%8F%A3"><span class="toc-text">全局窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#global-view-%E7%BB%84%E4%BB%B6"><span class="toc-text">global-view 组件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">全局配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%8E%AF%E5%A2%83%E5%BC%80%E5%8F%91"><span class="toc-text">多环境开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%A5%97%E7%8E%AF%E5%A2%83%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="toc-text">三套环境的差异</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="toc-text">构建任务的差异</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Node-js-Power"><span class="toc-text">Node.js Power</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="toc-text">运行过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NPM"><span class="toc-text">NPM</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B0%E5%A2%9E-npm-%E4%BE%9D%E8%B5%96"><span class="toc-text">新增 npm 依赖</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A"><span class="toc-text">更多</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-beautywe-intro" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">BeautyWe.js 一套专注于微信小程序的开发范式</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.06.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2019/06/11/beautywe-intro/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><img src="https://raw.githubusercontent.com/beautywe/docs/master/docs/assets/images/logo-V4.png" alt></p>
+<blockquote>
+<p>官网：<a href="http://beautywejs.com" target="_blank" rel="external">beautywejs.com</a><br>Repo: <a href="https://github.com/beautywe/beautywe" target="_blank" rel="external">beautywe</a></p>
+</blockquote>
+<h1 id="一个简单的介绍"><a href="#一个简单的介绍" class="headerlink" title="一个简单的介绍"></a>一个简单的介绍</h1><p><strong>BeautyWe.js 是什么？</strong></p>
+<p>它是一套专注于微信小程序的企业级开发范式，它的愿景是：</p>
+<blockquote>
+<p>让企业级的微信小程序项目中的代码，更加简单、漂亮。</p>
+</blockquote>
+<p><strong>为什么要这样命名呢？</strong></p>
+<blockquote>
+<p>Write <strong>beautiful</strong> code for <strong>we</strong>chat mini program by the <strong>beautiful</strong> <strong>we</strong>!</p>
+</blockquote>
+<p>「We」 既是我们的 <strong>We</strong>，也是微信的 <strong>We</strong>，Both beautiful！</p>
+<p><strong>那么它有什么卖点呢？</strong></p>
+<ol>
+<li>专注于微信小程序环境，写原汁原味的微信小程序代码。</li>
+<li>由于只专注于微信小程序，它的源码也很简单。</li>
+<li>插件化的编程方式，让复杂逻辑更容易封装。</li>
+<li>再加上一些配套设施：<ol>
+<li>一些官方插件。</li>
+<li>一套开箱即用，包含了工程化、项目规范以及微信小程序环境独特问题解决方案的框架。</li>
+<li>一个CLI工具，帮你快速创建应用，页面，组件等。</li>
+</ol>
+</li>
+</ol>
+<p><strong>它由以下几部分组成：</strong></p>
+<ul>
+<li><p><strong>一个插件化的核心</strong> - <a href="https://github.com/beautywe/beautywe" target="_blank" rel="external">BeautyWe Core</a><br>  对 App、Page 进行抽象和包装，保持传统微信小程序开发姿势，同时开放部分原生能力，让其具有「可插件化」的能力。</p>
+</li>
+<li><p><strong>一些官方插件</strong> — <a href="https://www.npmjs.com/search?q=keywords%3Abeautywe-plugin" target="_blank" rel="external">BeautyWe Plugins</a><br>  得益于 Core 的「可插件化」特性，封装复杂逻辑，实现可插拔。官方对于常见的需求提供了一些插件：如增强存储、发布/订阅、状态机、Logger、缓存策略等。</p>
+</li>
+<li><p><strong>一套开箱即用的项目框架</strong> - <a href="https://user-gold-cdn.xitu.io/2019/6/10/16b40250bcbe53fb#/contents/framework/introduce" target="_blank" rel="external">BeautyWe Framework</a><br>  描述了一种项目的组织形式，开箱即用，集成了 <code>BeautyWe Core</code> ，并且提供了如：全局窗口、开发规范、多环境开发、全局配置、NPM 等解决方案。</p>
+</li>
+<li><p><strong>一个CLI工具</strong> - <a href="https://user-gold-cdn.xitu.io/2019/6/10/16b40250bcbe53fb#/remote/cli" target="_blank" rel="external">BeautyWe Cli</a><br>  提供快速创建应用、页面、插件，以及项目构建功能的命令行工具。并且还支持自定义的创建模板。</p>
+</li>
+</ul>
+<h1 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h1><p>下载</p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181427" alt></p>
+<p>用 BeautyWe 包装你的应用</p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181445" alt></p>
+<p>之后，你就能使用 BeautyWe Plugin 提供的能力了。</p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181337" alt></p>
+<h1 id="开放原生App-Page，支持插件化"><a href="#开放原生App-Page，支持插件化" class="headerlink" title="开放原生App/Page，支持插件化"></a>开放原生App/Page，支持插件化</h1><p><code>new BtApp({...})</code> 的执行结果是对原生的应用进行包装，其中包含了「插件化」的处理，然后返回一个新的实例，这个实例适配原生的 <code>App()</code> 方法。</p>
+<p>下面来讲讲「插件化」到底做了什么事情。</p>
+<p>首先，插件化开放了原生 App 的四种能力：</p>
+<ol>
+<li><p><strong>Data 域</strong><br> 把插件的 Data 域合并到原生 App 的 Data 域中，这一块很容易理解。</p>
+</li>
+<li><p><strong>原生钩子函数</strong><br> 使原生钩子函数（如 <code>onShow</code>, <code>onLoad</code>）可插件化。让原生App与多个插件可以同时监听同一个钩子函数。如何工作的，下面会细说。</p>
+</li>
+<li><p><strong>事件钩子函数</strong><br> 使事件钩子函数（与 view 层交互的钩子函数），尽管在实现上有一些差异，但是实现原理跟「原生钩子函数」一样的。</p>
+</li>
+<li><p><strong>自定义方法</strong><br> 让插件能够给使用者提供 API。为了保证插件提供的 API 足够的优雅，支持当调用插件 API 的时候（如 event 插件 <code>this.event.on(...)</code>)，API 方法内部仍然能通过 <code>this</code> 获取到原生实例。</p>
+</li>
+</ol>
+<h4 id="钩子函数的插件化"><a href="#钩子函数的插件化" class="headerlink" title="钩子函数的插件化"></a>钩子函数的插件化</h4><p>原生钩子函数，事件钩子函数我们统一称为「钩子函数」。</p>
+<p>对于每一个钩子函数，内部是维护一个以 Series Promise 方式执行的执行队列。</p>
+<p>以 <code>onShow</code> 为例，将会以这样的形式执行：</p>
+<blockquote>
+<p>native.onShow → pluginA.onShow → pluginB.onShow → …</p>
+</blockquote>
+<p><strong>下面深入一下插件化的原理</strong>：</p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181648" alt="beautywe pluggable"></p>
+<p>工作原理是这样的：    </p>
+<ol>
+<li>经过 <code>new BtApp(...)</code> 包装，所有的钩子函数，都会有一个独立的执行队列，    </li>
+<li>首先会把原生的各个钩子函数 <code>push</code> 到对应的队列中。然后每 <code>use</code> 插件的时候，都会分解插件的钩子函数，往对应的队列 <code>push</code>。    </li>
+<li>当 <code>Native App</code>（原生）触发某个钩子的时候，<code>BtApp</code> 会以 Promise Series 的形式按循序执行对应队列里面的函数。    </li>
+<li>特殊的，<code>onLaunch</code> 和 <code>onLoad</code> 的执行队列中，会在队列顶部插入一个初始化的任务（<code>initialize</code>），它会以同步的方式按循序执行 <code>Initialize Queue</code> 里面的函数。这正是插件生命周期函数中的 <code>plugin.initialize</code>。</li>
+</ol>
+<p>这种设计能提供以下功能：</p>
+<ol>
+<li><p>可插件化。<br> 只需要往对应钩子函数的事件队列中插入任务。</p>
+</li>
+<li><p>支持异步。<br> 由于是以 Promise Series 方式运行的，其中一个任务返回一个 Promise，下一个任务会等待这个任务完成再开始。如果发生错误，会流转到原生的 <code>onError()</code> 中。</p>
+</li>
+<li><p>解决了微信小程序 <code>app.js</code> 中 <code>getApp() === undefinded</code>问题。<br> 造成这个问题，本质是因为 <code>App()</code> 的时候，原生实例未创建。但是由于 Promise 在 event loop 中是一个微任务，被注册在下一次循环。所以 Promise 执行的时候 <code>App()</code> 早已经完成了。</p>
+</li>
+</ol>
+<h1 id="一些官方插件"><a href="#一些官方插件" class="headerlink" title="一些官方插件"></a>一些官方插件</h1><p>BeautyWe 官方提供了一系列的插件：</p>
+<ol>
+<li>增强存储: Storage</li>
+<li>数据列表：List Page</li>
+<li>缓存策略：Cache</li>
+<li>日志：Logger</li>
+<li>事件发布/订阅：Event</li>
+<li>状态机：Status</li>
+</ol>
+<p>它们的使用很简单，哪里需要插哪里。<br>由于篇幅的原因，下面挑几个比较有趣的来讲讲，更多的可以看看官方文档：<a href="http://beautywejs.com" target="_blank" rel="external">BeautyWe</a></p>
+<h2 id="增强存储-Storage"><a href="#增强存储-Storage" class="headerlink" title="增强存储 Storage"></a>增强存储 Storage</h2><p>该功能由 <a href="https://github.com/beautywe/plugin-storage" target="_blank" rel="external">@beautywe/plugin-storage</a> 提供。</p>
+<p>由于微信小程序原生的数据存储生命周期跟小程序本身一致，即除用户主动删除或超过一定时间被自动清理，否则数据都一直可用。</p>
+<p>所以该插件在 <code>wx.getStorage/setStorage</code> 的基础上，提供了两种扩展能力：</p>
+<ol>
+<li>过期控制</li>
+<li>版本隔离</li>
+</ol>
+<p><strong>一些简单的例子</strong></p>
+<p>安装<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; BtApp &#125; <span class="keyword">from</span> <span class="string">'@beautywe/core'</span>;</span><br><span class="line"><span class="keyword">import</span> storage <span class="keyword">from</span> <span class="string">'@beautywe/plugin-storage'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> BtApp();</span><br><span class="line">app.use(storage());</span><br></pre></td></tr></table></figure></p>
+<p>过期控制<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 7天后过期</span></span><br><span class="line">app.storage.set(<span class="string">'name'</span>, <span class="string">'jc'</span>, &#123; <span class="attr">expire</span>: <span class="number">7</span> &#125;)；</span><br></pre></td></tr></table></figure></p>
+<p>版本隔离<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">app.use(&#123; <span class="attr">appVersion</span>: <span class="string">'0.0.1'</span> &#125;);</span><br><span class="line">app.set(<span class="string">'name'</span>, <span class="string">'jc'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回 jc</span></span><br><span class="line">app.get(<span class="string">'name'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当版本更新后</span></span><br><span class="line">app.use(&#123; <span class="attr">appVersion</span>: <span class="string">'0.0.2'</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回 undefined;</span></span><br><span class="line">app.get(<span class="string">'name'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>更多的查看 <a href="https://github.com/beautywe/plugin-storage" target="_blank" rel="external">@beautywe/plugin-storage 官方文档</a></p>
+<h2 id="数据列表-List-Page"><a href="#数据列表-List-Page" class="headerlink" title="数据列表 List Page"></a>数据列表 List Page</h2><p>对于十分常见的数据列表分页的业务场景，<code>@beautywe/plugin-listpage</code> 提供了一套打包方案：</p>
+<ol>
+<li>满足常用「数据列表分页」的业务场景</li>
+<li>支持分页</li>
+<li>支持多个数据列表</li>
+<li>自动捕捉下拉重载：<code>onPullDownRefresh</code></li>
+<li>自动捕捉上拉加载：<code>onReachBottom</code></li>
+<li>自带请求锁，防止帕金森氏手抖用户</li>
+<li>简单优雅的 API</li>
+</ol>
+<p>一个简单的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> BeautyWe <span class="keyword">from</span> <span class="string">'@beautywe/core'</span>;</span><br><span class="line"><span class="keyword">import</span> listpage <span class="keyword">from</span> <span class="string">'@beautywe/plugin-listpage'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> page = <span class="keyword">new</span> BeautyWe.BtPage();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 listpage 插件</span></span><br><span class="line">page.use(listpage(&#123;</span><br><span class="line">    lists: [&#123;</span><br><span class="line">        name: <span class="string">'goods'</span>,  <span class="comment">// 数据名</span></span><br><span class="line">        pageSize: <span class="number">20</span>,   <span class="comment">// 每页多少条数据，默认 10</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 每一页的数据源，没次加载页面时，会调用函数，然后取返回的数据。</span></span><br><span class="line">        fetchPageData(&#123; pageNo, pageSize &#125;) &#123;</span><br><span class="line">        </span><br><span class="line">            <span class="comment">// 获取数据</span></span><br><span class="line">            <span class="keyword">return</span> API.getGoodsList(&#123; pageNo, pageSize &#125;)</span><br><span class="line">            </span><br><span class="line">                <span class="comment">// 有时候，需要对服务器的数据进行处理，dataCooker 是你定义的函数。</span></span><br><span class="line">                .then(<span class="function">(<span class="params">rawData</span>) =&gt;</span> dataCooker(rawData));</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;],</span><br><span class="line">    enabledPullDownRefresh: <span class="literal">true</span>,    <span class="comment">// 开启下拉重载， 默认 false</span></span><br><span class="line">    enabledReachBottom: <span class="literal">true</span>,    <span class="comment">// 开启上拉加载， 默认 false</span></span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line"><span class="comment">// goods 数据会被加载到，goods 为上面定义的 name</span></span><br><span class="line"><span class="comment">// this.data.listPage.goods = &#123;</span></span><br><span class="line"><span class="comment">//     data: [...],     // 视图层，通过该字段来获取具体的数据</span></span><br><span class="line"><span class="comment">//     hasMore: true,   // 视图层，通过该字段来识别是否有下一页</span></span><br><span class="line"><span class="comment">//     currentPage: 1,  // 视图层，通过该字段来识别当前第几页</span></span><br><span class="line"><span class="comment">//     totalPage: undefined,</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+<p>只需要告诉 <code>listpage</code> 如何获取数据，它会自动处理「下拉重载」、「上拉翻页」的操作，然后把数据更新到 <code>this.data.listPage.goods</code> 下。</p>
+<p>View 层只需要描述数据怎么展示：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"good"</span> <span class="attr">wx:for</span>=<span class="string">"listPage.goods.data"</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"no-more"</span> <span class="attr">wx:if</span>=<span class="string">"listPage.goods.hasMore === false"</span>&gt;</span></span><br><span class="line">    没有更多了</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>listpage</code> 还支持多数据列表等其他更多配置，详情看：<a href="https://github.com/beautywe/plugin-listpage" target="_blank" rel="external">@beautywe/plugin-listpage</a></p>
+<h2 id="缓存策略-Cache"><a href="#缓存策略-Cache" class="headerlink" title="缓存策略 Cache"></a>缓存策略 Cache</h2><p><code>@beautywe/plugin-cache</code> 提供了一个微信小程序端缓存策略，其底层由 <a href="https://github.com/JerryC8080/super-cache" target="_blank" rel="external">super-cache</a> 提供支持。</p>
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><ol>
+<li>提供一套「服务端接口耗时慢，但加载性能要求高」场景的解决方案</li>
+<li>满足最基本的缓存需求，读取（get）和保存（set）</li>
+<li>支持针对缓存进行逻辑代理</li>
+<li>灵活可配置的数据存储方式</li>
+</ol>
+<h4 id="How-it-work"><a href="#How-it-work" class="headerlink" title="How it work"></a>How it work</h4><p>一般的请求数据的形式是，页面加载的时候，从服务端获取数据，然后等待数据返回之后，进行页面渲染：</p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181755" alt></p>
+<p>但这种模式，会受到服务端接口耗时，网络环境等因素影响到加载性能。   </p>
+<p>对于加载性能要求高的页面（如首页），一般的 Web 开发我们有很多解决方案（如服务端渲染，服务端缓存，SSR 等）。<br>但是也有一些环境不能使用这种技术（如微信小程序）。</p>
+<p>Super Cache 提供了一个中间数据缓存的解决方案：</p>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181847" alt></p>
+<p>思路：    </p>
+<ol>
+<li>当你需要获取一个数据的时候，如果有缓存，先把旧的数据给你。</li>
+<li>然后再从服务端获取新的数据，刷新缓存。</li>
+<li>如果一开始没有缓存，则请求服务端数据，再把数据返回。</li>
+<li>下一次请求缓存，从第一步开始。</li>
+</ol>
+<p>这种解决方案，舍弃了一点数据的实时性（非第一次请求，只能获取上一次最新数据），大大提高了前端的加载性能。<br>适合的场景：    </p>
+<ol>
+<li>数据实时性要求不高。</li>
+<li>服务端接口耗时长。</li>
+</ol>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; BtApp &#125; <span class="keyword">from</span> <span class="string">'@beautywe/core'</span>;</span><br><span class="line"><span class="keyword">import</span> cache <span class="keyword">from</span> <span class="string">'@beautywe/plugin-cache'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> BtApp();</span><br><span class="line">app.use(cache(&#123;</span><br><span class="line">    adapters: [&#123;</span><br><span class="line">        key: <span class="string">'name'</span>,</span><br><span class="line">        data() &#123;</span><br><span class="line">            <span class="keyword">return</span> API.fetch(<span class="string">'xxx/name'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<p>假设 <code>API.fetch(&#39;xxx/name&#39;)</code> 是请求服务器接口，返回数据：<code>data_from_server</code></p>
+<p>那么：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app.cache.get(<span class="string">'name'</span>).then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// value: 'data_from_server'  </span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>更多的配置，详情看：<a href="https://github.com/beautywe/plugin-cache" target="_blank" rel="external">@beautywe/plugin-cache</a></p>
+<h2 id="日志-Logger"><a href="#日志-Logger" class="headerlink" title="日志 Logger"></a>日志 Logger</h2><p>由 <code>@beautywe/logger-plugin</code> 提供的一个轻量的日志处理方案，它支持：</p>
+<ol>
+<li>可控的 log level</li>
+<li>自定义前缀</li>
+<li>日志统一处理</li>
+</ol>
+<h4 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; BtApp &#125; <span class="keyword">from</span> <span class="string">'@beautywe/core'</span>;</span><br><span class="line"><span class="keyword">import</span> logger <span class="keyword">from</span> <span class="string">'@beautywe/plugin-logger'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> page = <span class="keyword">new</span> BtApp();</span><br><span class="line"></span><br><span class="line">page.use(logger(&#123;</span><br><span class="line">    <span class="comment">// options</span></span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<p><strong>API</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">page.logger.info(<span class="string">'this is info'</span>);</span><br><span class="line">page.logger.warn(<span class="string">'this is warn'</span>);</span><br><span class="line">page.logger.error(<span class="string">'this is error'</span>);</span><br><span class="line">page.logger.debug(<span class="string">'this is debug'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line"><span class="comment">// [info] this is info</span></span><br><span class="line"><span class="comment">// [warn] this is warn</span></span><br><span class="line"><span class="comment">// [error] this is error</span></span><br><span class="line"><span class="comment">// [debug] this is debug</span></span><br></pre></td></tr></table></figure>
+<p><strong>Level control</strong></p>
+<p>可通过配置来控制哪些 level 该打印：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">page.use(logger(&#123;</span><br><span class="line">    level: <span class="string">'warn'</span>,</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<p>那么 <code>warn</code> 以上的 log （<code>info</code>, <code>debug</code>）就不会被打印，这种满足于开发和生成环境对 log 的不同需求。</p>
+<p>level 等级如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Logger.LEVEL = &#123;</span><br><span class="line">    error: <span class="number">1</span>,</span><br><span class="line">    warn: <span class="number">2</span>,</span><br><span class="line">    info: <span class="number">3</span>,</span><br><span class="line">    debug: <span class="number">4</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>更多的配置，详情看：<a href="https://github.com/beautywe/plugin-logger" target="_blank" rel="external">@beautywe/plugin-logger</a></p>
+<h1 id="BeautyWe-Framework"><a href="#BeautyWe-Framework" class="headerlink" title="BeautyWe Framework"></a>BeautyWe Framework</h1><p><code>@beautywe/core</code> 和 <code>@beautywe/plugin-...</code> 给小程序提供了：</p>
+<ol>
+<li>开放原生，支持插件化 —— by core</li>
+<li>各种插件 —— by plugins</li>
+</ol>
+<p>但是，还有很多的开发中实际还会遇到的痛点，是上面两个解决不到的。<br>如项目的组织、规范、工程化、配置、多环境等等</p>
+<p>这些就是，「BeautyWe Framework」要解决的范畴。</p>
+<p>它作为一套开箱即用的项目框架，提供了这些功能：</p>
+<ul>
+<li>集成 BeautyWe Core</li>
+<li>NPM 支持</li>
+<li>全局窗口</li>
+<li>全局 Page，Component</li>
+<li>全局配置文件</li>
+<li>多环境开发</li>
+<li>Example Pages</li>
+<li>正常项目需要的标配：ES2015+,sass,uglify,watch 等</li>
+<li>以及我们认为良好的项目规范（eslint，commit log，目录结构等）</li>
+</ul>
+<p>也是由于篇幅原因，挑几个有趣的来讲讲，更多的可以看看官方文档：<a href="http://beautywejs.com" target="_blank" rel="external">BeautyWe</a></p>
+<h2 id="快速创建"><a href="#快速创建" class="headerlink" title="快速创建"></a>快速创建</h2><p>首先安装 <code>@beautywe/cli</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm i @beautywe/cli -g</span><br></pre></td></tr></table></figure>
+<h4 id="创建应用"><a href="#创建应用" class="headerlink" title="创建应用"></a>创建应用</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> beautywe new app</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span> appName: my-app</span><br><span class="line"><span class="meta">&gt;</span> version: 0.0.1</span><br><span class="line"><span class="meta">&gt;</span> appid: 123456</span><br><span class="line"><span class="meta">&gt;</span> 这样可以么:</span><br><span class="line"><span class="meta">&gt;</span> &#123;</span><br><span class="line"><span class="meta">&gt;</span>    "appName": "my-app",</span><br><span class="line"><span class="meta">&gt;</span>    "version": "0.0.1",</span><br><span class="line"><span class="meta">&gt;</span>    "appid": "123456"</span><br><span class="line"><span class="meta">&gt;</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>回答几个问题之后，项目就生成了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">my-app</span><br><span class="line">├── gulpfile.js</span><br><span class="line">├── package.json</span><br><span class="line">└── src</span><br><span class="line">    ├── app.js</span><br><span class="line">    ├── app.json</span><br><span class="line">    ├── app.scss</span><br><span class="line">    ├── assets</span><br><span class="line">    ├── components</span><br><span class="line">    ├── config</span><br><span class="line">    ├── examples</span><br><span class="line">    ├── libs</span><br><span class="line">    ├── npm</span><br><span class="line">    ├── pages</span><br><span class="line">    └── project.config.json</span><br></pre></td></tr></table></figure>
+<h4 id="创建页面、组件、插件"><a href="#创建页面、组件、插件" class="headerlink" title="创建页面、组件、插件"></a>创建页面、组件、插件</h4><p><strong>页面</strong></p>
+<ol>
+<li>主包页面：<code>beautywe new page &lt;path|name&gt;</code></li>
+<li>分包页面：<code>beautywe new page --subpkg &lt;subPackageName&gt; &lt;path|name&gt;</code></li>
+</ol>
+<p><strong>组件</strong></p>
+<ol>
+<li><code>beautywe new component &lt;name&gt;</code></li>
+</ol>
+<p><strong>插件</strong></p>
+<ol>
+<li><code>beautywe new plugin &lt;name&gt;</code></li>
+</ol>
+<h4 id="自定义模板"><a href="#自定义模板" class="headerlink" title="自定义模板"></a>自定义模板</h4><p>在 <code>./.templates</code> 目录中，存放着快速创建命令的创建模板：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tree .templates</span><br><span class="line"></span><br><span class="line">.templates</span><br><span class="line">├── component</span><br><span class="line">│   ├── index.js</span><br><span class="line">│   ├── index.json</span><br><span class="line">│   ├── index.scss</span><br><span class="line">│   └── index.wxml</span><br><span class="line">├── page</span><br><span class="line">│   ├── index.js</span><br><span class="line">│   ├── index.json</span><br><span class="line">│   ├── index.scss</span><br><span class="line">│   └── index.wxml</span><br><span class="line">└── plugin</span><br><span class="line">    └── index.js</span><br></pre></td></tr></table></figure>
+<p>可以修改里面的模板，来满足项目级别的自定义模板创建。</p>
+<h2 id="全局窗口"><a href="#全局窗口" class="headerlink" title="全局窗口"></a>全局窗口</h2><p>我们都知道微信小程序是「单窗口」的交互平台，一个页面对应一个窗口。<br>而在业务开发中，往往会有诸如这种述求：</p>
+<ol>
+<li>自定义的 toast 样式</li>
+<li>页面底部 copyright</li>
+<li>全局的 loading 样式</li>
+<li>全局的悬浮控件<br>……</li>
+</ol>
+<p>稍微不优雅的实现可以是分别做成独立的组件，然后每一个页面都引入进来。<br>这种做法，我们会有很多的重复代码，并且每次新建页面，都要引入一遍，后期维护也会很繁琐。</p>
+<p>而「全局窗口」的概念是：<strong>希望所有页面之上有一块地方，全局性的逻辑和交互，可以往里面搁。</strong></p>
+<h4 id="global-view-组件"><a href="#global-view-组件" class="headerlink" title="global-view 组件"></a>global-view 组件</h4><p>这是一个自定义组件，源码在 <code>/src/components/global-view</code></p>
+<p>每个页面的 wxml 只需要在顶层包一层：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">global-view</span> <span class="attr">id</span>=<span class="string">"global-view"</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">global-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>需要全局实现的交互、样式、组件，只需要维护这个组件就足够了。</p>
+<h2 id="全局配置文件"><a href="#全局配置文件" class="headerlink" title="全局配置文件"></a>全局配置文件</h2><p>在 <code>src/config/</code> 目录中，可以存放各种全局的配置文件，并且支持以 Node.js 的方式运行。（得益于 <a href="/contents/framework/concept/nodejs-power.md">Node.js Power 特性</a>）。</p>
+<p>如 <code>src/config/logger.js</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> env = process.env.RUN_ENV || <span class="string">'dev'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> logger = <span class="built_in">Object</span>.assign(&#123;</span><br><span class="line">    prefix: <span class="string">'BeautyWe'</span>,</span><br><span class="line">    level: <span class="string">'debug'</span>,</span><br><span class="line">&#125;, &#123;</span><br><span class="line">    <span class="comment">// 开发环境的配置</span></span><br><span class="line">    dev: &#123;</span><br><span class="line">        level: <span class="string">'debug'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 测试环境的配置</span></span><br><span class="line">    test: &#123;</span><br><span class="line">        level: <span class="string">'info'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 线上环境的配置</span></span><br><span class="line">    prod: &#123;</span><br><span class="line">        level: <span class="string">'warn'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;[env] || &#123;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports.logger = logger;</span><br></pre></td></tr></table></figure>
+<p>然后我们可以这样读取到 config 内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; logger &#125; <span class="keyword">from</span> <span class="string">'/config/index'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// logger.level 会根据环境不同而不同。</span></span><br></pre></td></tr></table></figure>
+<p>Beautywe Framework 默认会把 config 集成到 <code>getApp()</code> 的示例中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getApp().config;</span><br></pre></td></tr></table></figure>
+<h2 id="多环境开发"><a href="#多环境开发" class="headerlink" title="多环境开发"></a>多环境开发</h2><p>BeautyWe Framework 支持多环境开发，其中预设了三套策略：</p>
+<ul>
+<li>dev</li>
+<li>test</li>
+<li>prod</li>
+</ul>
+<p>我们可以通过命令来运行这三个构建策略：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">beautywe run dev</span><br><span class="line">beautywe run test</span><br><span class="line">beautywe run prod</span><br></pre></td></tr></table></figure>
+<h2 id="三套环境的差异"><a href="#三套环境的差异" class="headerlink" title="三套环境的差异"></a>三套环境的差异</h2><p>Beautywe Framework 源码默认在两方面使用了多环境：</p>
+<ul>
+<li>构建任务（<code>gulpfile.js/env/...</code>）</li>
+<li>全局配置（<code>src/config/...</code>）</li>
+</ul>
+<h3 id="构建任务的差异"><a href="#构建任务的差异" class="headerlink" title="构建任务的差异"></a>构建任务的差异</h3><table>
+<thead>
+<tr>
+<th>构建任务</th>
+<th>说明</th>
+<th style="text-align:center">dev</th>
+<th style="text-align:center">test</th>
+<th style="text-align:center">prod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clean</td>
+<td>清除dist文件</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>复制资源文件</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>scripts</td>
+<td>编译JS文件</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>sass</td>
+<td>编译scss文件</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>npm</td>
+<td>编译npm文件</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>nodejs-power</td>
+<td>编译Node.js文件</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>watch</td>
+<td>监听文件修改</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>scripts-min</td>
+<td>压缩JS文件</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>sass-min</td>
+<td>压缩scss文件</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>npm-min</td>
+<td>压缩npm文件</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>image-min</td>
+<td>压缩图片文件</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td>clean-example</td>
+<td>清除示例页面</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Node-js-Power"><a href="#Node-js-Power" class="headerlink" title="Node.js Power"></a>Node.js Power</h3><p>Beautywe Framework 的代码有两种运行环境：</p>
+<ol>
+<li>Node.js 运行环境，如构建任务等。</li>
+<li>微信小程序运行环境，如打包到 <code>dist</code> 文件夹的代码。</li>
+</ol>
+<h4 id="运行过程"><a href="#运行过程" class="headerlink" title="运行过程"></a>运行过程</h4><blockquote>
+<p>Node.js Power 本质是一种静态编译的实现。<br>把某个文件在 Node.js 环境运行的结果，输出到微信小程序运行环境中，以此来满足特定的需求。</p>
+</blockquote>
+<p>Node.js Power 会把项目中 <code>src</code> 目录下类似 <code>xxx.nodepower.js</code> 命名的文件，以 Node.js 来运行，<br>然后把运行的结果，以「字面量对象」的形式写到 <code>dist</code> 目录下对应的同名文件 <code>xxx.nodepower.js</code> 文件去。</p>
+<p>以 <code>src/config/index.nodepower.js</code> 为例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> files = fs.readdirSync(path.join(__dirname));</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">files</span><br><span class="line">    .filter(<span class="function"><span class="params">name</span> =&gt;</span> name !== <span class="string">'index.js'</span>)</span><br><span class="line">    .forEach(<span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">Object</span>.assign(result, <span class="built_in">require</span>(path.join(__dirname, <span class="string">`./<span class="subst">$&#123;name&#125;</span>`</span>)));</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = result;</span><br></pre></td></tr></table></figure>
+<p>该文件，经过 Node.js Power 构建之后:</p>
+<p><code>dist/config/index.nodepower.js</code>: </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="string">"appInfo"</span>: &#123;</span><br><span class="line">        <span class="string">"version"</span>: <span class="string">"0.0.1"</span>,</span><br><span class="line">        <span class="string">"env"</span>: <span class="string">"test"</span>,</span><br><span class="line">        <span class="string">"appid"</span>: <span class="string">"wx85fc0d03fb0b224d"</span>,</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"beautywe-framework-test-app"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"logger"</span>: &#123;</span><br><span class="line">        <span class="string">"prefix"</span>: <span class="string">"BeautyWe"</span>,</span><br><span class="line">        <span class="string">"level"</span>: <span class="string">"info"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这就满足了，随意往 <code>src/config/</code> 目录中扩展配置文件，都能被自动打包。</p>
+<p>Node.js Power 已经被集成到多环境开发的 dev, test, prod 中去。</p>
+<p>当然，你可以手动运行这个构建任务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gulp nodejs-power</span><br></pre></td></tr></table></figure>
+<h3 id="NPM"><a href="#NPM" class="headerlink" title="NPM"></a>NPM</h3><p>BeautyWe Framework 实现支持 npm 的原理很简单，总结一句话：</p>
+<blockquote>
+<p>使用 webpack 打包 <code>src/npm/index.js</code> ，以 commonjs 格式输出到 <code>dist/npm/index.js</code></p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/JerryC8080/figure-bed/master/img/20190707181936" alt="npm-works"></p>
+<p>这样做的好处：</p>
+<ol>
+<li>实现简单。</li>
+<li>让 npm 包能集中管理，每次引入依赖，都好好的想一下，避免泛滥（尤其在多人开发中）。</li>
+<li>使用 <code>ll dist/npm/index.js</code> 命令能快速看到项目中的 npm 包使占了多少容量。</li>
+</ol>
+<h4 id="新增-npm-依赖"><a href="#新增-npm-依赖" class="headerlink" title="新增 npm 依赖"></a>新增 npm 依赖</h4><p>在 <code>src/npm/index.js</code> 文件中，进行 export：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export &#123; default as beautywe &#125; from &apos;@beautywe/core&apos;;</span><br></pre></td></tr></table></figure>
+<p>然后在其他文件 import：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; beautywe &#125; <span class="keyword">from</span> <span class="string">'./npm/index'</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h1><p>总的来说，BeautyWe 是一套微信小程序的开发范式。</p>
+<p><code>core</code> 和 <code>plugins</code> 扩展原生，提供复杂逻辑的封装和插拔式使用。</p>
+<p>而 <code>framework</code> 则负责提供一整套针对于微信小程序的企业级项目解决方案，开箱即用。</p>
+<p>其中还有更多的内容，欢迎浏览官网：<a href="http://beautywejs.com" target="_blank" rel="external">beautywejs.com</a></p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/04/13/about-communicate/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/07/06/about-okr/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2019/06/11/beautywe-intro/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>

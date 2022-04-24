@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>ServiceWorker 缓存与 HTTP 缓存 | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="PWA," />
+  
+
+  <meta name="description" content="虽然 ServiceWorker 和 PWA 正在成为现代 Web 应用程序的标准，但浏览器资源缓存变得比以往任何时候都复杂。本文涵盖了浏览器缓存的重点内容，具体包括：  ServiceWorker 缓存与 HTTP 缓存的优先级？ 主流浏览器实现的 MemoryCache 和 DiskCache 在哪一层？ MemoryCache、DiskCache、ServiceWorker 缓存哪个速度更快">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ServiceWorker 缓存与 HTTP 缓存">
+<meta property="og:url" content="http://huang-jerryc.com/2022/04/21/2022/http-cache-vs-service-worker-cache/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="虽然 ServiceWorker 和 PWA 正在成为现代 Web 应用程序的标准，但浏览器资源缓存变得比以往任何时候都复杂。本文涵盖了浏览器缓存的重点内容，具体包括：  ServiceWorker 缓存与 HTTP 缓存的优先级？ 主流浏览器实现的 MemoryCache 和 DiskCache 在哪一层？ MemoryCache、DiskCache、ServiceWorker 缓存哪个速度更快">
+<meta property="og:locale">
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/vtKWC9Bg9dAMzoFKTeAM.png?auto=format">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204201936867.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421014504.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204202034325.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421001210.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421013900.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421013928.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421014007.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421014505.png">
+<meta property="og:image" content="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421005723.png">
+<meta property="article:published_time" content="2022-04-20T17:43:04.000Z">
+<meta property="article:modified_time" content="2022-04-20T17:52:03.960Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="PWA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/vtKWC9Bg9dAMzoFKTeAM.png?auto=format">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B5%81%E7%A8%8B%E6%A6%82%E8%BF%B0"><span class="toc-text">缓存流程概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryCache%E3%80%81DiskCache-%E5%9C%A8%E7%BC%93%E5%AD%98%E6%B5%81%E7%A8%8B%E7%9A%84%E5%93%AA%E4%B8%80%E5%B1%82%EF%BC%9F"><span class="toc-text">MemoryCache、DiskCache 在缓存流程的哪一层？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryCache%E3%80%81DiskCache%E3%80%81ServiceWorker-%E7%BC%93%E5%AD%98%E5%93%AA%E4%B8%AA%E9%80%9F%E5%BA%A6%E6%9B%B4%E5%BF%AB%EF%BC%9F"><span class="toc-text">MemoryCache、DiskCache、ServiceWorker 缓存哪个速度更快？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E7%85%A7%E5%AE%9E%E9%AA%8C"><span class="toc-text">对照实验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A3-%E5%BC%A0-133KB-%E5%9B%BE%E7%89%87%E5%B9%B6%E5%8F%91"><span class="toc-text">实验一：3 张 133KB 图片并发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C%EF%BC%9A3-%E5%BC%A0-133KB-%E5%9B%BE%E7%89%87-10-%E6%AC%A1%E5%AE%9E%E9%AA%8C"><span class="toc-text">实验二：3 张 133KB 图片 10 次实验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89%EF%BC%9A3-%E5%BC%A0-133KB-%E5%9B%BE%E7%89%87-100-%E6%AC%A1%E5%AE%9E%E9%AA%8C"><span class="toc-text">实验三：3 张 133KB 图片 100 次实验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B%EF%BC%9A%E8%B5%84%E6%BA%90%E7%AB%9E%E9%80%9F%E4%B9%8B%E5%90%8E%EF%BC%8C%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82-3-%E5%BC%A0%E5%9B%BE%E7%89%87%E3%80%8110-%E5%BC%A0%E5%9B%BE%E7%89%87-%E5%92%8C-100-%E5%BC%A0%E5%9B%BE%E7%89%87"><span class="toc-text">实验四：资源竞速之后，并发请求 3 张图片、10 张图片 和 100 张图片</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-2022/http-cache-vs-service-worker-cache" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">ServiceWorker 缓存与 HTTP 缓存</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2022.04.21</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2022/04/21/2022/http-cache-vs-service-worker-cache/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>虽然 ServiceWorker 和 PWA 正在成为现代 Web 应用程序的标准，但浏览器资源缓存变得比以往任何时候都复杂。<br>本文涵盖了浏览器缓存的重点内容，具体包括：</p>
+<ol>
+<li>ServiceWorker 缓存与 HTTP 缓存的优先级？</li>
+<li>主流浏览器实现的 MemoryCache 和 DiskCache 在哪一层？</li>
+<li>MemoryCache、DiskCache、ServiceWorker 缓存哪个速度更快？</li>
+</ol>
+<h2 id="缓存流程概述"><a href="#缓存流程概述" class="headerlink" title="缓存流程概述"></a>缓存流程概述</h2><p>我们先来看标准定义的资源请求遵循的顺序：</p>
+<p><img src="https://web-dev.imgix.net/image/admin/vtKWC9Bg9dAMzoFKTeAM.png?auto=format" alt="缓存流"></p>
+<ol>
+<li><strong>ServiceWorker 缓存</strong>：ServiceWorker 检查资源是否存在其缓存中，并根据其编程的缓存策略决定是否返回资源。这个操作不会自动发生，需要在注册的 ServiceWorker 中定义 <code>fetch</code> 事件去拦截并处理网络请求，这样才能命中 ServiceWorker 缓存而不是网络或者 HTTP 缓存。</li>
+<li><strong>HTTP 缓存</strong>：这里就是我们常常说的「强缓存」和「协商缓存」，如果 HTTP 缓存未过期的话，浏览器就会使用 HTTP 缓存的资源。</li>
+<li><strong>服务器端</strong>：如果 ServiceWorker 缓存或者 HTTP 缓存中未找到任何资源，则浏览器会向网络请求资源。这里就会涉及到 CDN 服务或者源服务的工作了。</li>
+</ol>
+<p>这是标准定义的资源请求流程，但是有追求的浏览器还会在 ServiceWorker 上面加一层 <strong>「内存缓存层」</strong> ，以 Chrome 为例，我们请求一个资源，除去网络，会有三种浏览器缓存返回：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204201936867.png" alt="image-20220420193610795"></p>
+<p><strong>那么 MemoryCache 和 DiskCache 与 ServiceWorker Cache 的优先级是怎么样的呢？</strong><br>下面我们讲讲三者的区别。</p>
+<h2 id="MemoryCache、DiskCache-在缓存流程的哪一层？"><a href="#MemoryCache、DiskCache-在缓存流程的哪一层？" class="headerlink" title="MemoryCache、DiskCache 在缓存流程的哪一层？"></a>MemoryCache、DiskCache 在缓存流程的哪一层？</h2><p>我们以 Chrome 为例，MemoryCache 作为第一公民，位于 ServiceWorker 之上。<br>也就是命中了 MemoryCache，就不会触发 ServiceWorker 的 fetch 事件。<br>而 DiskCache 则位于原来的 HTTP 缓存层：</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421014504.png" alt="http-cache-priority.drawio"></p>
+<p>MemoryCache 的存在会导致一个问题： <strong>ServiceWorker 并不总是对资源有着控制权。</strong><br>这会另我们本来期望的情况会变得复杂且不可预知。可惜的是 MemoryCache 并不在 W3C 的标准中，W3C 从 2016 年到现在仍然在讨论着这个事情，看来短时间这个问题是得不到解决了。</p>
+<blockquote>
+<p>一些正在讨论的话题：</p>
+<ol>
+<li><a href="https://github.com/w3c/ServiceWorker/issues/1510" target="_blank" rel="external">safari fetches from memory cache instead of Service worker </a></li>
+<li><a href="https://github.com/w3c/ServiceWorker/issues/1174" target="_blank" rel="external">Difference between disk and memory cache</a></li>
+<li><a href="https://github.com/jakearchibald/idb/issues/171" target="_blank" rel="external">Advanced Questions About Service Worker</a></li>
+<li><a href="https://github.com/w3c/ServiceWorker/issues/962" target="_blank" rel="external">allow service worker produced resources to be marked as “cachable”</a></li>
+</ol>
+</blockquote>
+<p><strong>我们真的没有办法么？</strong></p>
+<p>要是我们遇到业务场景，确实对 ServiceWorker 资源控制权有很强的的要求，我们还是可以做点事情的。<br>MemoryCache 是受控于 <strong>「强缓存」</strong> 的，这意味着我们可以在 ServiceWorker 拦截资源的响应，并设置资源响应头来使资源从 MemoryCache 失效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cache-control: max-age=0</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(<span class="string">"fetch"</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  event.respondWith(</span><br><span class="line">    (<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 从 HTTP 缓存或者网络获取资源</span></span><br><span class="line">      <span class="keyword">const</span> res =  fetch(event.request);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 因为 Response 是一个流，只能用一次，所以这里要 clone 一下。</span></span><br><span class="line">      <span class="keyword">const</span> newRes = res.clone();</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 改写资源响应头</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> Response(res.body, &#123; ...newRes, headers: &#123;</span><br><span class="line">        <span class="string">'cache-control'</span>: <span class="string">'max-age=0'</span></span><br><span class="line">      &#125;&#125;);</span><br><span class="line">    &#125;)();</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，这种方法是以牺牲少量加载性能为前提的。这取决于我们实际场景中是性能优先，还是离线优先，或者其他什么情况优先。</p>
+<h2 id="MemoryCache、DiskCache、ServiceWorker-缓存哪个速度更快？"><a href="#MemoryCache、DiskCache、ServiceWorker-缓存哪个速度更快？" class="headerlink" title="MemoryCache、DiskCache、ServiceWorker 缓存哪个速度更快？"></a>MemoryCache、DiskCache、ServiceWorker 缓存哪个速度更快？</h2><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202204202034325.png" alt="image-20220420203359745"></p>
+<p>我们再看一下同一个资源三种缓存的加载速度和优先级：</p>
+<ol>
+<li>加载速度：MemoryCache &gt; <strong>DiskCache &gt; ServiceWorker</strong></li>
+<li>优先级：MemoryCache &gt; <strong>ServiceWorker&gt; DiskCache</strong></li>
+</ol>
+<p>MemoryCache 优先级在 ServiceWorker 前面，这个没问题。<br><strong>但是速度更慢的 ServiceWorker 优先级比速度更快的 DiskCache 更高？</strong><br><strong>那盘下来，ServiceWorker 岂不是减慢了站点的加载速度？</strong></p>
+<h2 id="对照实验"><a href="#对照实验" class="headerlink" title="对照实验"></a>对照实验</h2><p>为了研究这个问题，我做了一组对照实验。<br>实验只在 Chrome 进行，chrome devtool 为每个资源提供时间。所有加载资源的信息都可以作为 HAR 文件下载下来，然后编写本地脚本进行信息提取和分析。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421001210.png" alt="image-20220421001201494"></p>
+<p><strong>实验条件</strong></p>
+<ol>
+<li>同一个环境：Chrome97 / MacOS 10.14 / Wifi</li>
+<li>同一张图片的多次并发加载：<ol>
+<li>3 张 133KB 图片 10 次实验</li>
+<li>10 张 133KB 图片 10 次实验</li>
+<li>100 张 133KB 图片 10 次实验</li>
+</ol>
+</li>
+<li>观察两个性能：<ol>
+<li>DiskCache 缓存性能表现</li>
+<li>ServiceWorker 缓存速度表现</li>
+</ol>
+</li>
+</ol>
+<h3 id="实验一：3-张-133KB-图片并发"><a href="#实验一：3-张-133KB-图片并发" class="headerlink" title="实验一：3 张 133KB 图片并发"></a>实验一：3 张 133KB 图片并发</h3><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421013900.png" alt="image-20220421013805667"></p>
+<p>首先是并发请求 3 张图片进行 10 次实验，取平均数据，然后分别观察 DiskCache、ServiceWorker Cache 的性能表现。</p>
+<p>观察：</p>
+<ol>
+<li>DiskCache：我们发现下载操作并没有花太多时间，但是资源在等待排队。</li>
+<li>ServiceWorker Cache：更多耗时在下载。</li>
+</ol>
+<p>结论：但尽管如此，这种情况下， <strong>DiskCache 依然是比 ServiceWorker Cache 更快。</strong></p>
+<h3 id="实验二：3-张-133KB-图片-10-次实验"><a href="#实验二：3-张-133KB-图片-10-次实验" class="headerlink" title="实验二：3 张 133KB 图片 10 次实验"></a>实验二：3 张 133KB 图片 10 次实验</h3><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421013928.png" alt="image-20220421013924399"></p>
+<p>当我把并发图片增加到 10 张，这种情况可能会更加接近于实际情况，站点中可能会拥有更多的不同的资源（JS文件、字体、样式、图像等），因为某些网站可能会在一个页面存在超过 10 个资源。</p>
+<p>观察：</p>
+<ol>
+<li>DiskCache：从第二个资源开始排队时间依然很长，但是下载时间是基本不变的。</li>
+<li>ServiceWorker Cache： 排队并不是问题，但等待是。</li>
+</ol>
+<p>结论：这种情况下， <strong>DiskCache 会略逊于 ServiceWorker Cache。</strong></p>
+<h3 id="实验三：3-张-133KB-图片-100-次实验"><a href="#实验三：3-张-133KB-图片-100-次实验" class="headerlink" title="实验三：3 张 133KB 图片 100 次实验"></a>实验三：3 张 133KB 图片 100 次实验</h3><p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421014007.png" alt="image-20220421014006376"></p>
+<p>当我把并发图片增加到 100 张，这种情况几乎是不真实的情况，但是我好奇为什么 DiskCache 为什么在第一次试验中比 ServiceWorker Cache 更快。</p>
+<p>观察：</p>
+<ol>
+<li>DiskCache：排队依然是问题，且随着并发数成线性上升。我们甚至能看到浏览器是如何加载图片的，一次并发大概 6 张图片。</li>
+<li>ServiceWorker Cache：虽然等待时间随着并发数上升，但是是平缓的。</li>
+</ol>
+<p>结论： <strong>大并发下 ServiceWorker Cache 比 DiskCache 更快。</strong></p>
+<p>那 DiskCache 和 ServiceWorker 怎么选择？<br><strong>小孩子才做选择，大人都要</strong></p>
+<p>由于 ServiceWorker 的优先级在 DiskCache 之上，我们可以在 ServiceWorker 进行 <strong>「资源竞速」</strong>，同一时间请求 ServiceWorker Cache 和 DiskCache，哪个先返回就把资源返回上一层。代码可能是这样的：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(<span class="string">"fetch"</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  event.respondWith(</span><br><span class="line">    (<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">const</span> res = <span class="built_in">Promise</span>.race([</span><br><span class="line">        <span class="comment">// 请求 ServiceWorker Cache</span></span><br><span class="line">        cache.open(CACHE_NAME).then(<span class="function"><span class="params">cache</span> =&gt;</span> cache.match(event.request)),</span><br><span class="line">        <span class="comment">// 请求 DiskCache 或者网络资源</span></span><br><span class="line">        fetch(event.request)</span><br><span class="line">      ])</span><br><span class="line">    &#125;)();</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="实验四：资源竞速之后，并发请求-3-张图片、10-张图片-和-100-张图片"><a href="#实验四：资源竞速之后，并发请求-3-张图片、10-张图片-和-100-张图片" class="headerlink" title="实验四：资源竞速之后，并发请求 3 张图片、10 张图片 和 100 张图片"></a>实验四：资源竞速之后，并发请求 3 张图片、10 张图片 和 100 张图片</h3><p>当我们进行资源竞速之后，这种情况下，无论是并发少量资源还是大量资源，都能达到最快的级别。</p>
+<p><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421014505.png" alt="image-20220421014045092"><br><img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/jerryc/20220421005723.png" alt="image-20220421005715401"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本篇我们搞懂了 ServiceCache、MemoryCache、DiskCache 的优先级。<br>然后深入对比了 ServiceWorker Cache 和 DiskCache 的性能表现。<br>在少量资源并发的时候，DiskCache 更快，在大量资源并发的时候，ServiceWorker 更快。<br>最后通过「资源竞速」的方式来兼顾两种情况。<br>但是，在某些时候，我们比较 ServiceWorker 和 HTTP 缓存有点不公平。<br>ServiceWorker 的用途会更加广泛，它提供了更细力度的缓存控制、使离线化应用得以实现、并且对比主线程，他能够使用更多的 CacheAPI 容量。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2022/04/20/2022/build-a-extensible-reliable-controllable-PWA-app/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2022/04/21/2022/http-cache-vs-service-worker-cache/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>
