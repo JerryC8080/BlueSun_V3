@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>为什么使用Sails | BlueSun</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Nodejs,SailsJS," />
+  
+
+  <meta name="description" content="前言入手Node.js半年，从用Express开发自己的博客到用Sails开发公司项目，深深被Sails震撼了。Sails是Balderdash团队的产品，快速的项目构建、优秀的框架结构还有众多的扩展，让我有种相见恨晚的感觉。在Koa流行之前，个人认为Sails的用户量还是挺可观的。今天，我想写一写Sails那些让我感动的地方，顺便理顺一下Sails的架构。 目录  一步搭建项目 项目架构 ORM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么使用Sails">
+<meta property="og:url" content="http://huang-jerryc.com/2015/04/25/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8Sails/index.html">
+<meta property="og:site_name" content="BlueSun">
+<meta property="og:description" content="前言入手Node.js半年，从用Express开发自己的博客到用Sails开发公司项目，深深被Sails震撼了。Sails是Balderdash团队的产品，快速的项目构建、优秀的框架结构还有众多的扩展，让我有种相见恨晚的感觉。在Koa流行之前，个人认为Sails的用户量还是挺可观的。今天，我想写一写Sails那些让我感动的地方，顺便理顺一下Sails的架构。 目录  一步搭建项目 项目架构 ORM">
+<meta property="og:locale">
+<meta property="og:image" content="http://xia-dev.b0.upaiyun.com/64f9a65d-294f-43e6-984a-77dc2818ecc4.png">
+<meta property="article:published_time" content="2015-04-25T08:35:04.000Z">
+<meta property="article:modified_time" content="2017-02-02T14:53:25.000Z">
+<meta property="article:author" content="JerryC">
+<meta property="article:tag" content="Nodejs">
+<meta property="article:tag" content="SailsJS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xia-dev.b0.upaiyun.com/64f9a65d-294f-43e6-984a-77dc2818ecc4.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/personal-style.css">
+
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83430919-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b65b3ffc3fd0d14c968e1036793e631b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="BlueSun" type="application/atom+xml">
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-text">目录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%AD%A5%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-text">一步搭建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84"><span class="toc-text">项目架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#api"><span class="toc-text">api&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#views"><span class="toc-text">views&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#assets"><span class="toc-text">assets&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#config"><span class="toc-text">config&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tasks"><span class="toc-text">tasks&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#app-js"><span class="toc-text">app.js</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ORM"><span class="toc-text">ORM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">MVC的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Model%E5%B1%82"><span class="toc-text">Model层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#View%E5%B1%82"><span class="toc-text">View层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Controller%E5%B1%82"><span class="toc-text">Controller层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Service%E5%B1%82"><span class="toc-text">Service层</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Policy%E5%B1%82"><span class="toc-text">Policy层</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1"><span class="toc-text">路由</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RESTful-routes"><span class="toc-text">RESTful routes</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Shortcut-routes"><span class="toc-text">Shortcut routes</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Action-routes"><span class="toc-text">Action routes</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8"><span class="toc-text">安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97"><span class="toc-text">日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">单元测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebSocket"><span class="toc-text">WebSocket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-text">结语</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-为什么使用Sails" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">为什么使用Sails</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2015.04.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>JerryC</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E6%90%AC%E7%A0%96%E7%A0%81%E5%86%9C/">搬砖码农</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://huang-jerryc.com//2015/04/25/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8Sails/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>入手Node.js半年，从用Express开发自己的博客到用Sails开发公司项目，深深被Sails震撼了。Sails是Balderdash团队的产品，快速的项目构建、优秀的框架结构还有众多的扩展，让我有种相见恨晚的感觉。在Koa流行之前，个人认为Sails的用户量还是挺可观的。今天，我想写一写Sails那些让我感动的地方，顺便理顺一下Sails的架构。</p>
+<h4 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h4><blockquote>
+<ul>
+<li>一步搭建项目</li>
+<li>项目架构</li>
+<li>ORM</li>
+<li>MVC的实现</li>
+<li>路由</li>
+<li>安全</li>
+<li>日志</li>
+<li>单元测试</li>
+<li>WebSocket</li>
+</ul>
+</blockquote>
+<h2 id="一步搭建项目"><a href="#一步搭建项目" class="headerlink" title="一步搭建项目"></a>一步搭建项目</h2><blockquote>
+<p>在安装了Node.js 和 Sails的环境下，只需要一条命令，就能够搭建一个拥有完整架构的项目，尽管这很简单，我还是觉得有必要说一下。</p>
+</blockquote>
+<p>在已经安装了Node.js和npm的前提下，首先你需要全局下安装Sails<br><code>$ sudo npm install sails -g</code></p>
+<p>其次在一个空路径下，新建一个项目<br><code>$ sails new newApp</code></p>
+<p>最后，只需要前往项目路径，把项目运行起来<br><code>$ cd testProject</code><br><code>$ sails lift</code></p>
+<p>访问 <code>http://localhost:1337</code>就能看到一个新的项目</p>
+<p><img src="http://xia-dev.b0.upaiyun.com/64f9a65d-294f-43e6-984a-77dc2818ecc4.png" alt="new app"></p>
+<h2 id="项目架构"><a href="#项目架构" class="headerlink" title="项目架构"></a>项目架构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── api</span><br><span class="line">│   ├── controllers</span><br><span class="line">│   ├── models</span><br><span class="line">│   ├── policies</span><br><span class="line">│   ├── responses</span><br><span class="line">│   └── services</span><br><span class="line">├── views</span><br><span class="line">├── assets</span><br><span class="line">├── config</span><br><span class="line">├── tasks</span><br><span class="line">├── node_modules</span><br><span class="line">├── package.json</span><br><span class="line">├── Gruntfile.js</span><br><span class="line">├── README.md</span><br><span class="line">└── app.js</span><br></pre></td></tr></table></figure>
+<h3 id="api"><a href="#api" class="headerlink" title="api/"></a><code>api/</code></h3><p><code>api</code> 目录下是你要构建应用的核心所在，常说的MVC的设计结构就体现在这里<br><code>api/controllers</code> ：控制层，该层是Http请求的入口。Sails官方建议该层只处理请求的转发和页面的渲染，具体的逻辑实现应该交给Service层。<br><code>api/models</code>：模型层，在Sails中，对于Model采用的是充血模型，除了可以在模型中定于属性之外，还可以定义包含逻辑处理的函数。在Sails中，所有Model都可以全局性访问。<br><code>api/policies</code>：过滤层，该层在Controller层之前对Http请求做处理，在这一层中，可以定于一些规则来过滤Http请求，比如身份认证什么的。<br><code>api/responses</code>：http响应的方法都放这里，例如服务器错误、请求错误、404错误等，定义在responses文件夹里面的方法，都会赋值到controller层的req对象中。<br><code>api/services</code>：服务层，该层包含逻辑处理的方法，在Sails中，所有Service都可以全局性访问。</p>
+<h3 id="views"><a href="#views" class="headerlink" title="views/"></a><code>views/</code></h3><p>视图层，存放视图模版文件的地方，Sails默认是提供ejs模版引擎的，如果你愿意，你可以换成jade、handlebars或者任何你喜欢的模版引擎。</p>
+<h3 id="assets"><a href="#assets" class="headerlink" title="assets/"></a><code>assets/</code></h3><p>资源文件夹，在Sails启动的时候，会启动某一个Grunt任务，把assets文件夹里的内容或压缩或编译或复制到根目录下的<code>.tmp</code>目录，这是前端可以直接通过路由访问的资源，HTML、JS、CSS以及图片等静态资源都放在这里了。</p>
+<h3 id="config"><a href="#config" class="headerlink" title="config/"></a><code>config/</code></h3><p>配置文件夹，在Sails启动的时候，会加载该文件夹里的文件，并赋值在全局对象<code>sails.config</code>中，所以能够在任何一个地方都能用到。在用Sails开发，会经常跟这个文件夹里的文件打交道，从config的构成很容易知道Sails都提供哪方面的功能。</p>
+<h3 id="tasks"><a href="#tasks" class="headerlink" title="tasks/"></a><code>tasks/</code></h3><p>Sails自带的项目自动化工具是<code>Grunt</code>，而Grunt的配置和任务注册都放在这个文件夹里了。这里已经提供了通常会用到的CSS编译、JS压缩、文件合并，更改检测等等任务，当然如果没有自己需要的，还能扩展。</p>
+<h3 id="app-js"><a href="#app-js" class="headerlink" title="app.js"></a><code>app.js</code></h3><p>Sails的启动文件，无论是<code>$ sails lift</code>命令或者<code>$ npm start</code>命令都会运行该文件。</p>
+<h2 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h2><p>开发了Sails的团队Balderdash，还开发了一套ORM框架：Waterline。<br>Waterline在Sails主要的舞台是在<code>/api/models</code>目录里，在这里定义的模型文件，在Sails启动的时候，都要经由Waterline的洗礼。<br>Waterline 是通过Adapter关联数据库的，不同的Adapter关联不同的数据库。<br>Waterline 能适配绝对部分数据库，大致分类两类，一类是官方团队开发的 Adapter适配的，一类是民间开发者开发的Adapter适配的：<br>官方支持的:    </p>
+<ul>
+<li>PostgreSQL    </li>
+<li>MySQL    </li>
+<li>MongoDB    </li>
+<li>Redis    </li>
+<li>Disk    </li>
+<li>Memory    </li>
+</ul>
+<p>民间开发的：    </p>
+<ul>
+<li>SQLServer    </li>
+<li>OrientDB  </li>
+<li>Oracle    </li>
+<li>Cassandra    </li>
+</ul>
+<p>关于Waterline的更多信息可以关注：<br><a href="https://github.com/balderdashy/waterline" target="_blank" rel="external">github:waterline</a><br><a href="https://github.com/balderdashy/waterline" target="_blank" rel="external">github:waterline-docs</a></p>
+<h2 id="MVC的实现"><a href="#MVC的实现" class="headerlink" title="MVC的实现"></a>MVC的实现</h2><p>在这一段我想不仅仅要谈论到Model层、View层和Controller层，我认为还有必要谈到Service层、和Policy层。</p>
+<h5 id="Model层"><a href="#Model层" class="headerlink" title="Model层"></a>Model层</h5><p>模型文件定义到<code>/api/models</code>中，由Waterline驱动，所有model都能全局访问。Sails提供命令行创建model的命令：<code>$ sails generate model MODEL_NAME</code></p>
+<h5 id="View层"><a href="#View层" class="headerlink" title="View层"></a>View层</h5><p>实现在<code>/views</code>中，除了默认提供的ejs模版引擎之外，还能更换成jade、handlebars等模版引擎</p>
+<h5 id="Controller层"><a href="#Controller层" class="headerlink" title="Controller层"></a>Controller层</h5><p>在<code>/api/controller</code>目录里，Sails中提供创建controller的命令：<code>$ sails generate controller CONTROLLER_NAME</code>。Sails也提供同时创建model和对应的Controller的命令：<code>$ sails generate api API_NAME</code>。</p>
+<h5 id="Service层"><a href="#Service层" class="headerlink" title="Service层"></a>Service层</h5><p>在<code>/api/services</code>目录里，存放自定义的服务，所有service都能够全局访问，Sails官方的建议是把逻辑处理都放在该层中，Controller层只做路由的分发和轻逻辑的处理。</p>
+<h5 id="Policy层"><a href="#Policy层" class="headerlink" title="Policy层"></a>Policy层</h5><p>在<code>/api/policies</code>目录里，存放自定义的过滤器。该层是一条请求在到达Controller之前根据需求过滤请求的中间层。在<code>/api/policies</code>目录中定义的文件，还需要在<code>config/policies.js</code>文件中为需求应用到某一过滤器的Action配置。</p>
+<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><p>Sails中要理解路由，首先要记得这个名词<code>blueprint</code>，中文翻译为：蓝图。我不知道官方是否解释过为什么要用个单词，但以我的理解，Sails的blueprint是负责指挥每一条客户端请求应该分配到服务器端的哪个Action去，所以叫蓝图吧。<br>blueprint主要分为三种：<code>RESTful routes</code>、<code>Shortcut routes</code>、<code>Action routes</code>。</p>
+<h5 id="RESTful-routes"><a href="#RESTful-routes" class="headerlink" title="RESTful routes"></a>RESTful routes</h5><p>当路径诸如：<code>/:modelIdentity</code> 或者 <code>/:modelIdentity/:id</code>的时候，blueprint会根据HTTP的动作（GET、POST、DELETE、PUT等）来分配到相应的Controller下相应的Action来处理。例如一个POST请求<code>/user</code>会创建一个用户，一个DELETE请求<code>/user/123</code>会删除<code>id</code>为123的用户。</p>
+<h5 id="Shortcut-routes"><a href="#Shortcut-routes" class="headerlink" title="Shortcut routes"></a>Shortcut routes</h5><p>这种路由主要是方便开发，请求的参数可以直接写在请求路径中，例如<code>/user/create?name=joe</code>会创建一个新的用户，<code>/user/update/1?name=mike</code>会更新<code>id</code>为1的用户的名字。shortcut routes在开发环境很便利，但是在生产环境下需要关闭。</p>
+<h5 id="Action-routes"><a href="#Action-routes" class="headerlink" title="Action routes"></a>Action routes</h5><p>这种路由会自动的为Controller层的每一个Action创建一个路由，例如你的Controller层有一个<code>FooController.js</code>，里面有一个Action<code>bar</code>，那么请求<code>/foo/bar</code>就会分配到<code>bar</code>Action。</p>
+<p>当然Sails也会提供自定义的路由，用户可以在<code>config/routes.js</code>和<code>config/polices.js</code>这两个配置文件中选择关闭或者打开blueprint提供的路由，和定义自己的路由。</p>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><p>要确保产品的安全性，要对几种常见的攻击和安全策略了如指掌，诸如CORS、CSRF、DDOS、XSS等。Sails对于常见的安全策略都有提供支持，且只需要通过相关的配置文件就可以控制安全策略的等级。深入探讨Web的安全策略，并不在本文的范畴内，日后我会以这个为题写一篇文章聊聊Web的安全。<br>想要了解更多Sails的安全策略可以看看这里：<a href="http://sailsjs.org/#!/documentation/concepts/Security" target="_blank" rel="external">sails: security</a></p>
+<h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>Sails提供了一个全局对象<code>sails.log</code>用来处理日志信息的输出，日志是分level的，在<code>config/log.js</code>中配置日志输出的level，而level的作用看下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Priority</th>
+<th style="text-align:center">level</th>
+<th style="text-align:center">Log fns visible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:center">silent</td>
+<td style="text-align:center">N/A</td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:center">error</td>
+<td style="text-align:center">.error()</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:center">warn</td>
+<td style="text-align:center">.warn(), .error()</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:center">debug</td>
+<td style="text-align:center">.debug(), .warn(), .error()</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:center">info</td>
+<td style="text-align:center">.info(), .debug(), .warn(), .error()</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:center">verbose</td>
+<td style="text-align:center">.verbose(), .info(), .debug(), .warn(), .error()</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:center">silly</td>
+<td style="text-align:center">.silly(), .verbose(), .info(), .debug(), .warn(), .error()</td>
+</tr>
+</tbody>
+</table>
+<p>Sails的日志管理默认是info层的，既会输出.info(), .debug(), .warn(), .error()的信息。</p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>Sails使用了mocha进行单元测试，在新建Sails项目的时候，没有创建单元测试的文件夹，需要自己手动构造单元测试目录，官方建议的目录是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── api</span><br><span class="line">├── assets</span><br><span class="line">├── ...</span><br><span class="line">├── test</span><br><span class="line">│  ├── unit</span><br><span class="line">│  │  ├── controllers</span><br><span class="line">│  │  │  └── UsersController.test.js</span><br><span class="line">│  │  ├── models</span><br><span class="line">│  │  │  └── Users.test.js</span><br><span class="line">│  │  └── ...</span><br><span class="line">│  ├── fixtures</span><br><span class="line">│  ├── ...</span><br><span class="line">│  ├── bootstrap.test.js</span><br><span class="line">│  └── mocha.opts</span><br><span class="line">└── views</span><br></pre></td></tr></table></figure>
+<p>而我在单元测试常用的组合是：<a href="https://github.com/mochajs/mocha" target="_blank" rel="external">mocha</a>、<a href="https://github.com/tj/should.js" target="_blank" rel="external">should</a>、<a href="https://github.com/visionmedia/supertest" target="_blank" rel="external">supertest</a>、 <a href="https://github.com/gotwarlost/istanbul" target="_blank" rel="external">istanbul</a><br>其中should是提供断言，supertest是用于测试Controller层的时候伪造http请求的，而istanbul则是提供测试代码覆盖率的。<br>关于怎么在Sails中编写测试代码，可以参考 <a href="http://sailsjs.org/#!/documentation/concepts/Testing" target="_blank" rel="external">sails:testing</a></p>
+<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>对于有即时性通讯需求的Web应用，我们会用Socket，Sails也为这方面提供了支持。在客户端提供js文件：<code>sails.io.js</code>，而在服务器端提供全局对象：<code>sails.sockets</code>。通过这两个对象，就可以进行客户端和服务器端即时性通讯的开发了。<br>Sails默认会启动WebSocket功能，在客户端访问服务器端的时候，会自动尝试在同域名下连接socket。<br>值得注意的是，这样会对AngularJS、EmberJS等前端MVVC开发产生一些障碍。<br>比如进行AngularJS开发的时候，我们在<code>http://localhost:9000</code>跑AngularJS项目，而服务器端却跑在<code>http://localhost:1337</code>。<br>当访问<code>http://localhost:9000</code>的时候，<code>sails.io.js</code>会尝试于当前路径下进行socket连接，也就是<code>http://localhost:9000</code>，这时会出错，因为服务器是跑在<code>http://localhost:1337</code>的。<br>在开发的时候要解决这样的问题的时候，我们只需要在AngularJS这边引入<code>sails.io.js</code>之后定义连接路径就行了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"scripts/lib/sails.io.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script&gt;io.sails.url = <span class="string">"http://localhost:1337"</span>;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>可以说Sails涵盖了Web开发中会遇到的绝大部分需求和问题，如果深入研究Sails的话，是受益匪浅的。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持JerryC</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/03/29/%E5%9F%BA%E4%BA%8ERESTful-API-%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2015/07/14/Session%E5%8E%9F%E7%90%86/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'bluesun-jerryc';
+    
+    var disqus_url = 'http://huang-jerryc.com/2015/04/25/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8Sails/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      // dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      dsq.src = '//c.disquscdn.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <!-- 
+    <script id="dsq-count-scr" src="//bluesun-jerryc.disqus.com/count.js" async></script>
+  -->
+  <script id="dsq-count-scr" src="//c.disquscdn.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+
+    loadScript('/js/sw-register.js?235683', function() {
+      // load success
+    })
+  }
+</script>
+
+</body>
+</html>

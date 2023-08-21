@@ -16,9 +16,8 @@ tags:
 
 以三大品类为主语的「列表页」，已经不能满足业务的发展和用户新需求。为了满足用户新需求，助力产品增长，我们需要重新审视「非编辑」这件事。新成立的文档管理产研团队，帮忙理清了至关重要的事情，提出文档管理五大中台的概念：帐号中台、Drive 中台、权限中台、协作中台、安全中台。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308081109405.png" alt="文档管理五大中台" style="zoom: 30%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308081109405.png" alt="文档管理五大中台" style="zoom: 30%;" />
 
 
 
@@ -54,9 +53,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 
 从这个脉络来看，隐约能感受到行业内的产品，是有一定的历史进程和发展趋势的。而当我们将三个行业的竞品放在同一个时间线来看的话，这个产品演变趋势就变得直观了。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308182243178.png" alt="竞品产品发展趋势时间线" style="zoom: 100%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308182243178.png" alt="竞品产品发展趋势时间线" style="zoom: 100%;" />
 
 从历史的角度来总结「云盘」、「在线文档」、「企业办公套件」的产品变迁，发现主要经历了以下几个阶段：
 
@@ -108,9 +106,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 
 
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308190028191.png" alt="Drive 中台的能力圈" style="zoom:40%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308190028191.png" alt="Drive 中台的能力圈" style="zoom:40%;" />
 
 
 
@@ -129,9 +126,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 从软件生命周期的发展来看，着实已经到达了一个效率瓶颈节点。
 
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308120908718.png" alt="软件生命周期" style="zoom:80%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308120908718.png" alt="软件生命周期" style="zoom:80%;" />
 
 
 
@@ -142,9 +138,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 同时，在各个产品类别中插入的图片、音频、视频等文件，又被称为另一种文件：「附件」。
 更为复杂的是，这些不同的文件模型的数据来源对应多套后端接口，以及不同的请求体和响应体。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171551183.png" alt="多套文件模型和概念" style="zoom:80%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171551183.png" alt="多套文件模型和概念" style="zoom:80%;" />
 
 这种现状导致了许多问题。
 例如**从性能上看**，若要在列表页快速预览一个文件，「列表页」和「预览」作为两个模块，如何传输文件呢？如果通过 id 传输，将导致调用链路中的每个节点都需要进行接口查询，造成不必要的重复消耗，无法实现流畅的预览体验。
@@ -160,9 +155,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 附件是指在线文档编辑中插入的图片、音频、视频等文件。我们支持对这些文件进行快速预览，呈现方式为内嵌和全屏浮层。
 插件是指与第三方合作的文件，如智影等。我们支持对这类文件的预览图进行快速查看，呈现方式为浮层弹窗预览。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171552496.png" alt="多套文件预览" style="zoom:80%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171552496.png" alt="多套文件预览" style="zoom:80%;" />
 
 这些模块都实现了同一个功能：「文件预览」，但却是独立实现的。这导致了复用困难，例如在为云文件支持图片、音频、视频预览时，无法简单复用。同样，如果附件需要支持 Office 文档的插入和预览，也无法快速满足需求。
 总的来说，腾讯文档的文件能力目前是「分散」的，产品内存在多套文件概念、多套上传下载能力、多套文件选择能力等。
@@ -202,9 +196,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 文件概念的统一至关重要，不仅有利于产研团队之间的沟通，降低沟通成本，还有利于技术细节的设计，大到架构设计，小到变量命名。
 
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308182340927.png" alt="image-20230818234010116" style="zoom:30%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308182340927.png" alt="image-20230818234010116" style="zoom:30%;" />
 
 
 
@@ -238,9 +231,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 
 经过调整后，我们可以在不同场景下消费同一个文件。同时，只需要一套维护成本，在功能迭代时，只需在 Drive 内部完成迭代，对业务方来说是透明的。这样的设计能提高开发效率和维护便利性。
 
-<p align="center">
-  <img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308151641010.png" alt="image-20230817171349246" style="zoom:75%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308151641010.png" alt="image-20230817171349246" style="zoom:75%;" />
 
 
 
@@ -257,9 +249,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 
 因此，我们可以借鉴竞品的优势，为腾讯文档构建一个统一的文件预览服务，以解决现有的问题。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308152107648.png" alt="image-20230815210716773" style="zoom: 30%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308152107648.png" alt="image-20230815210716773" style="zoom: 30%;" />
 
 经过竞品分析过后，发现飞书的结构会比较适合我们，我们需要构建一个全面且灵活的文件预览能力：
 
@@ -271,9 +262,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 通过构建 DriveEngine，我们可以实现统一的文件预览服务，提高系统的复用性和可维护性。这将有助于我们更高效地进行功能迭代和优化，同时确保系统的稳定性和可靠性。在未来，我们还可以根据需求扩展 DriveEngine 的功能，以满足更多的业务场景。
 
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308152112034.png" alt="建设统一预览服务" style="zoom: 30%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308152112034.png" alt="建设统一预览服务" style="zoom: 30%;" />
 
 
 从上图中我们可以看到，DriveEngine 内部遵循开放封闭原则，对外提供统一高可用的 API 接口和可选的配置文件。它接收统一的文件模型 DriveFile，交给调度器，由调度器根据 DriveFile 的 MIME Type 来分流到不同文件驱动。
@@ -302,9 +292,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 
 架构从下往上生长，底层提供基础服务，中层完成通用模块，高层完成场景适配，顶层则构建各品类业务。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308161639840.png" alt="drive-file-sdk-architecture-v2.drawio" style="zoom: 30%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308161639840.png" alt="drive-file-sdk-architecture-v2.drawio" style="zoom: 30%;" />
 
 接下来，我们继续思考，如果未来有新的内容加入进来，这个架构又当如何生长？
 预览服务完善了「文件消费」能力，当我们需要为完善「文件生产」能力而迭代「上传导入模块」的时候呢？
@@ -312,25 +301,22 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 
 根据已有框架的分层思路，我们对上传导入模块进行了重新设计：
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308161210142.png" alt="tdoc-drive-uploader.drawio" style="zoom:50%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308161210142.png" alt="tdoc-drive-uploader.drawio" style="zoom:50%;" />
 
 
 然后将其放在整体架构中，符合基本分层。这时，我们发现架构开始变得更加丰富，它开始长胖了。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308161719139.png" alt="drive-file-sdk-architecture-v3.drawio" style="zoom:50%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308161719139.png" alt="drive-file-sdk-architecture-v3.drawio" style="zoom:50%;" />
 
 
 
 当未来有其他业务需要迭代时，我们可以以此架构为指导，逐渐让架构生长起来。
 再向前一步，根据以往的经验来看诗和远方，我们预见未来可能会有开放平台的需求。开放平台的接入应当从纵向考虑，可以使用每一层的能力来扩展定制应用和场景，按照开放程度由浅入深。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171539670.png" alt="drive-file-sdk-architecture-v4.drawio" style="zoom:50%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171539670.png" alt="drive-file-sdk-architecture-v4.drawio" style="zoom:50%;" />
 
 
 
@@ -361,9 +347,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 
 实际上，我们在执行过程中也是螺旋式的一点点修正最初的方案。毕竟，人无完人，技术也没有完美的设计，变化一直在发生。只要我们还能看得到远方的目标，即使风大雨大，也不会偏离正确的航向太远。
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171624121.png" alt="以生长型架构为指导，以产品节奏为依托" style="zoom:50%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171624121.png" alt="以生长型架构为指导，以产品节奏为依托" style="zoom:50%;" />
 
 举个简单的例子，像 Drive 前端中台的建设，一开始我们是先构建 DriveApplication 的。然后再根据产品节奏在支持音视图预览的时候，完成通用能力的下沉，构建了 DriveEngine，DriveAPI 等。接着又在一次需要统一附件体验的时候，构建统一的文件模型 DriveFile，然后再花点时间从下往上重塑上层设施，只要在上层设计的时候稍微考虑到未来，预留接口，就能很轻易的完成更改。
 
@@ -374,9 +359,8 @@ Drive 中台是其中之一，那怎么去落地这个中台？从技术的角�
 当下我们也在为不同的季度目标，不同的产品节奏，来持续夯实 Drive 中台的能力。Drive 业务也已经能在新的台阶上去迭代，产生了新的一条 S 曲线。未来随着业务发展，这条 S 曲线将来也会迎来衰老和下降。届时一定还会有新的人产生新的方法，构造出新的一条 S 曲线。
 
 
-<p align="center">
-	<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171713472.png" alt="image-20230817171349246" style="zoom:40%;" />
-</p>
+
+<img src="https://bluesun-1252625244.cos.ap-guangzhou.myqcloud.com/img/202308171713472.png" alt="image-20230817171349246" style="zoom:40%;" />
 
 
 最后，
